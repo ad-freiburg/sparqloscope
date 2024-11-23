@@ -1,0 +1,70 @@
+# SPARQL queries to compute the placeholders for a given dataset.
+placeholders:
+  - name: LARGE_PREDICATE
+    description: A large predicate that has many triples
+    query: SELECT ?p WHERE { ?s ?p ?o } GROUP BY ?p ORDER BY DESC(COUNT(?p)) LIMIT 1
+  - name: LARGE_PREDICATE_JOIN_1
+    description: A large predicate that has many triples, used in the first part of the join
+    query: SELECT ?p WHERE { ?s ?p ?o } GROUP BY ?p ORDER BY DESC(COUNT(?p)) LIMIT 1 OFFSET 0
+  - name: LARGE_PREDICATE_JOIN_2
+    description: A large predicate that has many triples, used in the second part of the join
+    query: SELECT ?p WHERE { ?s ?p ?o } GROUP BY ?p ORDER BY DESC(COUNT(?p)) LIMIT 1 OFFSET 1
+  - name: LARGE_PREDICATE_WITH_LITERAL
+    description: A large predicate that has literals as objects
+    query: |
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT (rdfs:label AS ?p) WHERE { }
+
+# The benchmark queries with placeholders.
+queries-with-placeholders:
+  - name: group-by-count-object-large
+    description: GROUP_BY with COUNT, for object of large predicate
+    type: group-by
+    query: SELECT ?object (COUNT(?object) AS ?count) WHERE { ?subject %LARGE_PREDICATE% ?object } GROUP BY ?object
+  - name: group-by-count-subject-large
+    description: GROUP_BY with COUNT, for subject of large predicate
+    type: group-by
+    query: SELECT ?subject (COUNT(?subject) AS ?count) WHERE { ?subject %LARGE_PREDICATE% ?object } GROUP BY ?subject
+
+  - name: join-two-triples-large-limit
+    description: JOIN of two triples, large result with LIMIT
+    type: join
+    query: SELECT ?s ?o WHERE { ?s %LARGE_PREDICATE_JOIN_1% ?o1 . ?s %LARGE_PREDICATE_JOIN_2% ?o2 } LIMIT 1000
+
+  - name: regex-prefix-1
+    description: REGEX filter with prefix of length 1
+    type: range-filter
+    query: SELECT ?object WHERE { ?subject %LARGE_PREDICATE_WITH_LITERAL ?object FILTER REGEX(?object, "^C") }
+  - name: regex-prefix-2
+    description: REGEX filter with prefix of length 2
+    type: range-filter
+    query: SELECT ?object WHERE { ?subject %LARGE_PREDICATE_WITH_LITERAL ?object FILTER REGEX(?object, "^Co") }
+  - name: regex-prefix-3
+    description: REGEX filter with prefix of length 3
+    type: range-filter
+    query: SELECT ?object WHERE { ?subject %LARGE_PREDICATE_WITH_LITERAL ?object FILTER REGEX(?object, "^Com") }  
+
+  - name: number-of-triples
+    description: Total number of triples
+    type: statistics
+    query: SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }
+  - name: number-of-subjects
+    description: Total number of distinct subjects
+    type: statistics
+    query: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+  - name: number-of-predicates
+    description: Total number of distinct predicates
+    type: statistics
+    query: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+  - name: number-of-objects
+    description: Total number of distinct objects
+    type: statistics
+    query: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+  - name: number-of-literals
+    description: Total number of literals
+    type: statistics
+    query: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+  - name: number-of-blank-nodes
+    description: Total number of blank nodes
+    type: statistics
+    query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
