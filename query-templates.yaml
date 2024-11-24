@@ -1,70 +1,188 @@
-# SPARQL queries to compute the placeholders for a given dataset.
+# SPARQL SELECT queries to compute the placeholders for a given dataset.
 placeholders:
-  - name: LARGE_PREDICATE
-    description: A large predicate that has many triples
-    query: SELECT ?p WHERE { ?s ?p ?o } GROUP BY ?p ORDER BY DESC(COUNT(?p)) LIMIT 1
-  - name: LARGE_PREDICATE_JOIN_1
-    description: A large predicate that has many triples, used in the first part of the join
-    query: SELECT ?p WHERE { ?s ?p ?o } GROUP BY ?p ORDER BY DESC(COUNT(?p)) LIMIT 1 OFFSET 0
-  - name: LARGE_PREDICATE_JOIN_2
-    description: A large predicate that has many triples, used in the second part of the join
-    query: SELECT ?p WHERE { ?s ?p ?o } GROUP BY ?p ORDER BY DESC(COUNT(?p)) LIMIT 1 OFFSET 1
-  - name: LARGE_PREDICATE_WITH_LITERAL
+  - name: PREDICATE_LARGE_1
+    description: A large predicate (with many triples)
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY DESC(?count)
+      LIMIT 1 OFFSET 0
+  - name: PREDICATE_LARGE_2
+    description: A large predicate, different from the first one
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY DESC(?count)
+      LIMIT 1 OFFSET 1
+  - name: PREDICATE_MEDIUM_1
+    description: A medium-sized predicate
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY DESC(?count)
+      LIMIT 1 OFFSET 10
+  - name: PREDICATE_MEDIUM_2
+    description: A medium-sized predicate, different from the first one
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY DESC(?count)
+      LIMIT 1 OFFSET 11
+  - name: PREDICATE_SMALL_1
+    description: A small predicate
+    query: |
+      SELECT ?p ?count WHERE {
+        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
+        FILTER (?count <= 1000)
+      }
+      ORDER BY DESC(?count) LIMIT 1 OFFSET 0
+  - name: PREDICATE_SMALL_2
+    description: A small predicate
+    query: |
+      SELECT ?p ?count WHERE {
+        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
+        FILTER (?count <= 1000)
+      }
+      ORDER BY DESC(?count) LIMIT 1 OFFSET 1
+  - name: PREDICATE_LARGE_WITH_LITERAL
     description: A large predicate that has literals as objects
     query: |
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-      SELECT (rdfs:label AS ?p) WHERE { }
+      SELECT (rdfs:label AS ?p) (COUNT(?s) AS ?count)
+      WHERE { ?s rdfs:label ?o }
+
+  - name: HAS_RDFS_LABEL
+    description: Check if rdfs:label is present
+    query: |
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      ASK { ?s rdfs:label ?o }
+  - name: HAS_WDT_P31_WDT_P279_STAR
+    description: Check if wdt:P31/wdt:P279* is present
+    query: |
+      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+      ASK { ?s wdt:P31/wdt:P279* ?o }
 
 # The benchmark queries with placeholders.
-queries-with-placeholders:
+#
+# NOTE: Do not add PREFIX declarations here, they will be added automatically
+# by `generate-queries.py` (if the user provides a mean to obtain prefix
+# definitions for the dataset).
+queries:
+  - name: group-by-count-object-small
+    description: GROUP_BY with COUNT, for object of large predicate
+    group: group-by
+    query: |
+      SELECT ?object (COUNT(?object) AS ?count)
+      WHERE { ?subject %PREDICATE_SMALL_1% ?object }
+      GROUP BY ?object ORDER BY DESC(?count) LIMIT 100
+  - name: group-by-count-object-medium
+    description: GROUP_BY with COUNT, for object of large predicate
+    group: group-by
+    query: |
+      SELECT ?object (COUNT(?object) AS ?count)
+      WHERE { ?subject %PREDICATE_MEDIUM_1% ?object }
+      GROUP BY ?object ORDER BY DESC(?count) LIMIT 100
   - name: group-by-count-object-large
     description: GROUP_BY with COUNT, for object of large predicate
-    type: group-by
-    query: SELECT ?object (COUNT(?object) AS ?count) WHERE { ?subject %LARGE_PREDICATE% ?object } GROUP BY ?object
-  - name: group-by-count-subject-large
-    description: GROUP_BY with COUNT, for subject of large predicate
-    type: group-by
-    query: SELECT ?subject (COUNT(?subject) AS ?count) WHERE { ?subject %LARGE_PREDICATE% ?object } GROUP BY ?subject
+    group: group-by
+    query: |
+      SELECT ?object (COUNT(?object) AS ?count)
+      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
+      GROUP BY ?object ORDER BY DESC(?count) LIMIT 100
+  # - name: group-by-count-subject-large
+  #   description: GROUP_BY with COUNT, for subject of large predicate
+  #   group: group-by
+  #   query:
+  #     SELECT ?subject (COUNT(?subject) AS ?count)
+  #     WHERE { ?subject %PREDICATE_LARGE_1% ?object }
+  #     GROUP BY ?subject ORDER BY DESC(?count) LIMIT 100
 
-  - name: join-two-triples-large-limit
-    description: JOIN of two triples, large result with LIMIT
-    type: join
-    query: SELECT ?s ?o WHERE { ?s %LARGE_PREDICATE_JOIN_1% ?o1 . ?s %LARGE_PREDICATE_JOIN_2% ?o2 } LIMIT 1000
+  - name: single-join-medium
+    description: JOIN of two medium-sized predicates
+    group: join
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_MEDIUM_1% ?o . ?s %PREDICATE_MEDIUM_2% ?o }
+      LIMIT 1000
+  - name: single-join-medium-large
+    description: JOIN of a large and a small predicate
+    group: join
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_SMALL_1% ?o }
+      LIMIT 1000
+  - name: single-join-small
+    description: JOIN of a large an a medium-sized predicate
+    group: join
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_MEDIUM_1% ?o }
+      LIMIT 1000
+  - name: single-join-large
+    description: JOIN of two large predicates
+    group: join
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_LARGE_2% ?o }
+      LIMIT 1000
+
+  - name: wdt-P31-wdt-P279-star
+    description: Subjects with their wdt:P31/wdt:P279* type
+    group: property-path
+    condition: HAS_WDT_P31_WDT_P279_STAR
+    query: |
+      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o } LIMIT 100
 
   - name: regex-prefix-1
     description: REGEX filter with prefix of length 1
-    type: range-filter
-    query: SELECT ?object WHERE { ?subject %LARGE_PREDICATE_WITH_LITERAL ?object FILTER REGEX(?object, "^C") }
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: SELECT ?object WHERE { ?subject %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^C") } LIMIT 100
   - name: regex-prefix-2
     description: REGEX filter with prefix of length 2
-    type: range-filter
-    query: SELECT ?object WHERE { ?subject %LARGE_PREDICATE_WITH_LITERAL ?object FILTER REGEX(?object, "^Co") }
+    condition: HAS_RDFS_LABEL
+    group: range-filter
+    query: SELECT ?object WHERE { ?subject %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Co") } LIMIT 100
   - name: regex-prefix-3
     description: REGEX filter with prefix of length 3
-    type: range-filter
-    query: SELECT ?object WHERE { ?subject %LARGE_PREDICATE_WITH_LITERAL ?object FILTER REGEX(?object, "^Com") }  
+    condition: HAS_RDFS_LABEL
+    group: range-filter
+    query: SELECT ?object WHERE { ?subject %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") } LIMIT 100
+
+  - name: export-small
+    description: Export of a small predicate
+    group: export
+    query: |
+      SELECT ?s ?o WHERE { ?s %PREDICATE_SMALL_1% ?o }
+  - name: export-medium
+    description: Export of a medium-sized predicate
+    group: export
+    query: |
+      SELECT ?s ?o WHERE { ?s %PREDICATE_MEDIUM_1% ?o } LIMIT 1000000
+  - name: export-large
+    description: Export of a large predicate
+    group: export
+    query: |
+      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o } LIMIT 10000000
+
 
   - name: number-of-triples
     description: Total number of triples
-    type: statistics
-    query: SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }
+    group: statistics
+    query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
   - name: number-of-subjects
     description: Total number of distinct subjects
-    type: statistics
+    group: statistics
     query: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
   - name: number-of-predicates
     description: Total number of distinct predicates
-    type: statistics
+    group: statistics
     query: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
   - name: number-of-objects
     description: Total number of distinct objects
-    type: statistics
+    group: statistics
     query: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
   - name: number-of-literals
     description: Total number of literals
-    type: statistics
+    group: statistics
     query: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
   - name: number-of-blank-nodes
     description: Total number of blank nodes
-    type: statistics
+    group: statistics
     query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
