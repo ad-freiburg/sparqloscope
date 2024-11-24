@@ -21,4 +21,18 @@ benchmarks:
    predicate. The generation is configurable.
 
 Concrete benchmarks are provided for the following RDF datasets: DBLP,
-Wikidata, TODO: add more.
+DBLP+Citations, Wikidata, TODO: add more.
+
+# Quickstart
+
+Here is the command line to generate a benchmark for the Wikidata dataset.
+There are more options available, see the help message of the script or use
+the autocomplete feature of your shell to see them (you might have to call
+`eval "$(register-python-argcomplete generate-benchmark.py)"` first).
+
+```
+NAME=wikidata
+ENDPOINT_URL=https://qlever.cs.uni-freiburg.de/api/wikidata
+PREFIXES_URL=https://qlever.cs.uni-freiburg.de/api/prefixes/wikidata
+python3 generate-benchmark.py --sparql-endpoint $ENDPOINT_URL --prefix-definitions "$(curl -s $PREFIXES_URL)" --output-file benchmark-queries.$NAME.tsv
+```
