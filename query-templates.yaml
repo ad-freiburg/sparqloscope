@@ -64,104 +64,111 @@ placeholders:
 # by `generate-queries.py` (if the user provides a mean to obtain prefix
 # definitions for the dataset).
 queries:
+  # JOIN queries.
+  - name: single-join-medium
+    description: JOIN of two medium-sized predicates
+    group: join
+    query: |
+      SELECT ?s ?o1 ?o2
+      WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_MEDIUM_2% ?o2 }
+  - name: single-join-small-large
+    description: JOIN of a small and a large predicate
+    group: join
+    query: |
+      SELECT ?s ?o1 ?o2
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
+  - name: single-join-medium-large
+    description: JOIN of a medium-sized and a large predicate
+    group: join
+    query: |
+      SELECT ?s ?o1 ?o2
+      WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
+  - name: single-join-large
+    description: JOIN of two large predicates
+    group: join
+    query: |
+      SELECT ?s ?o1 ?o2
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
+
+  # GROUP BY queries.
   - name: group-by-count-object-small
     description: GROUP_BY with COUNT, for object of large predicate
     group: group-by
     query: |
       SELECT ?object (COUNT(?object) AS ?count)
       WHERE { ?subject %PREDICATE_SMALL_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count) LIMIT 100
+      GROUP BY ?object ORDER BY DESC(?count)
   - name: group-by-count-object-medium
     description: GROUP_BY with COUNT, for object of large predicate
     group: group-by
     query: |
       SELECT ?object (COUNT(?object) AS ?count)
       WHERE { ?subject %PREDICATE_MEDIUM_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count) LIMIT 100
+      GROUP BY ?object ORDER BY DESC(?count)
   - name: group-by-count-object-large
     description: GROUP_BY with COUNT, for object of large predicate
     group: group-by
     query: |
       SELECT ?object (COUNT(?object) AS ?count)
       WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count) LIMIT 100
-  # - name: group-by-count-subject-large
-  #   description: GROUP_BY with COUNT, for subject of large predicate
-  #   group: group-by
-  #   query:
-  #     SELECT ?subject (COUNT(?subject) AS ?count)
-  #     WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-  #     GROUP BY ?subject ORDER BY DESC(?count) LIMIT 100
+      GROUP BY ?object ORDER BY DESC(?count)
+  - name: group-by-count-subject-large
+    description: GROUP_BY with COUNT, for subject of large predicate
+    group: group-by
+    query:
+      SELECT ?subject (COUNT(?subject) AS ?count)
+      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
+      GROUP BY ?subject ORDER BY DESC(?count)
 
-  - name: single-join-medium
-    description: JOIN of two medium-sized predicates
-    group: join
-    query: |
-      SELECT ?s ?o
-      WHERE { ?s %PREDICATE_MEDIUM_1% ?o . ?s %PREDICATE_MEDIUM_2% ?o }
-      LIMIT 1000
-  - name: single-join-medium-large
-    description: JOIN of a large and a small predicate
-    group: join
-    query: |
-      SELECT ?s ?o
-      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_SMALL_1% ?o }
-      LIMIT 1000
-  - name: single-join-small
-    description: JOIN of a large an a medium-sized predicate
-    group: join
-    query: |
-      SELECT ?s ?o
-      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_MEDIUM_1% ?o }
-      LIMIT 1000
-  - name: single-join-large
-    description: JOIN of two large predicates
-    group: join
-    query: |
-      SELECT ?s ?o
-      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_LARGE_2% ?o }
-      LIMIT 1000
-
+  # PROPERTY_PATH queries.
   - name: wdt-P31-wdt-P279-star
     description: Subjects with their wdt:P31/wdt:P279* type
     group: property-path
     condition: HAS_WDT_P31_WDT_P279_STAR
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o } LIMIT 100
+      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
 
+  # REGEX queries.
   - name: regex-prefix-1
     description: REGEX filter with prefix of length 1
     group: range-filter
     condition: HAS_RDFS_LABEL
-    query: SELECT ?object WHERE { ?subject %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^C") } LIMIT 100
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "^C") }
   - name: regex-prefix-2
     description: REGEX filter with prefix of length 2
     condition: HAS_RDFS_LABEL
     group: range-filter
-    query: SELECT ?object WHERE { ?subject %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Co") } LIMIT 100
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Co") }
   - name: regex-prefix-3
     description: REGEX filter with prefix of length 3
     condition: HAS_RDFS_LABEL
     group: range-filter
-    query: SELECT ?object WHERE { ?subject %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") } LIMIT 100
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
 
-  - name: export-small
-    description: Export of a small predicate
-    group: export
+  # SIZE MATTERS queries.
+  - name: result-size-small
+    description: A small predicate
+    group: result-size
     query: |
       SELECT ?s ?o WHERE { ?s %PREDICATE_SMALL_1% ?o }
-  - name: export-medium
-    description: Export of a medium-sized predicate
-    group: export
+  - name: result-size-medium
+    description: A medium-sized predicate
+    group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_MEDIUM_1% ?o } LIMIT 1000000
-  - name: export-large
-    description: Export of a large predicate
-    group: export
+      SELECT ?s ?o WHERE { ?s %PREDICATE_MEDIUM_1% ?o }
+  - name: result-size-large
+    description: A large predicate
+    group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o } LIMIT 10000000
+      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
 
-
+  # STATISTICS queries.
   - name: number-of-triples
     description: Total number of triples
     group: statistics
