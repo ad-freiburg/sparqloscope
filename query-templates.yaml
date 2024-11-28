@@ -129,6 +129,27 @@ queries:
       SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
 
   # REGEX queries.
+  - name: regex-3-contains
+    description: CONTAINS filter with fixed string of length 3
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER CONTAINS(?o, "com") }
+  - name: regex-3-fixed
+    description: REGEX filter with fixed string of length 3
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "com") }
+  - name: regex-3
+    description: REGEX filter with expression of length 3
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "c.m") }
   - name: regex-prefix-1
     description: REGEX filter with prefix of length 1
     group: range-filter
@@ -193,3 +214,42 @@ queries:
     description: Total number of blank nodes
     group: statistics
     query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
+
+  # TODO: add queries
+  # ORDER BY
+  # * large predicate + order by
+  #
+  # JOINS
+  # * join large predicates, small result
+  # * join large predicates, medium result
+  # * join large predicates, large result
+  # * star joins
+  # * chain joins
+  #
+  # SPECIAL JOINS
+  # * optional join
+  # * minus join
+  # * multi-column join
+  # * union
+  #
+  # LANGUAGE FILTER
+  # * rdfs:label und FILTER(LANG(?o) = "en")
+  # * rdfs:label und FILTER(LANGMATCHES(LANG(?o), "en"))
+  # * rdfs:label und FILTER(LANG(?o) != "en")  [no optimization]
+  # * rdfs:label und FILTER(LANG(?o) IN ("en", "de"))
+  #
+  # EXPRESSIONS
+  # * Large predicate with binary FILTER expression
+  # * All sorts of functions
+  #
+  # GRAPHS
+  # * check that graph filters work efficiently
+  #
+  #
+  # SELECT ?p1 ?p2 (COUNT(?m) AS ?count) WHERE {
+  #   ?s ?p1 ?m .
+  #   ?m ?p2 ?o .
+  # }
+  # GROUP BY ?p1 ?p2
+  # ORDER BY DESC(?count)
+  #
