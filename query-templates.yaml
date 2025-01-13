@@ -27,19 +27,15 @@ placeholders:
   - name: PREDICATE_SMALL_1
     description: A small predicate
     query: |
-      SELECT ?p ?count WHERE {
-        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
-        FILTER (?count <= 1000)
-      }
-      ORDER BY DESC(?count) LIMIT 1 OFFSET 0
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY ASC(?count)
+      LIMIT 1 OFFSET 0
   - name: PREDICATE_SMALL_2
     description: A small predicate
     query: |
-      SELECT ?p ?count WHERE {
-        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
-        FILTER (?count <= 1000)
-      }
-      ORDER BY DESC(?count) LIMIT 1 OFFSET 1
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY ASC(?count)
+      LIMIT 1 OFFSET 1
   - name: PREDICATE_LARGE_WITH_LITERAL
     description: A large predicate that has literals as objects
     query: |
