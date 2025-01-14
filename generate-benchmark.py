@@ -173,15 +173,22 @@ def generate_queries(
     Replace the placeholders in the given queries and write the queries to
     standard output, in the format specified by `args.output_format`.
     """
-    if args.output_format != "tsv":
+    if args.output_format not in ("tsv", "yaml", "yml"):
         log.error(
             f"Unsupported output format: {args.output_format}"
-            " (currently only TSV is supported)"
+            " (currently only TSV and YAML is supported)"
         )
         exit(1)
+
     num_queries_written = 0
     num_queries_error = 0
     num_queries_condition_false = 0
+
+    yaml_queries = []
+    yaml_structure = {
+        "kb": "",
+        "queries": [],
+    }
     with open_file_for_writing(args.output_file) as file:
         for query_template in query_templates:
             # Get the values for the various fields (`condition` is optional).
@@ -249,8 +256,8 @@ def generate_queries(
 
             # Add prefix definitions and turn into a single line.
             query, prefixes_used = apply_prefix_definitions(query, prefix_definitions)
-            query_single_line = re.sub(r"\s+", " ", query).strip()
-            log.info(colored(f"{name} -> {query_single_line}", "blue"))
+            query = re.sub(r"\s+", " ", query).strip()
+            log.info(colored(f"{name} -> {query}", "blue"))
             if len(prefixes_used) > 0:
                 prefixes_used_defs = " ".join(
                     [
@@ -258,13 +265,27 @@ def generate_queries(
                         for prefix in prefixes_used
                     ]
                 ).strip()
-                query_single_line = f"{prefixes_used_defs} {query_single_line}"
+                query_single_line = f"{prefixes_used_defs} {query}"
                 log.debug(colored(query_single_line, "blue"))
 
-            # For TSV, we have one description and one query per line.
-            print(f"{name} [{description}]\t{query_single_line}", file=file)
+            if args.output_format == "tsv":
+                # For TSV, we have one description and one query per line.
+                print(f"{name} [{description}]\t{query_single_line}", file=file)
+            else:
+                # For YAML
+                yaml_queries.append(
+                    {
+                        "query": description,
+                        "sparql": f"{prefixes_used_defs}\n{query}",
+                    }
+                )
+
             num_queries_written += 1
 
+        if args.output_format in ("yaml", "yml"):
+            yaml_structure["kb"] = args.name
+            yaml_structure["queries"] = yaml_queries
+            yaml.dump(yaml_structure, file, sort_keys=False, default_flow_style=False)
     # Return statistics.
     return (num_queries_written, num_queries_error, num_queries_condition_false)
 
@@ -274,6 +295,13 @@ def command_line_args() -> argparse.Namespace:
     Parse the command line arguments and return them.
     """
     arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument(
+        "--name",
+        type=str,
+        required=True,
+        help="A name (usually of the knowledge graph/data source ) "
+        "as an identifier for the final queries file",
+    )
     arg_parser.add_argument(
         "--query-templates",
         type=str,
@@ -290,14 +318,14 @@ def command_line_args() -> argparse.Namespace:
     arg_parser.add_argument(
         "--output-file",
         type=str,
-        default="benchmark-queries.tsv",
+        default=None,
         help="The output file for the generated queries"
         " (use `-` for standard output)",
     )
     arg_parser.add_argument(
         "--output-format",
         type=str,
-        choices=["tsv"],
+        choices=["tsv", "yaml", "yml"],
         default="tsv",
         help="The output format for the benchmark results"
         "; currently the only supported format is TSV (as required by "
@@ -355,6 +383,8 @@ if __name__ == "__main__":
     placeholders = compute_placeholders(placeholder_queries, args)
 
     log.info("Generating queries ...")
+    if args.output_file is None:
+        args.output_file = f"{args.name}.queries.{args.output_format}"
     num_queries_written, num_queries_error, num_queries_condition_false = (
         generate_queries(placeholders, query_templates, prefix_definitions, args)
     )

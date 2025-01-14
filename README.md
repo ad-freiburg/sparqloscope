@@ -34,5 +34,14 @@ the autocomplete feature of your shell to see them (you might have to call
 NAME=wikidata
 ENDPOINT_URL=https://qlever.cs.uni-freiburg.de/api/wikidata
 PREFIXES_URL=https://qlever.cs.uni-freiburg.de/api/prefixes/wikidata
-python3 generate-benchmark.py --sparql-endpoint $ENDPOINT_URL --prefix-definitions "$(curl -s $PREFIXES_URL)" --output-file benchmark-queries.$NAME.tsv
+python3 generate-benchmark.py --name $NAME --sparql-endpoint $ENDPOINT_URL --prefix-definitions "$(curl -s $PREFIXES_URL)"
+```
+
+This will generate an output file named $NAME.queries.tsv i.e. wikidata.queries.tsv
+To have the output file in .yaml or .yml format and with a custom file name:
+
+```
+FILE_NAME=benchmark-queries.$NAME.yaml
+python3 generate-benchmark.py --name $NAME --sparql-endpoint $ENDPOINT_URL --prefix-definitions "$(curl -s $PREFIXES_URL) \
+--output-format yaml --output-file $FILE_NAME"
 ```
