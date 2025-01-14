@@ -11,6 +11,7 @@ import argparse
 import argcomplete
 import logging
 import sys
+import os
 from contextlib import contextmanager
 from typing import TextIO
 from termcolor import colored
@@ -64,6 +65,30 @@ def open_file_for_writing(filename: str) -> TextIO:
             yield file
 
 
+def process_prefixes(input_file: str) -> str:
+    """
+    Reads a .ttl file, extracts prefixes, removes trailing ". ",
+    and writes them to an output file.
+    """
+    prefix_lines = []
+    with (
+        open(input_file, "r", encoding="utf-8") as infile
+    ):
+        while True:
+            line = infile.readline()
+            if not line:  # End of file
+                break
+
+            # Check if the line starts with @prefix or PREFIX
+            if line.startswith("@prefix") or line.startswith("PREFIX"):
+                # Remove the trailing ". " and write to the output file
+                prefix_lines.append(line.rstrip(". \n") + "\n")
+            else:
+                # Stop processing when the first non-prefix line is encountered
+                break
+    return "".join(prefix_lines).strip()
+
+
 def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
     """
     Parse the prefix definitions from the given string (one prefix definition
@@ -74,19 +99,19 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
         keyword, prefix, iri = line.split()
         if keyword not in ["PREFIX", "@prefix"]:
             raise ValueError(
-                f"Error parsing prefix definitions, line {i+1}: "
+                f"Error parsing prefix definitions, line {i + 1}: "
                 f"Expected `PREFIX` or `@prefix`, got `{keyword}`"
             )
-        prefix_regex = re.compile(r"^[a-zA-Z0-9_]+:$")
+        prefix_regex = re.compile(r"^[a-zA-Z0-9_-]+:$")
         if not re.match(prefix_regex, prefix):
             raise ValueError(
-                f"Error parsing prefix definitions, line {i+1}: "
+                f"Error parsing prefix definitions, line {i + 1}: "
                 f"should match `{prefix_regex.pattern}`, got `{prefix}`"
             )
         iri_regex = re.compile(r"^<[^>]+>$")
         if not re.match(iri_regex, iri):
             raise ValueError(
-                f"Error parsing prefix definitions, line {i+1}: "
+                f"Error parsing prefix definitions, line {i + 1}: "
                 f"should match `{iri_regex.pattern}`, got `{iri}`"
             )
         result[prefix[:-1]] = iri[1:-1]
@@ -291,8 +316,7 @@ def command_line_args() -> argparse.Namespace:
         "--output-file",
         type=str,
         default="benchmark-queries.tsv",
-        help="The output file for the generated queries"
-        " (use `-` for standard output)",
+        help="The output file for the generated queries (use `-` for standard output)",
     )
     arg_parser.add_argument(
         "--output-format",
@@ -307,6 +331,12 @@ def command_line_args() -> argparse.Namespace:
         "--prefix-definitions",
         type=str,
         help="Command to get prefix definitions (one per line)",
+    )
+    arg_parser.add_argument(
+        "--prefix-file",
+        type=str,
+        default=None,
+        help="A data file (eg: .ttl) from which prefixes can be extracted."
     )
     arg_parser.add_argument(
         "--log-level",
@@ -330,14 +360,20 @@ if __name__ == "__main__":
     log.info(f"SPARQL endpoint: {args.sparql_endpoint}")
 
     # Parse the prefix definitions (if provided).
+    prefixes = None
+    if args.prefix_file is not None and os.path.isfile(args.prefix_file):
+        prefixes = process_prefixes(args.prefix_file)
     prefix_definitions = {}
-    if args.prefix_definitions:
-        prefix_definitions = parse_prefix_definitions(args.prefix_definitions)
-        log.info(
-            f"Parsed prefix definitions " f"(#prefixes = {len(prefix_definitions)})"
-        )
-        for prefix, iri in prefix_definitions.items():
-            log.debug(colored(f"PREFIX {prefix}: <{iri}>", "blue"))
+    if args.prefix_definitions and prefixes is None:
+        if os.path.isfile(args.prefix_definitions):
+            with open(args.prefix_definitions, "r", encoding="utf-8") as prefix_file:
+                prefixes = prefix_file.read().strip()
+        else:
+            prefixes = args.prefix_definitions
+    prefix_definitions = parse_prefix_definitions(prefixes)
+    log.info(f"Parsed prefix definitions (#prefixes = {len(prefix_definitions)})")
+    for prefix, iri in prefix_definitions.items():
+        log.debug(colored(f"PREFIX {prefix}: <{iri}>", "blue"))
 
     # Read the YAML file.
     with open(args.query_templates, "r") as yaml_file:
