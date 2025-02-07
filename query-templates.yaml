@@ -118,7 +118,7 @@ placeholders:
 # * Virtuoso [quick and dirty]
 # * Oxigraph [Rust, upcoming]
 #
-# TODO for next
+# TODO: index scans with FILTER with contiguous range [realhannes stuff]
 queries:
   # JOIN queries.
   - name: single-join-medium
