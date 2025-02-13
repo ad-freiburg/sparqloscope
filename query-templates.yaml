@@ -53,6 +53,14 @@ placeholders:
       WHERE { ?s ?p ?o FILTER ISNUMERIC(?o) }
       GROUP BY ?p ORDER BY DESC(?count)
       LIMIT 1
+  - name: PREDICATE_LARGE_WITH_DATE
+    description: A large predicate that has date literals as objects
+    query: |
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT ?p (COUNT(?p) AS ?count)
+      WHERE { ?s ?p ?o FILTER (?o >= "-9999-01-01"^^xsd:date && ?o <= "9999-12-31"^^xsd:date) }
+      GROUP BY ?p ORDER BY DESC(?count)
+      LIMIT 1
 
   - name: HAS_RDFS_LABEL
     description: Check if rdfs:label is present
@@ -253,6 +261,9 @@ queries:
       SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
   # NUMERIC function queries.
   #
+  # TODO: Add functionality to ignore the time for warmup queries (but execute them)
+  # TODO: Add functionality to subtract time of baseline query. And note the aw
+  #
   # TODO: functions
   # * Numeric unary functions (e.g., ABS, CEIL, FLOOR, ROUND)
   # * Numeric binary functions (e.g., +, -, *, /)
@@ -264,12 +275,93 @@ queries:
   # * TODO: How to measure the time for the functions minus the time for computing the input?
   # * TODO: Find simple query, where the function or expression is the bottleneck
   # * IDEA: generate large inputs via VALUES (with Cartesian product) and BIND
-  - name: abs
+  - name: numeric-predicate-warmup
+    description: Warmup query for reading predicate
+    group: numeric-function
+    query: |
+      SELECT (COUNT(?o) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-baseline
+    description: Baseline for numeric queries
+    group: numeric-function
+    query: |
+      SELECT (SUM(?o) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-abs
     description: ABS function
     group: numeric-function
     query: |
       SELECT (SUM(ABS(?o)) AS ?sum)
       WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-ceil
+    description: CEIL function
+    group: numeric-function
+    query: |
+      SELECT (SUM(CEIL(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-floor
+    description: FLOOR function
+    group: numeric-function
+    query: |
+      SELECT (SUM(FLOOR(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-round
+    description: ROUND function
+    group: numeric-function
+    query: |
+      SELECT (SUM(ROUND(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-add
+    description: Addition
+    group: numeric-function
+    query: |
+      SELECT (SUM(?o + ?o) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-greater
+    description: Greater than
+    group: numeric-function
+    query: |
+      SELECT (SUM(?o > 0) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+
+  # DATE function queries (e.g., NOW, YEAR, MONTH, DAY)
+  - name: date-predicate-warmup
+    description: Warmup query for reading date predicate
+    group: date-function
+    query: |
+      SELECT (COUNT(?o) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-baseline
+    description: Baseline for date queries
+    group: date-function
+    query: |
+      SELECT (SUM(?o) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-year
+    description: YEAR function
+    group: date-function
+    query: |
+      SELECT (SUM(YEAR(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-month
+    description: MONTH function
+    group: date-function
+    query: |
+      SELECT (SUM(MONTH(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-day
+    description: DAY function
+    group: date-function
+    query: |
+      SELECT (SUM(DAY(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-now
+    description: NOW function
+    group: date-function
+    query: |
+      SELECT (SUM(NOW()) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+
 
   # STATISTICS queries.
   - name: number-of-triples
