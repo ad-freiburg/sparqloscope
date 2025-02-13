@@ -46,6 +46,13 @@ placeholders:
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       SELECT (rdfs:label AS ?p) (COUNT(?s) AS ?count)
       WHERE { ?s rdfs:label ?o }
+  - name: PREDICATE_LARGE_WITH_NUMERIC
+    description: A large predicate that has numeric literals as objects
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count)
+      WHERE { ?s ?p ?o FILTER ISNUMERIC(?o) }
+      GROUP BY ?p ORDER BY DESC(?count)
+      LIMIT 1
 
   - name: HAS_RDFS_LABEL
     description: Check if rdfs:label is present
@@ -244,6 +251,25 @@ queries:
     group: result-size
     query: |
       SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
+  # NUMERIC function queries.
+  #
+  # TODO: functions
+  # * Numeric unary functions (e.g., ABS, CEIL, FLOOR, ROUND)
+  # * Numeric binary functions (e.g., +, -, *, /)
+  # * String functions (e.g., STRLEN, SUBSTR, UCASE, LCASE)
+  # * Date functions (e.g., NOW, YEAR, MONTH, DAY)
+  # * Variadic functions (e.g., IF, COALESCE, CONCAT) 
+  # * Expression with one function [chunked might make a difference]
+  # * Expression with many functions [tests chunked vs. entry by entry evaluation]
+  # * TODO: How to measure the time for the functions minus the time for computing the input?
+  # * TODO: Find simple query, where the function or expression is the bottleneck
+  # * IDEA: generate large inputs via VALUES (with Cartesian product) and BIND
+  - name: abs
+    description: ABS function
+    group: numeric-function
+    query: |
+      SELECT (SUM(ABS(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
 
   # STATISTICS queries.
   - name: number-of-triples
