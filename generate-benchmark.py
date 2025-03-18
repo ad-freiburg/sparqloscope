@@ -94,7 +94,9 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
 
 
 def compute_placeholders(
-    placeholder_queries: list[dict[str, str]], args: argparse.Namespace
+    placeholder_queries: list[dict[str, str]],
+    prefix_definitions: dict[str, str],
+    args: argparse.Namespace
 ) -> dict[str, str]:
     """
     For each query in the `placeholders` section of the given YAML file,
@@ -126,6 +128,7 @@ def compute_placeholders(
                 binding = result_bindings[0][first_var]
                 if binding["type"] == "uri":
                     value = f"<{binding['value']}>"
+                    value, _ = apply_prefix_definitions(value, prefix_definitions)
                 else:
                     value = binding["value"]
         except Exception as e:
@@ -352,11 +355,13 @@ if __name__ == "__main__":
     )
 
     log.info("Computing placeholders ...")
-    placeholders = compute_placeholders(placeholder_queries, args)
+    placeholders = compute_placeholders(placeholder_queries,
+                                        prefix_definitions, args)
 
     log.info("Generating queries ...")
     num_queries_written, num_queries_error, num_queries_condition_false = (
-        generate_queries(placeholders, query_templates, prefix_definitions, args)
+        generate_queries(placeholders, query_templates,
+                         prefix_definitions, args)
     )
 
     log.info(
