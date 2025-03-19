@@ -128,7 +128,6 @@ def compute_placeholders(
                 binding = result_bindings[0][first_var]
                 if binding["type"] == "uri":
                     value = f"<{binding['value']}>"
-                    value, _ = apply_prefix_definitions(value, prefix_definitions)
                 else:
                     value = binding["value"]
         except Exception as e:
@@ -146,7 +145,8 @@ def compute_placeholders(
             if var2_binding["datatype"].endswith(("#int", "#integer")):
                 value2 = f"{int(value2):,}"
             additional_info = f" [{var2} = {value2}]"
-        log.info(colored(f"{name} = {value}{additional_info}", "blue"))
+        value_disp, _ = apply_prefix_definitions(value, prefix_definitions)
+        log.info(colored(f"{name} = {value_disp}{additional_info}", "blue"))
         # Store the result.
         result[name] = value
     return result
