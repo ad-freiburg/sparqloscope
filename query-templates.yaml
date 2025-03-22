@@ -142,24 +142,28 @@ queries:
     query: |
       SELECT ?s ?o1 ?o2
       WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_MEDIUM_2% ?o2 }
+      LIMIT %LIMIT%
   - name: single-join-small-large
     description: JOIN of a small and a large predicate
     group: join
     query: |
       SELECT ?s ?o1 ?o2
       WHERE { ?s %PREDICATE_SMALL_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
+      LIMIT %LIMIT%
   - name: single-join-medium-large
     description: JOIN of a medium-sized and a large predicate
     group: join
     query: |
       SELECT ?s ?o1 ?o2
       WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
+      LIMIT %LIMIT%
   - name: single-join-large
     description: JOIN of two large predicates
     group: join
     query: |
       SELECT ?s ?o1 ?o2
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
+      LIMIT %LIMIT%
 
   # GROUP BY queries.
   - name: group-by-count-object-small
@@ -169,6 +173,7 @@ queries:
       SELECT ?object (COUNT(?object) AS ?count)
       WHERE { ?subject %PREDICATE_SMALL_1% ?object }
       GROUP BY ?object ORDER BY DESC(?count)
+      LIMIT %LIMIT%
   - name: group-by-count-object-medium
     description: GROUP_BY with COUNT, for object of large predicate
     group: group-by
@@ -176,6 +181,7 @@ queries:
       SELECT ?object (COUNT(?object) AS ?count)
       WHERE { ?subject %PREDICATE_MEDIUM_1% ?object }
       GROUP BY ?object ORDER BY DESC(?count)
+      LIMIT %LIMIT%
   - name: group-by-count-object-large
     description: GROUP_BY with COUNT, for object of large predicate
     group: group-by
@@ -183,6 +189,7 @@ queries:
       SELECT ?object (COUNT(?object) AS ?count)
       WHERE { ?subject %PREDICATE_LARGE_1% ?object }
       GROUP BY ?object ORDER BY DESC(?count)
+      LIMIT %LIMIT%
   - name: group-by-count-subject-large
     description: GROUP_BY with COUNT, for subject of large predicate
     group: group-by
@@ -190,6 +197,7 @@ queries:
       SELECT ?subject (COUNT(?subject) AS ?count)
       WHERE { ?subject %PREDICATE_LARGE_1% ?object }
       GROUP BY ?subject ORDER BY DESC(?count)
+      LIMIT %LIMIT%
 
   # PROPERTY_PATH queries.
   - name: wdt-P31-wdt-P279-star
@@ -198,6 +206,7 @@ queries:
     condition: HAS_WDT_P31_WDT_P279_STAR
     query: |
       SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT %LIMIT%
 
   # REGEX queries.
   - name: regex-3-contains
@@ -207,6 +216,7 @@ queries:
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER CONTAINS(?o, "com") }
+      LIMIT %LIMIT%
   - name: regex-3-fixed
     description: REGEX filter with fixed string of length 3
     group: range-filter
@@ -214,6 +224,7 @@ queries:
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "com") }
+      LIMIT %LIMIT%
   - name: regex-3
     description: REGEX filter with expression of length 3
     group: range-filter
@@ -221,6 +232,7 @@ queries:
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "c.m") }
+      LIMIT %LIMIT%
   - name: regex-prefix-1
     description: REGEX filter with prefix of length 1
     group: range-filter
@@ -228,6 +240,7 @@ queries:
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "^C") }
+      LIMIT %LIMIT%
   - name: regex-prefix-2
     description: REGEX filter with prefix of length 2
     condition: HAS_RDFS_LABEL
@@ -235,6 +248,7 @@ queries:
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Co") }
+      LIMIT %LIMIT%
   - name: regex-prefix-3
     description: REGEX filter with prefix of length 3
     condition: HAS_RDFS_LABEL
@@ -242,23 +256,28 @@ queries:
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
+      LIMIT %LIMIT%
 
   # SIZE MATTERS queries.
   - name: result-size-small
     description: A small predicate
     group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_SMALL_1% ?o }
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_SMALL_1% ?o }
   - name: result-size-medium
     description: A medium-sized predicate
     group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_MEDIUM_1% ?o }
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_MEDIUM_1% ?o }
   - name: result-size-large
     description: A large predicate
     group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+
   # NUMERIC function queries.
   #
   # TODO: Add functionality to ignore the time for warmup queries (but execute them)
@@ -367,28 +386,39 @@ queries:
   - name: number-of-triples
     description: Total number of triples
     group: statistics
-    query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(?s) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-subjects
     description: Total number of distinct subjects
     group: statistics
-    query: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(DISTINCT ?s) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-predicates
     description: Total number of distinct predicates
     group: statistics
-    query: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(DISTINCT ?p) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-objects
     description: Total number of distinct objects
     group: statistics
-    query: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(DISTINCT ?o) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-literals
     description: Total number of literals
     group: statistics
-    query: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+    query: |
+      SELECT (COUNT(?o) AS ?count)
+      WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
   - name: number-of-blank-nodes
     description: Total number of blank nodes
     group: statistics
-    query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
-
+    query: |
+      SELECT (COUNT(?s) AS ?count)
+      WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
   # TODO: add queries
   # ORDER BY
   # * large predicate + order by

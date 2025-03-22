@@ -96,7 +96,7 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
 def compute_placeholders(
     placeholder_queries: list[dict[str, str]],
     prefix_definitions: dict[str, str],
-    args: argparse.Namespace
+    args: argparse.Namespace,
 ) -> dict[str, str]:
     """
     For each query in the `placeholders` section of the given YAML file,
@@ -170,103 +170,128 @@ def generate_queries(
     placeholders: dict[str, str],
     query_templates: list[dict[str, str]],
     prefix_definitions: dict[str, str],
+    output_filename: str,
     args: argparse.Namespace,
 ) -> None:
     """
     Replace the placeholders in the given queries and write the queries to
-    standard output, in the format specified by `args.output_format`.
+    a file, in the format specified by `args.output_format`.
     """
-    if args.output_format != "tsv":
-        log.error(
-            f"Unsupported output format: {args.output_format}"
-            " (currently only TSV is supported)"
-        )
-        exit(1)
+    result = []
     num_queries_written = 0
     num_queries_error = 0
     num_queries_condition_false = 0
-    with open_file_for_writing(args.output_file) as file:
-        for query_template in query_templates:
-            # Get the values for the various fields (`condition` is optional).
-            name = query_template["name"]
-            description = query_template["description"]
-            # group = query_template["group"]
-            query = query_template["query"]
-            condition = query_template.get("condition", None)
+    for query_template in query_templates:
+        # Get the values for the various fields (`condition` is optional).
+        name = query_template["name"]
+        description = query_template["description"]
+        # group = query_template["group"]
+        query = query_template["query"]
+        condition = query_template.get("condition", None)
 
-            # If there is a condition, it must be one of the placeholders and
-            # its value must be `true` or `false`. If that is no the case, we
-            # report an error. If the condition evaluates to `false`, we skip
-            # the query.
-            if condition:
-                if condition not in placeholders:
-                    log.error(
-                        f"Error processing query template `{name}`: "
-                        f"Condition `{condition}` must be one of the "
-                        f"placeholders but is not, skipping query"
-                    )
-                    num_queries_error += 1
-                    continue
-                if placeholders[condition] not in ["true", "false"]:
-                    log.error(
-                        f"Error processing query template `{name}`: "
-                        f"Condition `{condition}` must evaluate to "
-                        f"either `true` or `false` but is "
-                        f"`{placeholders[condition]}`, skipping query"
-                    )
-                    num_queries_error += 1
-                    continue
-                if placeholders[condition] == "false":
-                    log.info(
-                        colored(
-                            f"Skipping query `{name}` because condition "
-                            f"`{condition}` evaluates to `false`",
-                            "magenta",
-                        )
-                    )
-                    num_queries_condition_false += 1
-                    continue
-
-            # Helper function for replacing a placeholder. Throws an exception
-            # if the placeholder is not defined.
-            def replace_placeholder(match):
-                placeholder = match.group(1)
-                if placeholder in placeholders:
-                    return placeholders[placeholder]
-                else:
-                    raise ValueError(
-                        f"Error processing query template `{name}`: "
-                        f"Placeholder `%{placeholder}%` is not defined, "
-                        f"skipping query"
-                    )
-
-            # Iterate over the placeholders in the query, check that they are
-            # defined, and replace each by the respective value.
-            log.debug(f"Replacing placeholders in query: {query}")
-            try:
-                query = re.sub(r"%([A-Z0-9_]+)%", replace_placeholder, query)
-            except ValueError as e:
-                log.error(e)
+        # If there is a condition, it must be one of the placeholders and
+        # its value must be `true` or `false`. If that is no the case, we
+        # report an error. If the condition evaluates to `false`, we skip
+        # the query.
+        if condition:
+            if condition not in placeholders:
+                log.error(
+                    f"Error processing query template `{name}`: "
+                    f"Condition `{condition}` must be one of the "
+                    f"placeholders but is not, skipping query"
+                )
                 num_queries_error += 1
                 continue
+            if placeholders[condition] not in ["true", "false"]:
+                log.error(
+                    f"Error processing query template `{name}`: "
+                    f"Condition `{condition}` must evaluate to "
+                    f"either `true` or `false` but is "
+                    f"`{placeholders[condition]}`, skipping query"
+                )
+                num_queries_error += 1
+                continue
+            if placeholders[condition] == "false":
+                log.info(
+                    colored(
+                        f"Skipping query `{name}` because condition "
+                        f"`{condition}` evaluates to `false`",
+                        "magenta",
+                    )
+                )
+                num_queries_condition_false += 1
+                continue
 
-            # Add prefix definitions and turn into a single line.
-            query, prefixes_used = apply_prefix_definitions(query, prefix_definitions)
-            query_single_line = re.sub(r"\s+", " ", query).strip()
-            log.info(colored(f"{name} -> {query_single_line}", "blue"))
-            if len(prefixes_used) > 0:
-                prefixes_used_defs = " ".join(
-                    [
-                        f"PREFIX {prefix}: <{prefix_definitions[prefix]}>"
-                        for prefix in prefixes_used
-                    ]
-                ).strip()
-                query_single_line = f"{prefixes_used_defs} {query_single_line}"
-                log.debug(colored(query_single_line, "blue"))
+        # Helper function for replacing a placeholder. Throws an exception
+        # if the placeholder is not defined.
+        def replace_placeholder(match):
+            placeholder = match.group(1)
+            if placeholder in placeholders:
+                return placeholders[placeholder]
+            else:
+                raise ValueError(
+                    f"Error processing query template `{name}`: "
+                    f"Placeholder `%{placeholder}%` is not defined, "
+                    f"skipping query"
+                )
 
-            # For TSV, we have one description and one query per line.
-            print(f"{name} [{description}]\t{query_single_line}", file=file)
-            num_queries_written += 1
+        # Iterate over the placeholders in the query, check that they are
+        # defined, and replace each by the respective value.
+        try:
+            query = re.sub(r"%([A-Z0-9_]+)%", replace_placeholder, query)
+        except ValueError as e:
+            log.error(e)
+            num_queries_error += 1
+            continue
+
+        # Add a LIMIT clause if requested.
+        if args.limit:
+            query = f"{query}LIMIT {args.limit}"
+
+        # Add prefix definitions and turn into a single line.
+        query, prefixes_used = apply_prefix_definitions(query, prefix_definitions)
+        query_single_line = re.sub(r"\s+", " ", query).strip()
+        log.info(colored(f"{name} -> {query_single_line}", "blue"))
+        if len(prefixes_used) > 0:
+            prefixes_used_defs = [
+                f"PREFIX {prefix}: <{prefix_definitions[prefix]}>"
+                for prefix in prefixes_used
+            ]
+            query = f"{'\n'.join(prefixes_used_defs)}\n{query}"
+            query_single_line = f"{' '.join(prefixes_used_defs)} {query_single_line}"
+
+        # For TSV, we have one description and one query per line.
+        query = query.rstrip()
+        query_single_line = query_single_line.rstrip()
+        log.debug(colored(query, "yellow"))
+        log.debug(colored(query_single_line, "yellow"))
+        result.append((f"{name} [{description}]", query, query_single_line))
+        num_queries_written += 1
+
+    # Custom dumper for YAML, that dumps all values of key `query` using `|-`.
+    class MultiLineDumper(yaml.Dumper):
+        def represent_scalar(self, tag, value, style=None):
+            if isinstance(value, str) and "\n" in value:
+                style = "|"
+            return super().represent_scalar(tag, value, style)
+
+    # Write the result as TSV or YAML.
+    with open_file_for_writing(output_filename) as output_file:
+        if args.output_format == "tsv":
+            for description, _, query in result:
+                print(f"{description}\t{query}", file=output_file)
+        else:
+            yaml_dict = {
+                "kb": args.kg_name,
+                "queries": [
+                    {"query": description, "sparql": query}
+                    for description, query, _ in result
+                ],
+            }
+            print(
+                yaml.dump(yaml_dict, sort_keys=False, Dumper=MultiLineDumper),
+                file=output_file,
+            )
 
     # Return statistics.
     return (num_queries_written, num_queries_error, num_queries_condition_false)
@@ -291,25 +316,29 @@ def command_line_args() -> argparse.Namespace:
         help="The SPARQL endpoint for computing the placeholders",
     )
     arg_parser.add_argument(
-        "--output-file",
+        "--kg-name",
         type=str,
-        default="benchmark-queries.tsv",
-        help="The output file for the generated queries"
-        " (use `-` for standard output)",
+        required=True,
+        help="The name of the knowledge graph; the name of the "
+        "output file will be based on this",
     )
     arg_parser.add_argument(
         "--output-format",
         type=str,
-        choices=["tsv"],
+        choices=["tsv", "yml"],
         default="tsv",
-        help="The output format for the benchmark results"
-        "; currently the only supported format is TSV (as required by "
-        "the `qlever example-queries` command)",
+        help="The output format for the benchmark results (tsv or yml"
+        ", default: tsv)",
     )
     arg_parser.add_argument(
         "--prefix-definitions",
         type=str,
         help="Command to get prefix definitions (one per line)",
+    )
+    arg_parser.add_argument(
+        "--limit",
+        type=int,
+        help="Add a LIMIT clause to the queries with the given value",
     )
     arg_parser.add_argument(
         "--log-level",
@@ -355,17 +384,18 @@ if __name__ == "__main__":
     )
 
     log.info("Computing placeholders ...")
-    placeholders = compute_placeholders(placeholder_queries,
-                                        prefix_definitions, args)
+    placeholders = compute_placeholders(placeholder_queries, prefix_definitions, args)
 
     log.info("Generating queries ...")
+    output_filename = f"{args.kg_name}.benchmark.{args.output_format}"
     num_queries_written, num_queries_error, num_queries_condition_false = (
-        generate_queries(placeholders, query_templates,
-                         prefix_definitions, args)
+        generate_queries(
+            placeholders, query_templates, prefix_definitions, output_filename, args
+        )
     )
 
     log.info(
-        f"Queries written to `{args.output_file}` "
+        f"Queries written to `{output_filename}` "
         f" (format: {args.output_format}, "
         f"#written: {num_queries_written}, "
         f"#condition-false: {num_queries_condition_false}, "
