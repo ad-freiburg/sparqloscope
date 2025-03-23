@@ -177,6 +177,10 @@ def generate_queries(
     Replace the placeholders in the given queries and write the queries to
     a file, in the format specified by `args.output_format`.
     """
+
+    # Add value for special placeholder `%LIMIT%`.
+    placeholders["LIMIT"] = str(args.limit)
+
     result = []
     num_queries_written = 0
     num_queries_error = 0
@@ -243,10 +247,6 @@ def generate_queries(
             log.error(e)
             num_queries_error += 1
             continue
-
-        # Add a LIMIT clause if requested.
-        if args.limit:
-            query = f"{query}LIMIT {args.limit}"
 
         # Add prefix definitions and turn into a single line.
         query, prefixes_used = apply_prefix_definitions(query, prefix_definitions)
@@ -338,7 +338,9 @@ def command_line_args() -> argparse.Namespace:
     arg_parser.add_argument(
         "--limit",
         type=int,
-        help="Add a LIMIT clause to the queries with the given value",
+        default=1000,
+        help="Limit for those queries with a LIMIT clause"
+             " (default: 1000)",
     )
     arg_parser.add_argument(
         "--log-level",

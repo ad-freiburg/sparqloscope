@@ -136,34 +136,116 @@ placeholders:
 # TODO: index scans with FILTER with contiguous range [realhannes stuff]
 queries:
   # JOIN queries.
-  - name: single-join-medium
-    description: JOIN of two medium-sized predicates
-    group: join
-    query: |
-      SELECT ?s ?o1 ?o2
-      WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_MEDIUM_2% ?o2 }
-      LIMIT %LIMIT%
   - name: single-join-small-large
     description: JOIN of a small and a large predicate
     group: join
     query: |
-      SELECT ?s ?o1 ?o2
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_SMALL_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
-      LIMIT %LIMIT%
-  - name: single-join-medium-large
-    description: JOIN of a medium-sized and a large predicate
+  - name: single-join-large-small
+    description: JOIN of a large and a small predicate
     group: join
     query: |
-      SELECT ?s ?o1 ?o2
-      WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
-      LIMIT %LIMIT%
-  - name: single-join-large
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_SMALL_1% ?o2 }
+  - name: single-join-large-large
     description: JOIN of two large predicates
     group: join
     query: |
-      SELECT ?s ?o1 ?o2
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
-      LIMIT %LIMIT%
+
+  # OPTIONAL JOIN queries.
+  - name: optional-join-small-large
+    description: OPTIONAL JOIN of a small and a large predicate
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 OPTIONAL { ?s %PREDICATE_LARGE_1% ?o2 } }
+  - name: optional-join-large-small
+    description: OPTIONAL JOIN of a large and a small predicate
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 OPTIONAL { ?s %PREDICATE_SMALL_1% ?o2 } }
+  - name: optional-join-large-large
+    description: OPTIONAL JOIN of two large predicates
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 OPTIONAL { ?s %PREDICATE_LARGE_2% ?o2 } }
+
+  # MINUS JOIN queries.
+  - name: minus-join-small-large
+    description: MINUS JOIN of a small and a large predicate
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 MINUS { ?s %PREDICATE_LARGE_1% ?o2 } }
+  - name: minus-join-large-small
+    description: MINUS JOIN of a large and a small predicate
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 MINUS { ?s %PREDICATE_SMALL_1% ?o2 } }
+  - name: minus-join-large-large
+    description: MINUS JOIN of two large predicates
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 MINUS { ?s %PREDICATE_LARGE_2% ?o2 } }
+
+  # EXIST JOIN queries.
+  - name: exists-join-small-large
+    description: EXISTS JOIN of a small and a large predicate
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 FILTER EXISTS { ?s %PREDICATE_LARGE_1% ?o2 } }
+  - name: exists-join-large-small
+    description: EXISTS JOIN of a large and a small predicate
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 FILTER EXISTS { ?s %PREDICATE_SMALL_1% ?o2 } }
+  - name: exists-join-large-large
+    description: EXISTS JOIN of two large predicates
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 FILTER EXISTS { ?s %PREDICATE_LARGE_2% ?o2 } }
+
+  # UNION queries.
+  - name: union-no-constraint
+    description: UNION of two large predicates, no constraint
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o } }
+  - name: union-constraint-small-join
+    description: UNION of two large predicates, constraint by small predicate
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o }
+        ?s %PREDICATE_SMALL_1% ?o
+      }
+  - name: union-constraint-large-join
+    description: UNION of two large predicates, constraint by large predicate
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o }
+        ?s %PREDICATE_LARGE_1% ?o
+      }
+  - name: union-constraint-filter-restrictive
+    description: UNION of two large predicates, constraint by restrictive FILTER
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o }
+        FILTER (?s = ?o)
+      }
 
   # GROUP BY queries.
   - name: group-by-count-object-small
@@ -214,69 +296,66 @@ queries:
     group: range-filter
     condition: HAS_RDFS_LABEL
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER CONTAINS(?o, "com") }
-      LIMIT %LIMIT%
   - name: regex-3-fixed
     description: REGEX filter with fixed string of length 3
     group: range-filter
     condition: HAS_RDFS_LABEL
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "com") }
-      LIMIT %LIMIT%
   - name: regex-3
     description: REGEX filter with expression of length 3
     group: range-filter
     condition: HAS_RDFS_LABEL
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "c.m") }
-      LIMIT %LIMIT%
   - name: regex-prefix-1
     description: REGEX filter with prefix of length 1
     group: range-filter
     condition: HAS_RDFS_LABEL
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "^C") }
-      LIMIT %LIMIT%
   - name: regex-prefix-2
     description: REGEX filter with prefix of length 2
     condition: HAS_RDFS_LABEL
     group: range-filter
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Co") }
-      LIMIT %LIMIT%
   - name: regex-prefix-3
     description: REGEX filter with prefix of length 3
     condition: HAS_RDFS_LABEL
     group: range-filter
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
-      LIMIT %LIMIT%
 
   # SIZE MATTERS queries.
   - name: result-size-small
-    description: A small predicate
-    group: result-size
-    query: |
-      SELECT ?s ?o
-      WHERE { ?s %PREDICATE_SMALL_1% ?o }
-  - name: result-size-medium
-    description: A medium-sized predicate
-    group: result-size
-    query: |
-      SELECT ?s ?o
-      WHERE { ?s %PREDICATE_MEDIUM_1% ?o }
-  - name: result-size-large
-    description: A large predicate
+    description: Export 100K tuples
     group: result-size
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 100000
+  - name: result-size-medium
+    description: Export 1M tuples
+    group: result-size
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 1000000
+  - name: result-size-large
+    description: Export 10M tuples
+    group: result-size
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 10000000
 
   # NUMERIC function queries.
   #
@@ -298,7 +377,7 @@ queries:
     description: Warmup query for reading predicate
     group: numeric-function
     query: |
-      SELECT (COUNT(?o) AS ?count)
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
   - name: numeric-baseline
     description: Baseline for numeric queries
@@ -354,7 +433,7 @@ queries:
     description: Baseline for date queries
     group: date-function
     query: |
-      SELECT (SUM(?o) AS ?sum)
+      SELECT (SUM(?o = ?o) AS ?sum)
       WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
   - name: date-year
     description: YEAR function
