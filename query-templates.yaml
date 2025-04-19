@@ -227,16 +227,16 @@ queries:
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
-        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o }
-        ?s %PREDICATE_SMALL_1% ?o
+        { ?s %PREDICATE_LARGE_1% ?o1 } UNION { ?s %PREDICATE_LARGE_1% ?o1 }
+        ?s %PREDICATE_SMALL_1% ?o2
       }
   - name: union-constraint-large-join
     description: UNION of two large predicates, constraint by large predicate
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
-        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o }
-        ?s %PREDICATE_LARGE_1% ?o
+        { ?s %PREDICATE_LARGE_1% ?o1 } UNION { ?s %PREDICATE_LARGE_1% ?o2 }
+        ?s %PREDICATE_LARGE_2% ?o2
       }
   - name: union-constraint-filter-restrictive
     description: UNION of two large predicates, constraint by restrictive FILTER
@@ -247,9 +247,29 @@ queries:
         FILTER (?s = ?o)
       }
 
+  # MULTICOLUMN JOIN queries.
+  - name: multicolumn-join-small-large
+    description: Multicolumn JOIN of a small and a large predicate
+    group: multicolumn-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o . ?s %PREDICATE_LARGE_1% ?o }
+  - name: multicolumn-join-large-small
+    description: Multicolumn JOIN of a large and a small predicate
+    group: multicolumn-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_SMALL_1% ?o }
+  - name: multicolumn-join-large-large
+    description: Multicolumn JOIN of two large predicates
+    group: multicolumn-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_LARGE_2% ?o }
+
   # GROUP BY queries.
   - name: group-by-count-object-small
-    description: GROUP_BY with COUNT, for object of large predicate
+    description: GROUP_BY with COUNT, for object of small predicate
     group: group-by
     query: |
       SELECT ?object (COUNT(?object) AS ?count)
@@ -257,7 +277,7 @@ queries:
       GROUP BY ?object ORDER BY DESC(?count)
       LIMIT %LIMIT%
   - name: group-by-count-object-medium
-    description: GROUP_BY with COUNT, for object of large predicate
+    description: GROUP_BY with COUNT, for object of midsize predicate
     group: group-by
     query: |
       SELECT ?object (COUNT(?object) AS ?count)
@@ -335,21 +355,35 @@ queries:
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
 
   # SIZE MATTERS queries.
+  - name: result-size-tiny
+    description: Export 10 tuples
+    group: result-size
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 10
   - name: result-size-small
+    description: Export 1000 tuples
+    group: result-size
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 1000
+  - name: result-size-medium
     description: Export 100K tuples
     group: result-size
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_1% ?o }
       LIMIT 100000
-  - name: result-size-medium
+  - name: result-size-large
     description: Export 1M tuples
     group: result-size
     query: |
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_1% ?o }
       LIMIT 1000000
-  - name: result-size-large
+  - name: result-size-xlarge
     description: Export 10M tuples
     group: result-size
     query: |

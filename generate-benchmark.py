@@ -338,9 +338,9 @@ def command_line_args() -> argparse.Namespace:
     arg_parser.add_argument(
         "--limit",
         type=int,
-        default=1000,
+        default=10,
         help="Limit for those queries with a LIMIT clause"
-             " (default: 1000)",
+             " (default: 10)",
     )
     arg_parser.add_argument(
         "--log-level",
