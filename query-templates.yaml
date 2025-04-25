@@ -235,7 +235,7 @@ queries:
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
-        { ?s %PREDICATE_LARGE_1% ?o1 } UNION { ?s %PREDICATE_LARGE_1% ?o2 }
+        { ?s %PREDICATE_LARGE_1% ?o1 } UNION { ?s %PREDICATE_LARGE_1% ?o1 }
         ?s %PREDICATE_LARGE_2% ?o2
       }
   - name: union-constraint-filter-restrictive
