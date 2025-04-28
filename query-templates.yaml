@@ -1,77 +1,172 @@
 # SPARQL SELECT queries to compute the placeholders for a given dataset.
-placeholders:
-  - name: PREDICATE_LARGE_1
-    description: A large predicate (with many triples)
+placeholder_queries:
+  - name: predicate-size
     query: |
       SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
       GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 0
-  - name: PREDICATE_LARGE_2
-    description: A large predicate, different from the first one
-    query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 1
-  - name: PREDICATE_MEDIUM_1
-    description: A medium-sized predicate
-    query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 10
-  - name: PREDICATE_MEDIUM_2
-    description: A medium-sized predicate, different from the first one
-    query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 11
-  - name: PREDICATE_SMALL_1
-    description: A small predicate
+    cache_result: false
+    placeholders:
+      - name: PREDICATE_LARGE_1
+        description: A large predicate (with many triples)
+      - name: PREDICATE_LARGE_2
+        description: A large predicate, different from the first one
+        offset: 1
+      - name: PREDICATE_MEDIUM_1
+        description: A medium-sized predicate
+        offset: 10
+      - name: PREDICATE_MEDIUM_2
+        description: A medium-sized predicate, different from the first one
+        offset: 11
+  - name: predicate-size-small
     query: |
       SELECT ?p ?count WHERE {
         { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
         FILTER (?count <= 1000)
-      }
-      ORDER BY DESC(?count) LIMIT 1 OFFSET 0
-  - name: PREDICATE_SMALL_2
-    description: A small predicate
-    query: |
-      SELECT ?p ?count WHERE {
-        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
-        FILTER (?count <= 1000)
-      }
-      ORDER BY DESC(?count) LIMIT 1 OFFSET 1
-  - name: PREDICATE_LARGE_WITH_LITERAL
-    description: A large predicate that has literals as objects
+      } ORDER BY DESC(?count)
+    placeholders:
+      - name: PREDICATE_SMALL_1
+        description: A small predicate
+      - name: PREDICATE_SMALL_2
+        description: A small predicate
+        offset: 1
+  - name: predicate-size-literal
     query: |
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       SELECT (rdfs:label AS ?p) (COUNT(?s) AS ?count)
       WHERE { ?s rdfs:label ?o }
-  - name: PREDICATE_LARGE_WITH_NUMERIC
-    description: A large predicate that has numeric literals as objects
+    placeholders:
+      - name: PREDICATE_LARGE_WITH_LITERAL
+        description: A large predicate that has literals as objects
+  - name: predicate-size-numeric
     query: |
       SELECT ?p (COUNT(?p) AS ?count)
       WHERE { ?s ?p ?o FILTER ISNUMERIC(?o) }
       GROUP BY ?p ORDER BY DESC(?count)
       LIMIT 1
-  - name: PREDICATE_LARGE_WITH_DATE
-    description: A large predicate that has date literals as objects
+    placeholders:
+      - name: PREDICATE_LARGE_WITH_NUMERIC
+        description: A large predicate that has numeric literals as objects
+  - name: predicate-size-date
     query: |
       PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
       SELECT ?p (COUNT(?p) AS ?count)
       WHERE { ?s ?p ?o FILTER (?o >= "-9999-01-01"^^xsd:date && ?o <= "9999-12-31"^^xsd:date) }
       GROUP BY ?p ORDER BY DESC(?count)
       LIMIT 1
+    placeholders:
+      - name: PREDICATE_LARGE_WITH_DATE
+        description: A large predicate that has date literals as objects
+  - name: join-on-subject-size
+    query: |
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+        { SELECT ?p1 ?p2 (COUNT(?s) AS ?count_join) {
+            ?s ?p1 ?o1 . ?s ?p2 ?o2 .
+            FILTER(?p1 != ?p2) } GROUP BY ?p1 ?p2 }
+        {  SELECT ?p1 (COUNT(?s) AS ?count_p1) {
+            ?s ?p1 ?o . } GROUP BY ?p1 }
+        {  SELECT ?p2 (COUNT(?s) AS ?count_p2) {
+            ?s ?p2 ?o . } GROUP BY ?p2 } }
+    cache_result: true
+    placeholders:
+      # Possible Join Pair 1
+      - name: PREDICATE_1_FOR_LARGE_SUBJ_JOIN
+        description: Predicate 1 for the join on subject with the largest result
+        column: "?p1"
+        order_by: DESC(?count_join)
+      - name: PREDICATE_2_FOR_LARGE_SUBJ_JOIN
+        description: Predicate 2 for the join on subject with the largest result
+        column: "?p2"
+        order_by: DESC(?count_join)
+      # Possible Join Pair 2
+      - name: SMALL_PREDICATE_1_FOR_SUBJ_JOIN
+        description: todo
+        column: "?p1"
+        order_by: DESC(?count_join)
+        filters:
+          - "?count_p1 <= 1000"
+          - "?count_p2 > 1000"
+      - name: LARGE_PREDICATE_2_FOR_SUBJ_JOIN
+        description: todo
+        column: "?p2"
+        order_by: DESC(?count_join)
+        filters:
+          - "?count_p1 <= 1000"
+          - "?count_p2 > 1000"
+      # Possible Join Pair 3
+      - name: SMALL_PREDICATE_1_FOR_SUBJ_JOIN_2
+        description: todo
+        column: "?p1"
+        order_by: DESC(?count_join)
+        filters:
+          - "?count_p1 <= 1000"
+          - "?count_p2 <= 1000"
+      - name: SMALL_PREDICATE_2_FOR_SUBJ_JOIN_2
+        description: todo
+        column: "?p2"
+        order_by: DESC(?count_join)
+        filters:
+          - "?count_p1 <= 1000"
+          - "?count_p2 <= 1000"
+      # Star Join
+      - name: PREDICATE_3_FOR_SUBJ_STAR_JOIN
+        description: todo
+        column: "?p2"
+        order_by: DESC(?count_join)
+        filters:
+          - "?p2 != %PREDICATE_1_FOR_LARGE_SUBJ_JOIN%"
+          - "?p1 == %PREDICATE_2_FOR_LARGE_SUBJ_JOIN%"
 
-  - name: HAS_RDFS_LABEL
-    description: Check if rdfs:label is present
+  # - name: join-on-object-size
+  #   query: |
+  #     SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+  #       { SELECT ?p1 ?p2 (COUNT(?s) AS ?count_join) {
+  #           ?s1 ?p1 ?o . ?s2 ?p2 ?o .
+  #           FILTER(?p1 != ?p2) } GROUP BY ?p1 ?p2 }
+  #       {  SELECT ?p1 (COUNT(?s) AS ?count_p1) {
+  #           ?s ?p1 ?o . } GROUP BY ?p1 }
+  #       {  SELECT ?p2 (COUNT(?s) AS ?count_p2) {
+  #           ?s ?p2 ?o . } GROUP BY ?p2 } }
+  #   cache_result: true
+  #   placeholders:
+  #     - name: tmp
+  #       description: tmp1
+  #       column: "?p2"
+  #       order_by: DESC(?count_join)
+  #       filter:
+  #         - "?p1 == %LARGE_PREDICATE1_FOR_SMALL_SUBJ_JOIN_1%"
+
+  - name: join-diagonal-size
+    query: |
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+        { SELECT ?p1 ?p2 (COUNT(?s) AS ?count_join) {
+            ?s ?p1 ?m . ?m ?p2 ?o .
+            FILTER(?p1 != ?p2) } GROUP BY ?p1 ?p2 }
+        {  SELECT ?p1 (COUNT(?s) AS ?count_p1) {
+            ?s ?p1 ?o . } GROUP BY ?p1 }
+        {  SELECT ?p2 (COUNT(?s) AS ?count_p2) {
+            ?s ?p2 ?o . } GROUP BY ?p2 } }
+    cache_result: true
+    placeholders:
+      - name: PREDICATE_3_FOR_LARGE_CHAIN_JOIN
+        description: todo
+        column: "?p2"
+        order_by: DESC(?count_join)
+        filters:
+          - "?p1 == %PREDICATE_2_FOR_LARGE_SUBJ_JOIN%"
+  - name: has-rdfs-label
     query: |
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       ASK { ?s rdfs:label ?o }
-  - name: HAS_WDT_P31_WDT_P279_STAR
-    description: Check if wdt:P31/wdt:P279* is present
+    placeholders:
+      - name: HAS_RDFS_LABEL
+        description: Check if rdfs:label is present
+  - name: has-wdt-p31-wdt-p279-star
     query: |
       PREFIX wdt: <http://www.wikidata.org/prop/direct/>
       ASK { ?s wdt:P31/wdt:P279* ?o }
+    placeholders:
+      - name: HAS_WDT_P31_WDT_P279_STAR
+        description: Check if wdt:P31/wdt:P279* is present
 
 # The benchmark queries with placeholders.
 #
@@ -154,6 +249,45 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
+
+  # JOIN benchmarks based on precomputed join sizes
+  - name: single-join-large-large-with-large-result
+    description: JOIN of two large predicates with a large result
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
+        ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 }
+  - name: single-join-small-small
+    description: todo
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %SMALL_PREDICATE_1_FOR_SUBJ_JOIN_2% ?o1 .
+        ?s %SMALL_PREDICATE_2_FOR_SUBJ_JOIN_2% ?o2 }
+
+  # 3-triple JOINs
+  - name: join-chain
+    description: todo
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s1 %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
+        ?s1 %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?m .
+        ?m %PREDICATE_3_FOR_LARGE_CHAIN_JOIN% ?o2 .
+      }
+  - name: join-star
+    description: todo
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
+        ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 .
+        ?s %PREDICATE_3_FOR_SUBJ_STAR_JOIN% ?o3 .
+      }
+
 
   # OPTIONAL JOIN queries.
   - name: optional-join-small-large
@@ -307,7 +441,7 @@ queries:
     group: property-path
     condition: HAS_WDT_P31_WDT_P279_STAR
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      SELECT ?s ?o WHERE { ?s wdt:P31/wdt:P279* ?o }
       LIMIT %LIMIT%
 
   # REGEX queries.
