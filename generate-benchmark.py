@@ -216,8 +216,7 @@ def compute_placeholders(
                 result_bindings = result_json["results"]["bindings"]
                 log.debug(f"result_vars: {result_vars}")
                 value, row = get_placeholder_value(result_vars, result_bindings)
-        except NotImplementedError as e:
-        # TODO: except Exception as e:
+        except Exception as e:
             log.error(f'Error computing placeholder "{p_name}": {e}')
             exit(1)
 
