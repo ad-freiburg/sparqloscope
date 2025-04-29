@@ -1,4 +1,5 @@
 .venv
 precomputed.*.json
 benchmark-queries.*.tsv
+*.benchmark.tsv
 .vscode
