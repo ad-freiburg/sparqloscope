@@ -13,7 +13,7 @@ import argcomplete
 import logging
 import sys
 from contextlib import contextmanager
-from typing import NotRequired, TextIO, TypedDict, Literal
+from typing import NotRequired, TextIO, TypedDict, Literal, Generator
 from termcolor import colored
 import yaml
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -69,7 +69,7 @@ ResultJson = TypedDict("ResultJson", {"head": Head, "results": Results})
 
 
 @contextmanager
-def open_file_for_writing(filename: str) -> TextIO:
+def open_file_for_writing(filename: str) -> Generator[TextIO, None, None]:
     """
     Context manager for opening a file for writing or using STDOUT.
     """
@@ -120,7 +120,7 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
     sparql_endpoint.setQuery(sparql_query)
     sparql_endpoint.setReturnFormat(JSON)
     try:
-        return sparql_endpoint.query().convert()
+        return sparql_endpoint.query().convert()  # type: ignore
     except Exception as e:
         log.error(f'Error executing query "{name}": {e}')
         exit(1)
@@ -266,7 +266,8 @@ def compute_placeholders(
         additional_info = ""
         log.debug(f"result_bindings for used row: {row}")
         if row:
-            for var, val in row.items():
+            for var, cell in row.items():
+                val: Binding = cell  # type: ignore
                 if "datatype" in val and val["datatype"].endswith(
                         ("#int", "#integer")):
                     additional_info += f" [{var} = {int(val['value']):,}]"
@@ -280,7 +281,7 @@ def compute_placeholders(
 
 
 def apply_prefix_definitions(query: str, prefix_definitions: dict[str, str]) \
-        -> str:
+        -> tuple[str, set[str]]:
     """
     Check which of the given prefix definitions can be used in the query. For
     each such prefix definition, abbreviate the corresponding IRIs. Return the
@@ -300,7 +301,7 @@ def generate_queries(
     prefix_definitions: dict[str, str],
     output_filename: str,
     args: argparse.Namespace,
-) -> None:
+) -> tuple[int, int, int]:
     """
     Replace the placeholders in the given queries and write the queries to
     a file, in the format specified by `args.output_format`.
