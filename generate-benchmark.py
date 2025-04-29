@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # PYTHON_ARGCOMPLETE_OK
 
-# Copyright 2024, University of Freiburg,
+# Copyright 2024 - 2025, University of Freiburg,
 # Chair of Algorithms and Data Structures
-# Author: Hannah Bast <bast@cs.uni-freiburg.de>
+# Authors: Hannah Bast <bast@cs.uni-freiburg.de>
+#          Christoph Ullinger <ullingec@cs.uni-freiburg.de>
 
 from __future__ import annotations
 
@@ -66,6 +67,7 @@ Head = TypedDict("Head", {"vars": list[str]})
 Results = TypedDict("Results", {"bindings": list[Binding]})
 ResultJson = TypedDict("ResultJson", {"head": Head, "results": Results})
 
+
 @contextmanager
 def open_file_for_writing(filename: str) -> TextIO:
     """
@@ -107,7 +109,8 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
     return result
 
 
-def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) -> ResultJson:
+def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
+        -> ResultJson:
     """
     Helper function to execute a SPARQL query on the given endpoint.
     """
@@ -131,6 +134,7 @@ PrecomputedQuery = TypedDict("PrecomputedQuery", {
 PrecomputedQueries = list[PrecomputedQuery]
 PrecomputedQueriesResult = dict[str, ResultJson]
 
+
 def precompute_queries(precomputed_queries: PrecomputedQueries,
                        args: argparse.Namespace) -> PrecomputedQueriesResult:
     result = {}
@@ -142,29 +146,34 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
         # Get query result, either from cache or by requesting the endpoint
         filename = f"precomputed.{args.kg_name}.{query_name}.json"
         result_json = None
-        if cache and not args.overwrite_cached_results and Path(filename).exists():
+        if cache and not args.overwrite_cached_results and \
+                Path(filename).exists():
             log.debug(f"Loading precomputed query result from file {filename}")
             with open(filename, "r") as f:
                 result_json = json.load(f)
         else:
             result_json = compute_sparql(query_name, sparql_query, args)
             if cache:
-                log.debug(f"Writing precomputed query result to file {filename}")
+                log.debug(
+                    f"Writing precomputed query result to file {filename}")
                 with open(filename, "w") as f:
                     json.dump(result_json, f)
             result[query_name] = result_json
     return result
 
 
-def make_precomputed_queries_handler_class(precomputed_queries_result: PrecomputedQueriesResult) -> type:
+def make_precomputed_queries_handler_class(
+        precomputed_queries_result: PrecomputedQueriesResult) -> type:
     class PrecomputedQueriesHandler(http.server.BaseHTTPRequestHandler):
         def __respond(self):
             path = self.path[1:]
             if path in precomputed_queries_result:
                 self.send_response(200)
-                self.send_header("Content-Type", "application/sparql-results+json")
+                self.send_header(
+                    "Content-Type", "application/sparql-results+json")
                 self.end_headers()
-                self.wfile.write(json.dumps(precomputed_queries_result[path]).encode("utf-8"))
+                self.wfile.write(json.dumps(
+                    precomputed_queries_result[path]).encode("utf-8"))
             else:
                 self.send_response(500)
                 self.end_headers()
@@ -182,6 +191,7 @@ Placeholder = TypedDict("Placeholder", {
     "description": NotRequired[str],
     "query": str
 })
+
 
 def compute_placeholders(
     placeholders: list[Placeholder],
@@ -203,10 +213,13 @@ def compute_placeholders(
             substr = match.group(0)
             precomputed_query = substr[1:-1]
             assert precomputed_query in precomputed_queries_result
-            variables = precomputed_queries_result[precomputed_query]["head"]["vars"]
+            variables = precomputed_queries_result[
+                precomputed_query]["head"]["vars"]
             vars_str = ' '.join(f'?{v}' for v in variables)
-            result = result.replace(substr,
-                f"{{ SERVICE <{args.external_url}/{precomputed_query}> {{ VALUES ({vars_str}) {{}} }} }}")
+            result = result.replace(
+                substr,
+                f"{{ SERVICE <{args.external_url}/{precomputed_query}> {{ " +
+                f"VALUES ({vars_str}) {{}} }} }}")
         return result
 
     def add_iri_brackets(binding: dict[str, str]) -> str:
@@ -218,7 +231,7 @@ def compute_placeholders(
 
     def get_placeholder_value(result_vars: list[str],
                               result_bindings: list[Binding]) \
-                                -> tuple[str, Binding]:
+            -> tuple[str, Binding]:
         column = result_vars[0]
         assert len(result_bindings), "No matching binding found for placeholder"
         binding = add_iri_brackets(result_bindings[0][column])
@@ -242,7 +255,8 @@ def compute_placeholders(
                 result_vars = result_json["head"]["vars"]
                 result_bindings = result_json["results"]["bindings"]
                 log.debug(f"result_vars: {result_vars}")
-                value, row = get_placeholder_value(result_vars, result_bindings)
+                value, row = get_placeholder_value(
+                    result_vars, result_bindings)
         except Exception as e:
             log.error(f'Error computing placeholder "{p_name}": {e}')
             exit(1)
@@ -253,9 +267,10 @@ def compute_placeholders(
         log.debug(f"result_bindings for used row: {row}")
         if row:
             for var, val in row.items():
-                if "datatype" in val and val["datatype"].endswith(("#int", "#integer")):
+                if "datatype" in val and val["datatype"].endswith(
+                        ("#int", "#integer")):
                     additional_info += f" [{var} = {int(val['value']):,}]"
-        
+
         value_disp, _ = apply_prefix_definitions(value, prefix_definitions)
         log.info(colored(f"{p_name} = {value_disp}{additional_info}", "blue"))
 
@@ -264,7 +279,8 @@ def compute_placeholders(
     return result
 
 
-def apply_prefix_definitions(query: str, prefix_definitions: dict[str, str]) -> str:
+def apply_prefix_definitions(query: str, prefix_definitions: dict[str, str]) \
+        -> str:
     """
     Check which of the given prefix definitions can be used in the query. For
     each such prefix definition, abbreviate the corresponding IRIs. Return the
@@ -361,7 +377,8 @@ def generate_queries(
             continue
 
         # Add prefix definitions and turn into a single line.
-        query, prefixes_used = apply_prefix_definitions(query, prefix_definitions)
+        query, prefixes_used = apply_prefix_definitions(
+            query, prefix_definitions)
         query_single_line = re.sub(r"\s+", " ", query).strip()
         log.info(colored(f"{name} -> {query_single_line}", "blue"))
         if len(prefixes_used) > 0:
@@ -370,7 +387,8 @@ def generate_queries(
                 for prefix in prefixes_used
             ]
             query = f"{'\n'.join(prefixes_used_defs)}\n{query}"
-            query_single_line = f"{' '.join(prefixes_used_defs)} {query_single_line}"
+            query_single_line = \
+                f"{' '.join(prefixes_used_defs)} {query_single_line}"
 
         # For TSV, we have one description and one query per line.
         query = query.rstrip()
@@ -470,13 +488,14 @@ def command_line_args() -> argparse.Namespace:
         "--external-url",
         type=str,
         default="http://localhost:8000",
-        help="The URL where the SPARQL endpoint can reach this program",
+        help="The URL where the SPARQL endpoint can reach this program"
     )
     arg_parser.add_argument(
         "--port",
         type=int,
         default=8000,
-        help=f"Port where this program can serve a SERVICE used by the SPARQL endpoint",
+        help=f"Port where this program can serve a SERVICE used by the " +
+        "SPARQL endpoint"
     )
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
     args = arg_parser.parse_args()
@@ -496,9 +515,8 @@ if __name__ == "__main__":
     prefix_definitions = {}
     if args.prefix_definitions:
         prefix_definitions = parse_prefix_definitions(args.prefix_definitions)
-        log.info(
-            f"Parsed prefix definitions " f"(#prefixes = {len(prefix_definitions)})"
-        )
+        log.info("Parsed prefix definitions " +
+                 f"(#prefixes = {len(prefix_definitions)})")
         for prefix, iri in prefix_definitions.items():
             log.debug(colored(f"PREFIX {prefix}: <{iri}>", "blue"))
 
@@ -518,24 +536,27 @@ if __name__ == "__main__":
 
     log.info("Precomputing queries for placeholder generation ...")
     precomputed_queries_result = precompute_queries(precomputed_queries, args)
-    
+
     log.info("Starting HTTP server for precomputed queries ...")
-    handler = make_precomputed_queries_handler_class(precomputed_queries_result)
+    handler = make_precomputed_queries_handler_class(
+        precomputed_queries_result)
     httpd = socketserver.TCPServer(("", args.port), handler)
     try:
         server_thread = threading.Thread(target=httpd.serve_forever)
-        server_thread.daemon = True  # Exit server thread when main thread terminates
+        server_thread.daemon = True
         server_thread.start()
         log.info(f"Internal HTTP server started on port {args.port}")
 
         log.info("Computing placeholders ...")
-        placeholders = compute_placeholders(placeholders, precomputed_queries_result, prefix_definitions, args)
+        placeholders = compute_placeholders(
+            placeholders, precomputed_queries_result, prefix_definitions, args)
 
         log.info("Generating queries ...")
         output_filename = f"{args.kg_name}.benchmark.{args.output_format}"
         num_queries_written, num_queries_error, num_queries_condition_false = (
             generate_queries(
-                placeholders, query_templates, prefix_definitions, output_filename, args
+                placeholders, query_templates, prefix_definitions,
+                output_filename, args
             )
         )
 
