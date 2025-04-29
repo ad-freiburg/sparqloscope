@@ -19,6 +19,9 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from pathlib import Path
 import json
 import re
+import http.server
+import socketserver
+import threading
 
 
 class LogFormatter(logging.Formatter):
@@ -95,8 +98,69 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
     return result
 
 
+def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace):
+    """
+    Helper function to execute a SPARQL query on the given endpoint.
+    """
+    log.debug(f'Computing placeholder query "{name}" ...')
+    log.debug(sparql_query)
+    sparql_endpoint = SPARQLWrapper(args.sparql_endpoint)
+    sparql_endpoint.setQuery(sparql_query)
+    sparql_endpoint.setReturnFormat(JSON)
+    try:
+        return sparql_endpoint.query().convert()
+    except Exception as e:
+        log.error(f'Error executing query "{name}": {e}')
+        exit(1)
+
+
+def precompute_queries(precomputed_queries, args):
+    result = {}
+    for query in precomputed_queries:
+        query_name = query["name"]
+        sparql_query = query["query"]
+        cache = bool(query.get("cache_result"))
+
+        # Get query result, either from cache or by requesting the endpoint
+        filename = f"precomputed.{args.kg_name}.{query_name}.json"
+        result_json = None
+        if cache and not args.overwrite_cached_results and Path(filename).exists():
+            log.debug(f"Loading precomputed query result from file {filename}")
+            with open(filename, "r") as f:
+                result_json = json.load(f)
+        else:
+            result_json = compute_sparql(query_name, sparql_query, args)
+            if cache:
+                log.debug(f"Writing precomputed query result to file {filename}")
+                with open(filename, "w") as f:
+                    json.dump(result_json, f)
+            result[query_name] = result_json
+    return result
+
+
+def make_precomputed_queries_handler_class(precomputed_queries_result):
+    class PrecomputedQueriesHandler(http.server.BaseHTTPRequestHandler):
+        def __respond(self):
+            path = self.path[1:]
+            if path in precomputed_queries_result:
+                self.send_response(200)
+                self.send_header("Content-Type", "application/sparql-results+json")
+                self.end_headers()
+                self.wfile.write(json.dumps(precomputed_queries_result[path]).encode("utf-8"))
+            else:
+                self.send_response(500)
+                self.end_headers()
+
+        def do_GET(self):
+            self.__respond()
+
+        def do_POST(self):
+            self.__respond()
+    return PrecomputedQueriesHandler
+
 def compute_placeholders(
-    placeholder_queries, # TODO: add correct annotations using TypedDict
+    placeholders, # TODO: add correct annotations using TypedDict
+    precomputed_queries_result,
     prefix_definitions: dict[str, str],
     args: argparse.Namespace,
 ) -> dict[str, str]:
@@ -106,25 +170,19 @@ def compute_placeholders(
     placeholders and return them as a dictionary.
     """
 
-    sparql_endpoint = SPARQLWrapper(args.sparql_endpoint)
     result = {}
 
-    def compute(name: str, sparql_query: str):
-        """
-        Helper function to execute a SPARQL query on the given endpoint.
-        """
-        log.debug(f'Computing placeholder query "{name}" ...')
-        log.debug(sparql_query)
-        sparql_endpoint.setQuery(sparql_query)
-        sparql_endpoint.setReturnFormat(JSON)
-        try:
-            return sparql_endpoint.query().convert()
-        except Exception as e:
-            log.error(f'Error executing placeholder query "{name}": {e}')
-            exit(1)
-
-    order_by_re = re.compile(
-        r'^\s*((?P<reversed>[Dd][Ee][Ss][Cc])|[Aa][Ss][Cc])\s*\(\?(?P<var>\w+)\)\s*$')
+    def add_interal_services(query):
+        result = query
+        for match in re.finditer(r'%[\w\-]+%', query):
+            substr = match.group(0)
+            precomputed_query = substr[1:-1]
+            assert precomputed_query in precomputed_queries_result
+            variables = precomputed_queries_result[precomputed_query]["head"]["vars"]
+            vars_str = ' '.join(f'?{v}' for v in variables)
+            result = result.replace(substr,
+                f"{{ SERVICE <{args.external_url}/{precomputed_query}> {{ VALUES ({vars_str}) {{}} }} }}")
+        return result
 
     def add_iri_brackets(binding: dict[str, str]) -> str:
         "Make a SPARQL literal from a result JSON binding"
@@ -133,170 +191,50 @@ def compute_placeholders(
         else:
             return binding["value"]
 
-    def apply_order(result_bindings, order_by_str: str):
-        "Sort the bindings as given by the order clause"
-        m = order_by_re.match(order_by_str)
-        assert m, "Only 'order_by' values of the form 'DESC(?var)' or " + \
-            "'ASC(?var) are supported in the configuration"
-        result_bindings.sort(
-            key=lambda row: int(row[m.group("var")]["value"]),
-            reverse=bool(m.group("reversed")))
-
-    def int_comparator(comp_str: str, a:int, b:int) -> bool:
-        "Compare integers with the relation given by comp_str."
-        if comp_str == "<":
-            return a < b
-        elif comp_str == "<=":
-            return a <= b
-        elif comp_str == ">":
-            return a > b
-        elif comp_str == ">=":
-            return a >= b
-        elif comp_str == "==":
-            return a == b
-        elif comp_str == "!=":
-            return a != b
-        raise AssertionError(f"Unsupported comparator {comp_str}")
-    
-    int_filter_re = re.compile(
-        r'^\s*\?(?P<var>\w+)\s*(?P<comp>([<>]=?|==|!=))\s*(?P<val>[0-9]+)\s*$')
-    placeholder_conjunction_re = re.compile(
-        r'^\s*\?(?P<var>\w+)\s*(?P<comp>(==|!=))\s*%(?P<placeholder>\w+)%\s*$')
-
-    def str_comparator(comp_str: str, a: str, b:str) -> bool:
-        "Compare strings with the relation given by comp_str."
-        if comp_str == "==":
-            return a == b
-        elif comp_str == "!=":
-            return a != b
-        raise AssertionError(f"Unsupported comparator {comp_str}")
-
-    def make_filter_func(filter_strs: list[str]):
-        def filter_func(row):
-            for f_str in filter_strs:
-                m = int_filter_re.match(f_str)
-                mp = placeholder_conjunction_re.match(f_str)
-                if m:
-                    var = m.group("var")
-                    val = int(m.group("val"))
-                    if not int_comparator(
-                        m.group("comp"), int(row[var]["value"]), val):
-                        return False
-                elif mp:
-                    var = mp.group("var")
-                    pl = mp.group("placeholder")
-                    val = result[pl]
-                    if not str_comparator(
-                        mp.group("comp"), add_iri_brackets(row[var]), val):
-                        return False
-                else:
-                    raise AssertionError(f"Filter command {f_str} is not supported")
-            return True
-        return filter_func
-
-    def apply_filters(result_bindings, filter_strs: list[str]):
-        return list(filter(make_filter_func(filter_strs), result_bindings))
-
-    column_re = re.compile(r'^\?(?P<var>\w+)$')
-
-    def get_placeholder_value(
-        result_vars,
-        result_bindings,
-        column: str | None, 
-        order_by: str | None,
-        offset: str | None,
-        filters: list[str] | None):
-        
-        if order_by:
-            apply_order(result_bindings, order_by)
-        if filters:
-            result_bindings = apply_filters(result_bindings, filters)
-        if offset:
-            result_bindings = result_bindings[int(offset):int(offset)+1]
-        else:
-            result_bindings = result_bindings[0:1]
-        if not column:
-            column = result_vars[0]
-        else:
-            assert column_re.match(column), f"Invalid column '{column}'"
-            column = column[1:]
-
+    def get_placeholder_value(result_vars, result_bindings):
+        column = result_vars[0]
         assert len(result_bindings), "No matching binding found for placeholder"
         binding = add_iri_brackets(result_bindings[0][column])
         return (binding, result_bindings[0])
 
+    for query in placeholders:
+        p_name = query["name"]
+        sparql_query = add_interal_services(query["query"])
+        result_json = compute_sparql(p_name, sparql_query, args)
 
-
-    for query in placeholder_queries:
-        query_name = query["name"]
-        sparql_query = query["query"]
-        cache = bool(query.get("cache_result"))
-
-        # Get query result, either from cache or by requesting the endpoint
-        filename = f"precomputed.{args.kg_name}.{query_name}.json"
-        result_json = None
-        if cache and not args.overwrite_cached_results and Path(filename).exists():
-            log.debug(f"Loading placeholder query result from file {filename}")
-            with open(filename, "r") as f:
-                result_json = json.load(f)
-        else:
-            result_json = compute(query_name, sparql_query)
-            if cache:
-                log.debug(f"Writing placeholder query result to file {filename}")
-                with open(filename, "w") as f:
-                    json.dump(result_json, f)
-
-        placeholders = query["placeholders"]
-        
-        bool_result = None
         result_vars = []
         result_bindings = []
-        if "boolean" in result_json:
-            bool_result = str(result_json["boolean"]).lower()
-            assert len(placeholders) == 1
-        else:
-            result_vars = result_json["head"]["vars"]
-            result_bindings = result_json["results"]["bindings"]
-            log.debug(f"result_vars: {result_vars}")
-            assert len(placeholders) >= 1
+        row = []
+        value = None
+        try:
+            # For ASK queries, we want the value of the field `boolean`. For
+            # SELECT queries, we want the first value of the first variable.
+            if "boolean" in result_json:
+                value = str(result_json["boolean"]).lower()
+            else:
+                result_vars = result_json["head"]["vars"]
+                result_bindings = result_json["results"]["bindings"]
+                log.debug(f"result_vars: {result_vars}")
+                value, row = get_placeholder_value(result_vars, result_bindings)
+        except NotImplementedError as e:
+        # TODO: except Exception as e:
+            log.error(f'Error computing placeholder "{p_name}": {e}')
+            exit(1)
+
+        # Log the computed value. If the result had a second variable, log that
+        # as well (it is typically a count that is useful to know).
+        additional_info = ""
+        log.debug(f"result_bindings for used row: {row}")
+        if row:
+            for var, val in row.items():
+                if "datatype" in val and val["datatype"].endswith(("#int", "#integer")):
+                    additional_info += f" [{var} = {int(val['value']):,}]"
         
-        for placeholder in placeholders:
-            # Prepare the value of the placeholder using the query result
-            p_name = placeholder["name"]
-            row = []
-            value = None
-            try:
-                # For ASK queries, we want the value of the field `boolean`. For
-                # SELECT queries, we want the first value of the first variable.
-                if "boolean" in result_json:
-                    value = bool_result
-                else:
-                    value, row = get_placeholder_value(
-                        result_vars,
-                        result_bindings,
-                        placeholder.get("column"),
-                        placeholder.get("order_by"),
-                        placeholder.get("offset"),
-                        placeholder.get("filters"))
-            except NotImplementedError as e:
-            # except Exception as e:
-                log.error(f'Error computing placeholder "{p_name}": {e}')
-                exit(1)
+        value_disp, _ = apply_prefix_definitions(value, prefix_definitions)
+        log.info(colored(f"{p_name} = {value_disp}{additional_info}", "blue"))
 
-            # Log the computed value. If the result had a second variable, log that
-            # as well (it is typically a count that is useful to know).
-            additional_info = ""
-            log.debug(f"result_bindings for used row: {row}")
-            if row:
-                for var, val in row.items():
-                    if "datatype" in val and val["datatype"].endswith(("#int", "#integer")):
-                        additional_info += f" [{var} = {int(val['value']):,}]"
-            
-            value_disp, _ = apply_prefix_definitions(value, prefix_definitions)
-            log.info(colored(f"{p_name} = {value_disp}{additional_info}", "blue"))
-
-            # Add to result dict.
-            result[p_name] = value
+        # Add to result dict.
+        result[p_name] = value
     return result
 
 
@@ -502,6 +440,18 @@ def command_line_args() -> argparse.Namespace:
         action="store_true",
         help="If set, all placeholder queries will be re-evaluated."
     )
+    arg_parser.add_argument(
+        "--external-url",
+        type=str,
+        default="http://localhost:8000",
+        help="The URL where the SPARQL endpoint can reach this program",
+    )
+    arg_parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help=f"Port where this program can serve a SERVICE used by the SPARQL endpoint",
+    )
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
     args = arg_parser.parse_args()
     return args
@@ -529,30 +479,47 @@ if __name__ == "__main__":
     # Read the YAML file.
     with open(args.query_templates, "r") as yaml_file:
         query_templates_yaml = yaml.safe_load(yaml_file)
-    placeholder_queries = query_templates_yaml["placeholder_queries"]
+    precomputed_queries = query_templates_yaml["precomputed_queries"]
+    placeholders = query_templates_yaml["placeholders"]
     query_templates = query_templates_yaml["queries"]
     log.info(
         f"Read query templates and placeholder queries from "
         f"`{args.query_templates}` "
-        f"(#placeholder queries = {len(placeholder_queries)}, "
+        f"(#precomputed queries = {len(precomputed_queries)}, "
+        f"#placeholders = {len(placeholders)}, "
         f"#queries = {len(query_templates)})"
     )
 
-    log.info("Computing placeholders ...")
-    placeholders = compute_placeholders(placeholder_queries, prefix_definitions, args)
+    log.info("Precomputing queries for placeholder generation ...")
+    precomputed_queries_result = precompute_queries(precomputed_queries, args)
+    
+    log.info("Starting HTTP server for precomputed queries ...")
+    handler = make_precomputed_queries_handler_class(precomputed_queries_result)
+    httpd = socketserver.TCPServer(("", args.port), handler)
+    try:
+        server_thread = threading.Thread(target=httpd.serve_forever)
+        server_thread.daemon = True  # Exit server thread when main thread terminates
+        server_thread.start()
+        log.info(f"Internal HTTP server started on port {args.port}")
 
-    log.info("Generating queries ...")
-    output_filename = f"{args.kg_name}.benchmark.{args.output_format}"
-    num_queries_written, num_queries_error, num_queries_condition_false = (
-        generate_queries(
-            placeholders, query_templates, prefix_definitions, output_filename, args
+        log.info("Computing placeholders ...")
+        placeholders = compute_placeholders(placeholders, precomputed_queries_result, prefix_definitions, args)
+
+        log.info("Generating queries ...")
+        output_filename = f"{args.kg_name}.benchmark.{args.output_format}"
+        num_queries_written, num_queries_error, num_queries_condition_false = (
+            generate_queries(
+                placeholders, query_templates, prefix_definitions, output_filename, args
+            )
         )
-    )
 
-    log.info(
-        f"Queries written to `{output_filename}` "
-        f" (format: {args.output_format}, "
-        f"#written: {num_queries_written}, "
-        f"#condition-false: {num_queries_condition_false}, "
-        f"#errors: {num_queries_error})"
-    )
+        log.info(
+            f"Queries written to `{output_filename}` "
+            f" (format: {args.output_format}, "
+            f"#written: {num_queries_written}, "
+            f"#condition-false: {num_queries_condition_false}, "
+            f"#errors: {num_queries_error})"
+        )
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
