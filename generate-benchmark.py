@@ -137,6 +137,11 @@ PrecomputedQueriesResult = dict[str, ResultJson]
 
 def precompute_queries(precomputed_queries: PrecomputedQueries,
                        args: argparse.Namespace) -> PrecomputedQueriesResult:
+    """
+    Compute or restore the results of the queries stated in the
+    precomputed_queries section of the template YAML and store the results of
+    queries with cache_results flag to disk.
+    """
     result = {}
     for query in precomputed_queries:
         query_name = query["name"]
@@ -164,7 +169,14 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
 
 def make_precomputed_queries_handler_class(
         precomputed_queries_result: PrecomputedQueriesResult) -> type:
+    """
+    Make an HTTP request handler class that can provide the precomputed SPARQL
+    results as JSON. The class definition captures the
+    precomputed_queries_result argument.
+    """
     class PrecomputedQueriesHandler(http.server.BaseHTTPRequestHandler):
+        "Custom request handler class to return SPARQL JSON results from a dict"
+
         def __respond(self):
             path = self.path[1:]
             if path in precomputed_queries_result:
@@ -200,7 +212,7 @@ def compute_placeholders(
     args: argparse.Namespace,
 ) -> dict[str, str]:
     """
-    For each query in the `placeholder_queries` section of the given YAML file,
+    For each query in the `placeholders` section of the templates YAML file,
     send the query to the given SPARQL endpoint. From the result, construct the
     placeholders and return them as a dictionary.
     """
@@ -208,6 +220,11 @@ def compute_placeholders(
     result = {}
 
     def add_interal_services(query: str) -> str:
+        """
+        Replace placeholders for precomputed queries with the appropriate
+        SPARQL SERVICE statement to retrieve the result of the precomputed
+        query.
+        """
         result = query
         for match in re.finditer(r'%[\w\-]+%', query):
             substr = match.group(0)
@@ -232,6 +249,7 @@ def compute_placeholders(
     def get_placeholder_value(result_vars: list[str],
                               result_bindings: list[Binding]) \
             -> tuple[str, Binding]:
+        "Extract the value for a placeholder from the result bindings"
         column = result_vars[0]
         assert len(result_bindings), "No matching binding found for placeholder"
         binding = add_iri_brackets(result_bindings[0][column])
@@ -495,7 +513,7 @@ def command_line_args() -> argparse.Namespace:
         "--port",
         type=int,
         default=8000,
-        help=f"Port where this program can serve a SERVICE used by the " +
+        help="Port where this program can serve a SERVICE used by the " +
         "SPARQL endpoint"
     )
     argcomplete.autocomplete(arg_parser, always_complete_options="long")

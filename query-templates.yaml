@@ -136,7 +136,8 @@ placeholders:
     query: |
       SELECT ?p4 ?count_p4 {
         %join-on-subject-size%
-        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
           %join-on-subject-size% } }
         FILTER(?p2 = ?p3 && ?p1 != ?p4)
       } ORDER BY DESC(?count_join) LIMIT 1
@@ -147,7 +148,8 @@ placeholders:
     query: |
       SELECT ?p4 ?count_p4 {
         %join-on-subject-size%
-        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
           %join-diagonal-size% } }
         FILTER(?p2 = ?p3)
       } ORDER BY DESC(?count_join) LIMIT 1
