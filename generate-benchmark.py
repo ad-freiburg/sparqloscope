@@ -12,7 +12,7 @@ import argcomplete
 import logging
 import sys
 from contextlib import contextmanager
-from typing import TextIO
+from typing import NotRequired, TextIO, TypedDict, Literal
 from termcolor import colored
 import yaml
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -56,6 +56,15 @@ log_levels = {
     "NO_LOG": logging.CRITICAL + 1,
 }
 
+# Type annotations for parsed SPARQL JSONs
+Binding = TypedDict("Binding", {
+    "datatype": NotRequired[str],
+    "type": Literal["uri"] | Literal["literal"],
+    "value": str
+})
+Head = TypedDict("Head", {"vars": list[str]})
+Results = TypedDict("Results", {"bindings": list[Binding]})
+ResultJson = TypedDict("ResultJson", {"head": Head, "results": Results})
 
 @contextmanager
 def open_file_for_writing(filename: str) -> TextIO:
@@ -98,7 +107,7 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
     return result
 
 
-def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace):
+def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) -> ResultJson:
     """
     Helper function to execute a SPARQL query on the given endpoint.
     """
@@ -114,7 +123,16 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace):
         exit(1)
 
 
-def precompute_queries(precomputed_queries, args):
+PrecomputedQuery = TypedDict("PrecomputedQuery", {
+    "name": str,
+    "query": str,
+    "cache_result": NotRequired[bool]
+})
+PrecomputedQueries = list[PrecomputedQuery]
+PrecomputedQueriesResult = dict[str, ResultJson]
+
+def precompute_queries(precomputed_queries: PrecomputedQueries,
+                       args: argparse.Namespace) -> PrecomputedQueriesResult:
     result = {}
     for query in precomputed_queries:
         query_name = query["name"]
@@ -138,7 +156,7 @@ def precompute_queries(precomputed_queries, args):
     return result
 
 
-def make_precomputed_queries_handler_class(precomputed_queries_result):
+def make_precomputed_queries_handler_class(precomputed_queries_result: PrecomputedQueriesResult) -> type:
     class PrecomputedQueriesHandler(http.server.BaseHTTPRequestHandler):
         def __respond(self):
             path = self.path[1:]
@@ -158,9 +176,16 @@ def make_precomputed_queries_handler_class(precomputed_queries_result):
             self.__respond()
     return PrecomputedQueriesHandler
 
+
+Placeholder = TypedDict("Placeholder", {
+    "name": str,
+    "description": NotRequired[str],
+    "query": str
+})
+
 def compute_placeholders(
-    placeholders, # TODO: add correct annotations using TypedDict
-    precomputed_queries_result,
+    placeholders: list[Placeholder],
+    precomputed_queries_result: PrecomputedQueriesResult,
     prefix_definitions: dict[str, str],
     args: argparse.Namespace,
 ) -> dict[str, str]:
@@ -172,7 +197,7 @@ def compute_placeholders(
 
     result = {}
 
-    def add_interal_services(query):
+    def add_interal_services(query: str) -> str:
         result = query
         for match in re.finditer(r'%[\w\-]+%', query):
             substr = match.group(0)
@@ -191,7 +216,9 @@ def compute_placeholders(
         else:
             return binding["value"]
 
-    def get_placeholder_value(result_vars, result_bindings):
+    def get_placeholder_value(result_vars: list[str],
+                              result_bindings: list[Binding]) \
+                                -> tuple[str, Binding]:
         column = result_vars[0]
         assert len(result_bindings), "No matching binding found for placeholder"
         binding = add_iri_brackets(result_bindings[0][column])
@@ -204,7 +231,7 @@ def compute_placeholders(
 
         result_vars = []
         result_bindings = []
-        row = []
+        row = None
         value = None
         try:
             # For ASK queries, we want the value of the field `boolean`. For
