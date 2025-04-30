@@ -164,7 +164,7 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
                     f"Writing precomputed query result to file {filename}")
                 with open(filename, "w") as f:
                     json.dump(result_json, f)
-            result[query_name] = result_json
+        result[query_name] = result_json
     return result
 
 
