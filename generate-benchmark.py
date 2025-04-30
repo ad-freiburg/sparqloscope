@@ -157,6 +157,7 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
             with open(filename, "r") as f:
                 result_json = json.load(f)
         else:
+            log.info(f"Computing query result for {query_name}")
             result_json = compute_sparql(query_name, sparql_query, args)
             if cache:
                 log.debug(
@@ -225,19 +226,23 @@ def compute_placeholders(
         SPARQL SERVICE statement to retrieve the result of the precomputed
         query.
         """
-        result = query
+        out = query
         for match in re.finditer(r'%[\w\-]+%', query):
             substr = match.group(0)
             precomputed_query = substr[1:-1]
-            assert precomputed_query in precomputed_queries_result
-            variables = precomputed_queries_result[
-                precomputed_query]["head"]["vars"]
-            vars_str = ' '.join(f'?{v}' for v in variables)
-            result = result.replace(
-                substr,
-                f"{{ SERVICE <{args.external_url}/{precomputed_query}> {{ " +
-                f"VALUES ({vars_str}) {{}} }} }}")
-        return result
+            if precomputed_query in precomputed_queries_result:
+                variables = precomputed_queries_result[
+                    precomputed_query]["head"]["vars"]
+                vars_str = ' '.join(f'?{v}' for v in variables)
+                out = out.replace(
+                    substr,
+                    f"{{ SERVICE <{args.external_url}/{precomputed_query}> {{ " +
+                    f"VALUES ({vars_str}) {{}} }} }}")
+            elif precomputed_query in result:
+                out = out.replace(substr, result[precomputed_query])
+            else:
+                raise AssertionError(f"Replacement {substr} unknown")
+        return out
 
     def add_iri_brackets(binding: dict[str, str]) -> str:
         "Make a SPARQL literal from a result JSON binding"
@@ -277,7 +282,7 @@ def compute_placeholders(
                     result_vars, result_bindings)
         except Exception as e:
             log.error(f'Error computing placeholder "{p_name}": {e}')
-            exit(1)
+            raise
 
         # Log the computed value. If the result had a second variable, log that
         # as well (it is typically a count that is useful to know).
@@ -516,6 +521,11 @@ def command_line_args() -> argparse.Namespace:
         help="Port where this program can serve a SERVICE used by the " +
         "SPARQL endpoint"
     )
+    arg_parser.add_argument(
+        "--pause-on-service",
+        action="store_true",
+        help="Pause for debugging when SERVICE is started"
+    )
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
     args = arg_parser.parse_args()
     return args
@@ -565,6 +575,8 @@ if __name__ == "__main__":
         server_thread.daemon = True
         server_thread.start()
         log.info(f"Internal HTTP server started on port {args.port}")
+        if args.pause_on_service:
+            input("Paused. Press enter to continue")
 
         log.info("Computing placeholders ...")
         placeholders = compute_placeholders(

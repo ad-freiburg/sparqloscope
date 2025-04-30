@@ -1,38 +1,71 @@
 # SPARQL queries to gain insight on the characteristics of the knowledge graph,
 # used to generate placeholders in the next step.
 precomputed_queries:
-  - name: predicate-size
+  - name: PREDICATE_SIZE_QUERY
     query: |
       SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
       GROUP BY ?p ORDER BY DESC(?count)
     cache_result: false
-  - name: predicate-size-small
+  - name: PREDICATE_SIZE_SMALL_QUERY
     query: |
       SELECT ?p ?count WHERE {
         { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
         FILTER (?count <= 1000)
       } ORDER BY DESC(?count)
-  - name: join-on-subject-size
+  - name: PREDICATE_LARGE_WITH_NUMERIC_QUERY
     query: |
-      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
-        { SELECT ?p1 ?p2 (COUNT(?s) AS ?count_join) {
-            ?s ?p1 ?o1 . ?s ?p2 ?o2 .
-            FILTER(?p1 != ?p2) } GROUP BY ?p1 ?p2 }
-        {  SELECT ?p1 (COUNT(?s) AS ?count_p1) {
-            ?s ?p1 ?o . } GROUP BY ?p1 }
-        {  SELECT ?p2 (COUNT(?s) AS ?count_p2) {
-            ?s ?p2 ?o . } GROUP BY ?p2 } }
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o FILTER ISNUMERIC(?o) }
+      GROUP BY ?p ORDER BY DESC(?count)
+  - name: JOIN_ON_SUBJECT_SIZE_QUERY
+    query: |
+      SELECT * {
+        { SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
+          { SELECT ?a ?p1 (COUNT(?a) as ?cnt1) { ?a ?p1 ?o . } GROUP BY ?a ?p1 }
+          { SELECT ?a ?p2 (COUNT(?a) as ?cnt2) { ?a ?p2 ?o . } GROUP BY ?a ?p2 }
+          FILTER(?p1 != ?p2)
+        } GROUP BY ?p1 ?p2 }
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+        { SELECT ?p2 (COUNT(?p2) AS ?count_p2) { ?a ?p2 ?o } GROUP BY ?p2 }
+      } ORDER BY DESC(?count_join)
     cache_result: true
-  - name: join-diagonal-size
+  - name: JOIN_DIAGONAL_SIZE_QUERY
     query: |
-      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
-        { SELECT ?p1 ?p2 (COUNT(?s) AS ?count_join) {
-            ?s ?p1 ?m . ?m ?p2 ?o .
-            FILTER(?p1 != ?p2) } GROUP BY ?p1 ?p2 }
-        {  SELECT ?p1 (COUNT(?s) AS ?count_p1) {
-            ?s ?p1 ?o . } GROUP BY ?p1 }
-        {  SELECT ?p2 (COUNT(?s) AS ?count_p2) {
-            ?s ?p2 ?o . } GROUP BY ?p2 } }
+      SELECT * {
+        { SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
+          { SELECT ?m ?p1 (COUNT(?m) as ?cnt1) { ?s ?p1 ?m . } GROUP BY ?m ?p1 }
+          { SELECT ?m ?p2 (COUNT(?m) as ?cnt2) { ?m ?p2 ?o . } GROUP BY ?m ?p2 }
+          FILTER(?p1 != ?p2)
+        } GROUP BY ?p1 ?p2 }
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+        { SELECT ?p2 (COUNT(?p2) AS ?count_p2) { ?a ?p2 ?o } GROUP BY ?p2 }
+      } ORDER BY DESC(?count_join)
+    cache_result: true
+  - name: JOIN_ON_OBJECT_SIZE_QUERY
+    query: |
+      SELECT * {
+        {SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
+          { SELECT ?p1 ?o (COUNT(?o) as ?cnt1) { ?s ?p1 ?o . } GROUP BY ?o ?p1 }
+          { SELECT ?p2 ?o (COUNT(?o) as ?cnt2) { ?s ?p2 ?o . } GROUP BY ?o ?p2 }
+          FILTER(?p1 != ?p2)
+        } GROUP BY ?p1 ?p2 }
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+        { SELECT ?p2 (COUNT(?p2) AS ?count_p2) { ?a ?p2 ?o } GROUP BY ?p2 }
+      } ORDER BY DESC(?count_join)
+    cache_result: true
+  - name: MULTIPLICITY_ON_OBJECT_QUERY
+    query: |
+      SELECT ?p (SUM(?count_s) AS ?count) (COUNT(?p) AS ?count_distinct)
+        (?count / ?count_distinct AS ?multiplicity) WHERE {
+        SELECT ?p ?x (COUNT(?s) AS ?count_s) WHERE { ?s ?p ?x } GROUP BY ?p ?x }
+      GROUP BY ?p ORDER BY DESC(?multiplicity)
+    cache_result: true
+  - name: TRANSITIVE_PATH_PREDICATES_QUERY
+    query: |
+      SELECT ?p1 ?count_p1 ?count ((?count / ?count_p1) AS ?x) WHERE {
+        { SELECT ?p1 (COUNT(*) AS ?count) WHERE {
+          ?s ?p1 ?m . ?m ?p2 ?o . FILTER(?p1 = ?p2) } GROUP BY ?p1}
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+      } ORDER BY DESC(?x) 
     cache_result: true
 
 # SPARQL SELECT queries to compute the placeholders for a given dataset.
@@ -41,27 +74,27 @@ placeholders:
   - name: PREDICATE_LARGE_1
     description: A large predicate (with many triples)
     query: |
-      SELECT ?p ?count { %predicate-size% } LIMIT 1
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1
   - name: PREDICATE_LARGE_2
     description: A large predicate, different from the first one
     query: |
-      SELECT ?p ?count { %predicate-size% } LIMIT 1 OFFSET 1
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1 OFFSET 1
   - name: PREDICATE_MEDIUM_1
     description: A medium-sized predicate
     query: |
-      SELECT ?p ?count { %predicate-size% } LIMIT 1 OFFSET 10
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1 OFFSET 10
   - name: PREDICATE_MEDIUM_2
     description: A medium-sized predicate, different from the first one
     query: |
-      SELECT ?p ?count { %predicate-size% } LIMIT 1 OFFSET 11
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1 OFFSET 11
   - name: PREDICATE_SMALL_1
     description: A small predicate
     query: |
-      SELECT ?p ?count { %predicate-size-small% } LIMIT 1
+      SELECT ?p ?count { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 1
   - name: PREDICATE_SMALL_2
     description: A small predicate
     query: |
-      SELECT ?p ?count { %predicate-size-small% } LIMIT 1 OFFSET 1
+      SELECT ?p ?count { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 1 OFFSET 1
 
   # Predicates for certain datatypes
   - name: PREDICATE_LARGE_WITH_LITERAL
@@ -73,10 +106,14 @@ placeholders:
   - name: PREDICATE_LARGE_WITH_NUMERIC
     description: A large predicate that has numeric literals as objects
     query: |
-      SELECT ?p (COUNT(?p) AS ?count)
-      WHERE { ?s ?p ?o FILTER ISNUMERIC(?o) }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1
+      SELECT * { %PREDICATE_LARGE_WITH_NUMERIC_QUERY% } LIMIT 1
+  - name: AVG_PREDICATE_LARGE_WITH_NUMERIC
+    description: todo
+    query: |
+      SELECT (AVG(?o) AS ?avg) {
+        { SELECT * { %PREDICATE_LARGE_WITH_NUMERIC_QUERY% } LIMIT 1 }
+        ?s ?p ?o .
+      } GROUP BY ?p
   - name: PREDICATE_LARGE_WITH_DATE
     description: A large predicate that has date literals as objects
     query: |
@@ -90,12 +127,12 @@ placeholders:
   - name: PREDICATE_1_FOR_LARGE_SUBJ_JOIN
     description: Predicate 1 for the join on subject with the largest result
     query: |
-      SELECT ?p1 ?count_p1 { %join-on-subject-size% }
+      SELECT ?p1 ?count_p1 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
       ORDER BY DESC(?count_join) LIMIT 1
   - name: PREDICATE_2_FOR_LARGE_SUBJ_JOIN
     description: Predicate 2 for the join on subject with the largest result
     query: |
-      SELECT ?p2 ?count_p2 { %join-on-subject-size% }
+      SELECT ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
       ORDER BY DESC(?count_join) LIMIT 1
 
   # Join on subject: Possible Join Pair 2
@@ -103,14 +140,14 @@ placeholders:
     description: todo
     query: |
       SELECT ?p1 ?count_p1 {
-        %join-on-subject-size% 
+        %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
   - name: LARGE_PREDICATE_2_FOR_SUBJ_JOIN
     description: todo
     query: |
       SELECT ?p2 ?count_p2 {
-        %join-on-subject-size% 
+        %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
 
@@ -119,14 +156,14 @@ placeholders:
     description: todo
     query: |
       SELECT ?p1 ?count_p1 {
-        %join-on-subject-size% 
+        %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
   - name: SMALL_PREDICATE_2_FOR_SUBJ_JOIN_2
     description: todo
     query: |
       SELECT ?p2 ?count_p2 {
-        %join-on-subject-size% 
+        %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
 
@@ -135,24 +172,27 @@ placeholders:
     description: todo
     query: |
       SELECT ?p4 ?count_p4 {
-        %join-on-subject-size%
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
         { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
           (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
-          %join-on-subject-size% } }
+          %JOIN_ON_SUBJECT_SIZE_QUERY% } }
+        } }
         FILTER(?p2 = ?p3 && ?p1 != ?p4)
-      } ORDER BY DESC(?count_join) LIMIT 1
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
 
   # Join on subject and diagonal: Chain Join
   - name: PREDICATE_3_FOR_LARGE_CHAIN_JOIN
     description: todo
     query: |
       SELECT ?p4 ?count_p4 {
-        %join-on-subject-size%
-        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
           (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
-          %join-diagonal-size% } }
-        FILTER(?p2 = ?p3)
-      } ORDER BY DESC(?count_join) LIMIT 1
+          %JOIN_DIAGONAL_SIZE_QUERY% } }
+        } }
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
 
   # Boolean checks
   - name: HAS_RDFS_LABEL
@@ -165,6 +205,59 @@ placeholders:
     query: |
       PREFIX wdt: <http://www.wikidata.org/prop/direct/>
       ASK { ?s wdt:P31/wdt:P279* ?o }
+  
+  # Predicate with high multiplicity
+  - name: PREDICATE_HIGH_MULTIPLICITY
+    description: todo
+    query: |
+      SELECT ?p ?count ?count_distinct ?multiplicity {
+        %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?multiplicity) LIMIT 1
+  # Predicate with low multiplicity
+  - name: PREDICATE_LOW_MULTIPLICITY
+    description: todo
+    query: |
+      SELECT ?p ?count ?count_distinct ?multiplicity {
+        %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?count_distinct) LIMIT 1
+  
+  - name: LARGE_PREDICATE_1_FOR_GROUP_BY
+    description: todo
+    query: |
+      SELECT ?p1 (?count_join / ?count_distinct AS ?order) {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p AS ?p1) ?count_distinct ?multiplicity {
+          %MULTIPLICITY_ON_OBJECT_QUERY%
+        } }
+      } ORDER BY DESC(?order) LIMIT 1
+  - name: LARGE_PREDICATE_2_FOR_GROUP_BY
+    description: todo
+    query: |
+      SELECT ?p2 (?count_join / ?count_distinct AS ?order) {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p AS ?p1) ?count_distinct ?multiplicity {
+          %MULTIPLICITY_ON_OBJECT_QUERY%
+        } }
+      } ORDER BY DESC(?order) LIMIT 1
+
+
+  # For filter (use with multiplicity predicates)
+  # - name: FILTER_OUT_MANY_VALUES
+  #   description: todo
+  #   query: |
+  #     SELECT ?o (COUNT(?o) AS ?count) WHERE {
+  #       ?s %PREDICATE_HIGH_MULTIPLICITY% ?o }
+  #     GROUP BY ?o ORDER BY DESC(?count) LIMIT 1
+  # - name: FILTER_OUT_FEW_VALUES
+  #   description: todo
+  #   query: |
+  #     SELECT ?o (COUNT(?o) AS ?count) WHERE {
+  #       ?s %PREDICATE_LOW_MULTIPLICITY% ?o }
+  #     GROUP BY ?o ORDER BY ASC(?count) LIMIT 1
+
+  #
+  - name: PREDICATE_TRANSITIVE_PATH
+    description: todo
+    query: |
+      SELECT * { %TRANSITIVE_PATH_PREDICATES_QUERY% } LIMIT 1
 
 # The benchmark queries with placeholders.
 #
@@ -427,11 +520,46 @@ queries:
   - name: group-by-count-subject-large
     description: GROUP_BY with COUNT, for subject of large predicate
     group: group-by
-    query:
+    query: |
       SELECT ?subject (COUNT(?subject) AS ?count)
       WHERE { ?subject %PREDICATE_LARGE_1% ?object }
       GROUP BY ?subject ORDER BY DESC(?count)
       LIMIT %LIMIT%
+  
+  - name: group-by-count-object-high-multiplicity
+    description: todo
+    group: group-by
+    query: |
+      SELECT ?subject (COUNT(?subject) AS ?count) {
+      ?subject %PREDICATE_HIGH_MULTIPLICITY% ?object .
+      } GROUP BY ?object ORDER BY DESC(?count) LIMIT %LIMIT%
+
+  - name: group-by-count-object-low-multiplicity
+    description: todo
+    group: group-by
+    query: |
+      SELECT ?subject (COUNT(?subject) AS ?count) {
+      ?subject %PREDICATE_LOW_MULTIPLICITY% ?object .
+      } GROUP BY ?object ORDER BY DESC(?count) LIMIT %LIMIT%
+
+  - name: group-by-count-wrong-input-sort
+    description: todo
+    group: group-by
+    query: |
+      SELECT ?o1 (COUNT(?s) AS ?count) {
+        ?s %LARGE_PREDICATE_1_FOR_GROUP_BY% ?o1 .
+        ?s %LARGE_PREDICATE_2_FOR_GROUP_BY% ?o2 .
+      } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
+    
+  - name: group-by-complex-aggregate
+    description: todo
+    group: group-by
+    query: |
+      SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max)
+        (SAMPLE(?s) AS ?sample) {
+        ?s %LARGE_PREDICATE_1_FOR_GROUP_BY% ?o1 .
+        ?s %LARGE_PREDICATE_2_FOR_GROUP_BY% ?o2 .
+      } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
 
   # PROPERTY_PATH queries.
   - name: wdt-P31-wdt-P279-star
@@ -441,6 +569,11 @@ queries:
     query: |
       SELECT ?s ?o WHERE { ?s wdt:P31/wdt:P279* ?o }
       LIMIT %LIMIT%
+  
+  - name: transitive-path
+    description: todo
+    query: |
+      SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
 
   # REGEX queries.
   - name: regex-3-contains
@@ -522,6 +655,19 @@ queries:
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_1% ?o }
       LIMIT 10000000
+  
+  # # Full scans
+  # - name: full-scan-constrained # TODO
+  #   description: x
+  #   group: full-scan
+  #   query: |
+  #     SELECT (COUNT(*) AS ?count) { ?s ?p ?o }
+  # - name: full-scan-filter
+  #   description: x
+  #   group: full-scan
+  #   query: |
+  #     SELECT (COUNT(*) AS ?count) {
+  #       ?s ?p ?o . FILTER(?p != %PREDICATE_LARGE_1%) }
 
   # NUMERIC function queries.
   #
@@ -587,6 +733,29 @@ queries:
     query: |
       SELECT (SUM(?o > 0) AS ?sum)
       WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  
+  # Numeric (Binary Search) Filter
+  - name: numeric-filter-bin-search
+    description: todo
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
+        FILTER (?o >= %AVG_PREDICATE_LARGE_WITH_NUMERIC%) }
+  
+  # Other Filters
+  - name: filter-few-results
+    description: todo
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_1% ?o . FILTER (?s = ?o) }
+  - name: filter-many-results
+    description: todo
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_1% ?o . FILTER (?s != ?o) }
 
   # DATE function queries (e.g., NOW, YEAR, MONTH, DAY)
   - name: date-predicate-warmup
