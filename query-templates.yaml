@@ -152,7 +152,7 @@ placeholders:
         FILTER(?count_p1 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
 
-  # Prdicates for subject join with two small predicates and large result
+  # Predicates for subject join with two small predicates and large result
   - name: SMALL_PREDICATE_1_FOR_SUBJ_JOIN_2
     description: Predicate 1 for subject join with two small predicates and large result
     query: |
@@ -167,6 +167,18 @@ placeholders:
         %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
+
+  # Predicates for a join between two large predicates with a small result
+  - name: LARGE_PREDICATE_1_FOR_SMALL_SUBJ_JOIN
+    description: Predicate 1 for subject join with two large predicates and small result
+    query: |
+      SELECT ?p1 ?count_p1 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
+      ORDER BY ASC(?count_join  /  (?count_p1 * ?count_p2))
+  - name: LARGE_PREDICATE_2_FOR_SMALL_SUBJ_JOIN
+    description: Predicate 2 for subject join with two large predicates and small result
+    query: |
+      SELECT ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
+      ORDER BY ASC(?count_join  /  (?count_p1 * ?count_p2))
 
   # Star subject join with larges sum of join sizes
   - name: PREDICATE_3_FOR_SUBJ_STAR_JOIN
@@ -348,6 +360,14 @@ queries:
       WHERE {
         ?s %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
         ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 }
+  - name: join-2-large-large-with-small-result
+    description: JOIN of two large predicates with a small result
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_1_FOR_SMALL_SUBJ_JOIN% ?o1 .
+        ?s %LARGE_PREDICATE_2_FOR_SMALL_SUBJ_JOIN% ?o2 }
   - name: join-2-small-small-with-large-result
     description: JOIN of two small predicates
     group: join
