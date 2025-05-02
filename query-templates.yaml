@@ -347,7 +347,7 @@ queries:
       WHERE {
         ?s %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
         ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 }
-  - name: single-join-small-small-with-large-result 
+  - name: join-2-small-small-with-large-result
     description: JOIN of two small predicates
     group: join
     query: |
