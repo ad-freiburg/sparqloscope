@@ -123,53 +123,53 @@ placeholders:
       GROUP BY ?p ORDER BY DESC(?count)
       LIMIT 1
 
-  # Join on subject: possible join pair 1
+  # Predicates for subject join of two large predicate with large result
   - name: PREDICATE_1_FOR_LARGE_SUBJ_JOIN
-    description: Predicate 1 for the join on subject with the largest result
+    description: Predicate 1 for subject joinn of two large predicates with large result
     query: |
       SELECT ?p1 ?count_p1 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
       ORDER BY DESC(?count_join) LIMIT 1
   - name: PREDICATE_2_FOR_LARGE_SUBJ_JOIN
-    description: Predicate 2 for the join on subject with the largest result
+    description: Predicate 2 for subject join of two large predicates with large result
     query: |
       SELECT ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
       ORDER BY DESC(?count_join) LIMIT 1
 
-  # Join on subject: Possible Join Pair 2
+  # Predicates for subject join with one small predicate and large result
   - name: SMALL_PREDICATE_1_FOR_SUBJ_JOIN
-    description: todo
+    description: Predicate 1 for subject join with one small predicate and large result
     query: |
       SELECT ?p1 ?count_p1 {
         %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
   - name: LARGE_PREDICATE_2_FOR_SUBJ_JOIN
-    description: todo
+    description: Predicate 2 for subject join with one small predicate and large result
     query: |
       SELECT ?p2 ?count_p2 {
         %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
 
-  # Join on subject: Possible Join Pair 3
+  # Prdicates for subject join with two small predicates and large result
   - name: SMALL_PREDICATE_1_FOR_SUBJ_JOIN_2
-    description: todo
+    description: Predicate 1 for subject join with two small predicates and large result
     query: |
       SELECT ?p1 ?count_p1 {
         %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
   - name: SMALL_PREDICATE_2_FOR_SUBJ_JOIN_2
-    description: todo
+    description: Predicate 2 for subject join with two small predicates and large result
     query: |
       SELECT ?p2 ?count_p2 {
         %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
 
-  # Join on subject: Star Join
+  # Star subject join with larges sum of join sizes
   - name: PREDICATE_3_FOR_SUBJ_STAR_JOIN
-    description: todo
+    description: Star subject join with larges sum of join sizes
     query: |
       SELECT ?p4 ?count_p4 {
         %JOIN_ON_SUBJECT_SIZE_QUERY%
@@ -181,9 +181,9 @@ placeholders:
         FILTER(?p2 = ?p3 && ?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
 
-  # Join on subject and diagonal: Chain Join
+  # Subject and diagonal join with largest sum of join sizes
   - name: PREDICATE_3_FOR_LARGE_CHAIN_JOIN
-    description: todo
+    description: Subject and diagonal join with larges sum of join sizes
     query: |
       SELECT ?p4 ?count_p4 {
         %JOIN_ON_SUBJECT_SIZE_QUERY%
@@ -206,18 +206,17 @@ placeholders:
       PREFIX wdt: <http://www.wikidata.org/prop/direct/>
       ASK { ?s wdt:P31/wdt:P279* ?o }
   
-  # Predicate with high multiplicity
-  - name: PREDICATE_HIGH_MULTIPLICITY
-    description: todo
-    query: |
-      SELECT ?p ?count ?count_distinct ?multiplicity {
-        %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?multiplicity) LIMIT 1
-  # Predicate with low multiplicity
+  # Predicate with low and high multiplicity
   - name: PREDICATE_LOW_MULTIPLICITY
     description: todo
     query: |
       SELECT ?p ?count ?count_distinct ?multiplicity {
         %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?count_distinct) LIMIT 1
+  - name: PREDICATE_HIGH_MULTIPLICITY
+    description: todo
+    query: |
+      SELECT ?p ?count ?count_distinct ?multiplicity {
+        %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?multiplicity) LIMIT 1
   
   - name: LARGE_PREDICATE_1_FOR_GROUP_BY
     description: todo
@@ -321,28 +320,26 @@ placeholders:
 #
 # TODO: index scans with FILTER with contiguous range [realhannes stuff]
 queries:
-  # JOIN queries.
-  - name: single-join-small-large
+  # JOIN of two triple patterns
+  - name: join-2-small-large
     description: JOIN of a small and a large predicate
     group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_SMALL_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
-  - name: single-join-large-small
+  - name: join-2-large-small
     description: JOIN of a large and a small predicate
     group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_SMALL_1% ?o2 }
-  - name: single-join-large-large
+  - name: join-2-large-large
     description: JOIN of two large predicates
     group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
-
-  # JOIN benchmarks based on precomputed join sizes
-  - name: single-join-large-large-with-large-result
+  - name: join-2-large-large-with-large-result
     description: JOIN of two large predicates with a large result
     group: join
     query: |
@@ -350,8 +347,8 @@ queries:
       WHERE {
         ?s %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
         ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 }
-  - name: single-join-small-small
-    description: todo
+  - name: single-join-small-small-with-large-result 
+    description: JOIN of two small predicates
     group: join
     query: |
       SELECT (COUNT(*) AS ?count)
@@ -359,18 +356,9 @@ queries:
         ?s %SMALL_PREDICATE_1_FOR_SUBJ_JOIN_2% ?o1 .
         ?s %SMALL_PREDICATE_2_FOR_SUBJ_JOIN_2% ?o2 }
 
-  # 3-triple JOINs
-  - name: join-chain
-    description: todo
-    query: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE {
-        ?s1 %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
-        ?s1 %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?m .
-        ?m %PREDICATE_3_FOR_LARGE_CHAIN_JOIN% ?o2 .
-      }
-  - name: join-star
-    description: todo
+  # JOIN of three triple patterns
+  - name: join-3-star-largest-sum-of-join-sizes
+    description: JOIN star of three large predicates with the largest sum of join sizes
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
@@ -378,7 +366,15 @@ queries:
         ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 .
         ?s %PREDICATE_3_FOR_SUBJ_STAR_JOIN% ?o3 .
       }
-
+  - name: join-3-chain-largest-sum-of-join-sizes
+    description: JOIN chain of three large predicates with the largest sum of join sizes
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s1 %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
+        ?s1 %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?m .
+        ?m %PREDICATE_3_FOR_LARGE_CHAIN_JOIN% ?o2 .
+      }
 
   # OPTIONAL JOIN queries.
   - name: optional-join-small-large
@@ -493,66 +489,46 @@ queries:
       WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_LARGE_2% ?o }
 
   # GROUP BY queries.
-  - name: group-by-count-object-small
-    description: GROUP_BY with COUNT, for object of small predicate
-    group: group-by
-    query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_SMALL_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-      LIMIT %LIMIT%
-  - name: group-by-count-object-medium
-    description: GROUP_BY with COUNT, for object of midsize predicate
-    group: group-by
-    query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_MEDIUM_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-      LIMIT %LIMIT%
-  - name: group-by-count-object-large
-    description: GROUP_BY with COUNT, for object of large predicate
-    group: group-by
-    query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-      LIMIT %LIMIT%
-  - name: group-by-count-subject-large
-    description: GROUP_BY with COUNT, for subject of large predicate
+  - name: group-by-count-subject-large-predicate
+    description: GROUP BY with COUNT, for subject of large predicate
     group: group-by
     query: |
       SELECT ?subject (COUNT(?subject) AS ?count)
       WHERE { ?subject %PREDICATE_LARGE_1% ?object }
       GROUP BY ?subject ORDER BY DESC(?count)
       LIMIT %LIMIT%
-  
-  - name: group-by-count-object-high-multiplicity
-    description: todo
+  - name: group-by-count-object-large-predicate
+    description: GROUP BY with COUNT, for object of large predicate
     group: group-by
     query: |
-      SELECT ?subject (COUNT(?subject) AS ?count) {
+      SELECT ?object (COUNT(?object) AS ?count)
+      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
+      GROUP BY ?object ORDER BY DESC(?count)
+      LIMIT %LIMIT%
+  - name: group-by-count-object-high-multiplicity
+    description: GROUP BY with COUNT, for object with high multiplicity
+    group: group-by
+    query: |
+      SELECT ?object (COUNT(?subject) AS ?count) {
       ?subject %PREDICATE_HIGH_MULTIPLICITY% ?object .
       } GROUP BY ?object ORDER BY DESC(?count) LIMIT %LIMIT%
-
   - name: group-by-count-object-low-multiplicity
-    description: todo
+    description: GROUP BY with COUNT, for object with low multiplicity
     group: group-by
     query: |
-      SELECT ?subject (COUNT(?subject) AS ?count) {
+      SELECT ?object (COUNT(?subject) AS ?count) {
       ?subject %PREDICATE_LOW_MULTIPLICITY% ?object .
       } GROUP BY ?object ORDER BY DESC(?count) LIMIT %LIMIT%
-
-  - name: group-by-count-wrong-input-sort
-    description: todo
+  - name: group-by-count-object-wrong-sort-order
+    description: GROUP BY with COUNT, for object but not sorted by object
     group: group-by
     query: |
       SELECT ?o1 (COUNT(?s) AS ?count) {
         ?s %LARGE_PREDICATE_1_FOR_GROUP_BY% ?o1 .
         ?s %LARGE_PREDICATE_2_FOR_GROUP_BY% ?o2 .
       } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
-    
   - name: group-by-complex-aggregate
-    description: todo
+    description: GROUP BY with COUNT and MIN and MAX and SAMPLE
     group: group-by
     query: |
       SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max)
@@ -569,9 +545,8 @@ queries:
     query: |
       SELECT ?s ?o WHERE { ?s wdt:P31/wdt:P279* ?o }
       LIMIT %LIMIT%
-  
-  - name: transitive-path
-    description: todo
+  - name: transitive-path-plus
+    description: Transitive path with plus
     query: |
       SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
 
@@ -794,7 +769,6 @@ queries:
     query: |
       SELECT (SUM(NOW()) AS ?sum)
       WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
-
 
   # STATISTICS queries.
   - name: number-of-triples
