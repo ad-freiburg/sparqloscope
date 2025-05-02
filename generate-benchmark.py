@@ -122,7 +122,9 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
     try:
         return sparql_endpoint.query().convert()  # type: ignore
     except Exception as e:
-        log.error(f'Error executing query "{name}": {e}')
+        log.error(
+            f'Error executing query "{name}" on SPARQL endpoint '
+            + f'{args.sparql_endpoint}: {e}')
         raise
 
 
