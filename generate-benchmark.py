@@ -114,7 +114,7 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
     """
     Helper function to execute a SPARQL query on the given endpoint.
     """
-    log.debug(f'Computing placeholder query "{name}" ...')
+    log.debug(f'Computing result for "{name}" ...')
     log.debug(sparql_query)
     sparql_endpoint = SPARQLWrapper(args.sparql_endpoint)
     sparql_endpoint.setQuery(sparql_query)
@@ -123,7 +123,7 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
         return sparql_endpoint.query().convert()  # type: ignore
     except Exception as e:
         log.error(
-            f'Error executing query "{name}" on SPARQL endpoint '
+            f'Error executing query for "{name}" on SPARQL endpoint '
             + f'{args.sparql_endpoint}: {e}')
         raise
 
@@ -605,3 +605,4 @@ if __name__ == "__main__":
     finally:
         httpd.shutdown()
         httpd.server_close()
+        httpd.socket.close()
