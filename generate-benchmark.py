@@ -122,8 +122,10 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
     try:
         return sparql_endpoint.query().convert()  # type: ignore
     except Exception as e:
-        log.error(f'Error executing query "{name}": {e}')
-        exit(1)
+        log.error(
+            f'Error executing query "{name}" on SPARQL endpoint '
+            + f'{args.sparql_endpoint}: {e}')
+        raise
 
 
 PrecomputedQuery = TypedDict("PrecomputedQuery", {
@@ -598,6 +600,8 @@ if __name__ == "__main__":
             f"#condition-false: {num_queries_condition_false}, "
             f"#errors: {num_queries_error})"
         )
+    except Exception as e:
+        log.error(f"Quitting because of exception: {e}")
     finally:
         httpd.shutdown()
         httpd.server_close()
