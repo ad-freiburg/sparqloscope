@@ -181,8 +181,32 @@ placeholders:
       ORDER BY ASC(?count_join  /  (?count_p1 * ?count_p2))
 
   # Star subject join with larges sum of join sizes
+  - name: PREDICATE_1_FOR_SUBJ_STAR_JOIN
+    description: Star subject join predicate 1 with larges sum of join sizes
+    query: |
+      SELECT ?p1 ?count_p1 {
+        { SELECT * WHERE { %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+          %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        } }
+        FILTER(?p1 != ?p4)
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+  - name: PREDICATE_2_FOR_SUBJ_STAR_JOIN
+    description: Star subject join predicate 2 with larges sum of join sizes
+    query: |
+      SELECT ?p2 ?count_p2 {
+        { SELECT * WHERE { %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+          %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        } }
+        FILTER(?p1 != ?p4)
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
   - name: PREDICATE_3_FOR_SUBJ_STAR_JOIN
-    description: Star subject join with larges sum of join sizes
+    description: Star subject join predicate 3 with larges sum of join sizes
     query: |
       SELECT ?p4 ?count_p4 {
         { SELECT * WHERE { %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
@@ -191,20 +215,45 @@ placeholders:
           (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
           %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
         } }
-        FILTER(?p2 = ?p3 && ?p1 != ?p4)
+        FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
 
   # Subject and diagonal join with largest sum of join sizes
-  - name: PREDICATE_3_FOR_LARGE_CHAIN_JOIN
-    description: Subject and diagonal join with larges sum of join sizes
+  - name: PREDICATE_1_FOR_LARGE_CHAIN_JOIN
+    description: Diagonal chain join predicate 1 with larges sum of join sizes
     query: |
-      SELECT ?p4 ?count_p4 {
-        { SELECT * WHERE { %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+      SELECT ?p1 ?count_p1 {
+        { SELECT * WHERE { %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
         { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
           { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
           (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
           %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
         } }
+        FILTER(?p1 != ?p4)
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+  - name: PREDICATE_2_FOR_LARGE_CHAIN_JOIN
+    description: Diagonal chain join predicate 2 with larges sum of join sizes
+    query: |
+      SELECT ?p2 ?count_p2 {
+        { SELECT * WHERE { %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+          %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
+        } }
+        FILTER(?p1 != ?p4)
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+  - name: PREDICATE_3_FOR_LARGE_CHAIN_JOIN
+    description: Diagonal chain join predicate 3 with larges sum of join sizes
+    query: |
+      SELECT ?p4 ?count_p4 {
+        { SELECT * WHERE { %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+          %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
+        } }
+        FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
 
   # Boolean checks
@@ -383,8 +432,8 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
-        ?s %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
-        ?s %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?o2 .
+        ?s %PREDICATE_1_FOR_SUBJ_STAR_JOIN% ?o1 .
+        ?s %PREDICATE_2_FOR_SUBJ_STAR_JOIN% ?o2 .
         ?s %PREDICATE_3_FOR_SUBJ_STAR_JOIN% ?o3 .
       }
   - name: join-3-chain-largest-sum-of-join-sizes
@@ -392,9 +441,9 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
-        ?s1 %PREDICATE_1_FOR_LARGE_SUBJ_JOIN% ?o1 .
-        ?s1 %PREDICATE_2_FOR_LARGE_SUBJ_JOIN% ?m .
-        ?m %PREDICATE_3_FOR_LARGE_CHAIN_JOIN% ?o2 .
+        ?a %PREDICATE_1_FOR_LARGE_CHAIN_JOIN% ?b .
+        ?b %PREDICATE_2_FOR_LARGE_CHAIN_JOIN% ?c .
+        ?c %PREDICATE_3_FOR_LARGE_CHAIN_JOIN% ?d .
       }
 
   # OPTIONAL JOIN queries.
