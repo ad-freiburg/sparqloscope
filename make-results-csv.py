@@ -14,7 +14,7 @@ from pathlib import Path
 import csv
 
 RESULTS_YAML_FILENAME_RE = re.compile(
-    r'^(?P<dataset>[a-zA-Z]+)\.(?P<engine>[a-zA-Z]+)\.results\.ya?ml$')
+    r'^(?P<dataset>[a-zA-Z\-]+)\.(?P<engine>[a-zA-Z\-]+)\.results\.ya?ml$')
 BAD_COL_NAME_RE = re.compile(r'[^a-zA-Z]+')
 
 # Type for a parsed result: float represents seconds, None represents error
@@ -93,9 +93,11 @@ def make_column_name(dataset: str, engine: str) -> str:
     Make a safe column name that is suitable for LaTeX csvreader (that is,
     contains only letters a-z and A-Z)
     """
-    clean_d = BAD_COL_NAME_RE.sub("x", dataset)
-    clean_e = BAD_COL_NAME_RE.sub("x", engine)
-    return clean_d.lower() + clean_e.capitalize()
+    def words(x: str) -> str:
+        return "".join(w.lower().capitalize() for w in x.split("-"))
+    clean_d = BAD_COL_NAME_RE.sub("x", words(dataset))
+    clean_e = BAD_COL_NAME_RE.sub("x", words(engine))
+    return clean_d[0].lower() + clean_d[1:] + clean_e.capitalize()
 
 
 def make_csv_head(inp: AllResultsDict) -> list[str]:
