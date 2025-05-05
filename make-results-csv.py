@@ -104,6 +104,9 @@ def make_csv_head(inp: AllResultsDict) -> list[str]:
     """
     res = ["queryname"]
     for dataset, engine in next(iter(inp.values())):
+        f = make_column_name(dataset, "fastest")
+        if f not in res:
+            res.append(f)
         res.append(make_column_name(dataset, engine))
     assert len(res) == len(set(res)), \
         "Multiple columns in the output would be mapped to the same " + \
@@ -120,9 +123,19 @@ def write_csv(inp: AllResultsDict, filename: str):
         writer.writeheader()
         for query_name, query_results in inp.items():
             row = {"queryname": query_name}
+            dataset_min: dict[str, Optional[float]] = {}
             for (dataset, engine), qtime in query_results.items():
+                if dataset not in dataset_min:
+                    dataset_min[dataset] = qtime
+                else:
+                    prev = dataset_min[dataset]
+                    if qtime is not None and (prev is None or qtime < prev):
+                        dataset_min[dataset] = qtime
                 val = f"{qtime:.2f}" if qtime else "Error"
                 row[make_column_name(dataset, engine)] = val
+            for dataset, minimum in dataset_min.items():
+                row[make_column_name(dataset, "fastest")] = \
+                    f"{minimum:.2f}" if minimum is not None else "-1"
             writer.writerow(row)
 
 
