@@ -3,3 +3,6 @@ precomputed.*.json
 benchmark-queries.*.tsv
 *.benchmark.tsv
 .vscode
+*.results.yaml
+*.csv
+
