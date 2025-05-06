@@ -124,7 +124,7 @@ placeholders:
       GROUP BY ?p ORDER BY DESC(?count)
       LIMIT 1
 
-  # Predicates for subject join of two large predicates with large result
+  # Predicates for non-self subject join with largest possible result
   - name: PREDICATE_FOR_LARGEST_SUBJ_JOIN
     description: Predicates for subject join of two large predicates with large result
     children:
@@ -167,7 +167,7 @@ placeholders:
     #   SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
     #   ORDER BY ASC(?count_join / (?count_p1 * ?count_p2))
 
-  # Star subject join with larges sum of join sizes
+  # Star subject join with largest sum of join sizes
   - name: PREDICATE_FOR_SUBJ_STAR_JOIN
     description: Star subject join predicates with larges sum of join sizes
     children:
@@ -187,6 +187,7 @@ placeholders:
         } }
         FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+    # TODO certificate for actual join size
 
   # Subject and diagonal join with largest sum of join sizes
   - name: PREDICATE_FOR_LARGE_CHAIN_JOIN
@@ -208,6 +209,7 @@ placeholders:
         } }
         FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+    # TODO certificate for actual join size
 
   # Boolean checks
   - name: HAS_RDFS_LABEL
@@ -267,9 +269,6 @@ placeholders:
     description: todo
     query: |
       SELECT * { %TRANSITIVE_PATH_PREDICATES_QUERY% } LIMIT 10
-    # If a placeholder query has multiple result rows, the certificate query
-    # is used to assign a score to each result. The final placeholder will be
-    # argmax over this score.
     certificate: |
       SELECT (?count_path / ?count_p AS ?sort) {
         {SELECT (COUNT(*) AS ?count_path) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }}
