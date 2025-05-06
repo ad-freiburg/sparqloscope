@@ -153,8 +153,12 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
         # Get query result, either from cache or by requesting the endpoint
         filename = f"precomputed.{args.kg_name}.{query_name}.json"
         result_json = None
+        Path("precomputed-cache").mkdir(exist_ok=True)
         if cache and not args.overwrite_cached_results and \
-                Path(filename).exists():
+                (Path(filename).exists() or
+                 Path("precomputed-cache", filename).exists()):
+            if Path("precomputed-cache", filename).exists():
+                filename = Path("precomputed-cache", filename)
             log.debug(f"Loading precomputed query result from file {filename}")
             with open(filename, "r") as f:
                 result_json = json.load(f)
@@ -164,7 +168,7 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
             if cache:
                 log.debug(
                     f"Writing precomputed query result to file {filename}")
-                with open(filename, "w") as f:
+                with open(Path("precomputed-cache", filename), "w") as f:
                     json.dump(result_json, f)
         result[query_name] = result_json
     return result
@@ -291,6 +295,16 @@ def compute_placeholders(
         _max_i: Optional[int] = None
 
         log.debug(f"Evaluating certificate for {p_name}")
+        cache_dir = Path("certificate-cache")
+        cache_dir.mkdir(exist_ok=True)
+        cert_cache = {}
+        query_cache_pth = cache_dir / \
+            Path(f"certificate.{args.kg_name}.{p_name}.json")
+        result_json = None
+        if not args.overwrite_cached_results and query_cache_pth.exists():
+            with open(query_cache_pth, "r") as f:
+                cert_cache = json.load(f)
+
         for i, bindings in enumerate(candidates):
             # Replace names of placeholders with values of current candidate
             c = certificate
@@ -299,7 +313,12 @@ def compute_placeholders(
             log.debug(f"Certificate query for candidate: {repr(bindings)}")
 
             # Evaluate certificate query
-            result_json = compute_sparql(f"{p_name}_cert_{i}", c, args)
+            if c in cert_cache:
+                result_json = cert_cache[c]
+            else:
+                result_json = compute_sparql(f"{p_name}_cert_{i}", c, args)
+                cert_cache[c] = result_json
+
             result_var_ = result_json["head"]["vars"][0]
             result_bindings_ = result_json["results"]["bindings"]
 
@@ -317,6 +336,10 @@ def compute_placeholders(
             log.debug(f"Certificate {i} score: {val}")
             if _max is None or val > _max:
                 _max, _max_i = val, i
+
+        # Store computed certificates for this placeholder to cache file
+        with open(query_cache_pth, "w") as f:
+            json.dump(cert_cache, f)
 
         # Return row index for placeholder query result with maximum certificate
         # score
