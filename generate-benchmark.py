@@ -13,7 +13,8 @@ import argcomplete
 import logging
 import sys
 from contextlib import contextmanager
-from typing import Iterator, NotRequired, TextIO, TypedDict, Literal, Generator, Optional
+from typing import Iterator, NotRequired, TextIO, TypedDict, Literal, \
+    Generator, Optional
 from termcolor import colored
 import yaml
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -254,8 +255,8 @@ def compute_placeholders(
                 vars_str = ' '.join(f'?{v}' for v in variables)
                 out = out.replace(
                     substr,
-                    f"{{ SERVICE <{args.external_url}/{precomputed_query}> {{ " +
-                    f"VALUES ({vars_str}) {{}} }} }}")
+                    f"{{ SERVICE <{args.external_url}/{precomputed_query}>" +
+                    f" {{ VALUES ({vars_str}) {{}} }} }}")
             elif precomputed_query in result:
                 out = out.replace(substr, result[precomputed_query])
             else:
