@@ -186,8 +186,27 @@ placeholders:
           %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
         } }
         FILTER(?p1 != ?p4)
-      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
-    # TODO certificate for actual join size
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
+    # certificate: |
+    #   SELECT (...TODO... AS ?score) {
+    #     { SELECT (COUNT(*) AS ?count_join) {
+    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 .
+    #     } }
+    #     { SELECT (COUNT(*) AS ?count_p1) {
+    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 . } }
+    #     { SELECT (COUNT(*) AS ?count_p2) {
+    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o1 . } }
+    #     { SELECT (COUNT(*) AS ?count_p3) {
+    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o1 . } }
+    #   }
+    certificate: |
+      SELECT (COUNT(*) AS ?count_join) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 .
+      }
 
   # Subject and diagonal join with largest sum of join sizes
   - name: PREDICATE_FOR_LARGE_CHAIN_JOIN
@@ -208,7 +227,14 @@ placeholders:
           %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
         } }
         FILTER(?p1 != ?p4)
-      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
+    certificate: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d .
+      }
     # TODO certificate for actual join size
 
   # Boolean checks
@@ -266,7 +292,7 @@ placeholders:
 
   #
   - name: PREDICATE_TRANSITIVE_PATH
-    description: todo
+    description: A predicate with a very large blow-up when used as a transitive path with plus
     query: |
       SELECT * { %TRANSITIVE_PATH_PREDICATES_QUERY% } LIMIT 10
     certificate: |
@@ -384,6 +410,7 @@ queries:
   # JOIN of three triple patterns
   - name: join-3-star-largest-sum-of-join-sizes
     description: JOIN star of three large predicates with the largest sum of join sizes
+    group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
@@ -393,6 +420,7 @@ queries:
       }
   - name: join-3-chain-largest-sum-of-join-sizes
     description: JOIN chain of three large predicates with the largest sum of join sizes
+    group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
@@ -420,6 +448,66 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 OPTIONAL { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: optional-join-2-large-large-with-small-join-result-1
+    description: OPTIONAL JOIN of two large predicates with a small join result
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        OPTIONAL { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 } }
+  - name: optional-join-2-large-large-with-small-join-result-2
+    description: OPTIONAL JOIN of two large predicates with a small join result
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o1 .
+        OPTIONAL { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o2 } }
+  - name: optional-join-3-star-1
+    description: OPTIONAL JOIN star of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        OPTIONAL {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: optional-join-3-star-2
+    description: OPTIONAL JOIN star of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        OPTIONAL {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: optional-join-3-chain-1
+    description: OPTIONAL JOIN chain of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        OPTIONAL {
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d . }
+      }
+  - name: optional-join-3-chain-2
+    description: OPTIONAL JOIN chain of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        OPTIONAL {
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d . }
+      }
 
   # MINUS JOIN queries.
   - name: minus-join-small-large
@@ -440,6 +528,66 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 MINUS { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: minus-join-2-large-large-with-small-join-result-1
+    description: MINUS JOIN of two large predicates with a small join result
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        MINUS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 } }
+  - name: minus-join-2-large-large-with-small-join-result-2
+    description: MINUS JOIN of two large predicates with a small join result
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o1 .
+        MINUS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o2 } }
+  - name: minus-join-3-star-1
+    description: MINUS JOIN star of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        MINUS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: minus-join-3-star-2
+    description: MINUS JOIN star of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        MINUS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: minus-join-3-chain-1
+    description: MINUS JOIN chain of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        MINUS {
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d . }
+      }
+  - name: minus-join-3-chain-2
+    description: MINUS JOIN chain of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        MINUS {
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d . }
+      }
 
   # EXIST JOIN queries.
   - name: exists-join-small-large
@@ -460,6 +608,66 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 FILTER EXISTS { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: exists-join-2-large-large-with-small-join-result-1
+    description: EXISTS JOIN of two large predicates with a small join result
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        FILTER EXISTS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 } }
+  - name: exists-join-2-large-large-with-small-join-result-2
+    description: EXISTS JOIN of two large predicates with a small join result
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o1 .
+        FILTER EXISTS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o2 } }
+  - name: exists-join-3-star-1
+    description: EXISTS JOIN star of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        FILTER EXISTS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: exists-join-3-star-2
+    description: EXISTS JOIN star of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        FILTER EXISTS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: exists-join-3-chain-1
+    description: EXISTS JOIN chain of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        FILTER EXISTS {
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d . }
+      }
+  - name: exists-join-3-chain-2
+    description: EXISTS JOIN chain of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
+        FILTER EXISTS {
+        ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d . }
+      }
 
   # UNION queries.
   - name: union-no-constraint
