@@ -13,7 +13,7 @@ import argcomplete
 import logging
 import sys
 from contextlib import contextmanager
-from typing import NotRequired, TextIO, TypedDict, Literal, Generator
+from typing import Iterator, NotRequired, TextIO, TypedDict, Literal, Generator, Optional
 from termcolor import colored
 import yaml
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -201,10 +201,16 @@ def make_precomputed_queries_handler_class(
     return PrecomputedQueriesHandler
 
 
+PlaceholderChild = TypedDict("PlaceholderChild", {
+    "variable": str,
+    "suffix": str
+})
 Placeholder = TypedDict("Placeholder", {
     "name": str,
     "description": NotRequired[str],
-    "query": str
+    "query": str,
+    "certificate": NotRequired[str],
+    "children": NotRequired[list[PlaceholderChild]]
 })
 
 
@@ -253,35 +259,116 @@ def compute_placeholders(
         else:
             return binding["value"]
 
-    def get_placeholder_value(result_vars: list[str],
-                              result_bindings: list[Binding]) \
-            -> tuple[str, Binding]:
-        "Extract the value for a placeholder from the result bindings"
-        column = result_vars[0]
+    def get_placeholder_values(result_vars: list[str],
+                               result_bindings: list[Binding],
+                               column: Optional[str] = None) \
+            -> Iterator[tuple[str, Binding]]:
+        "Extract the values for a placeholder from all result bindings rows"
+        if column is None:
+            column = result_vars[0]
+        elif column.startswith("?"):
+            column = column[1:]
         assert len(result_bindings), "No matching binding found for placeholder"
-        binding = add_iri_brackets(result_bindings[0][column])
-        return (binding, result_bindings[0])
+        return ((add_iri_brackets(row[column]), row) for row in result_bindings)
+
+    def evaluate_certificate(p_name: str, certificate: str,
+                             candidates: list[dict[str, str]]) -> Optional[int]:
+        "Todo"
+        _max: Optional[float] = None
+        _max_i: Optional[int] = None
+        log.debug(f"Evaluating certificate for {p_name}")
+        for i, bindings in enumerate(candidates):
+            c = certificate
+            for suffix, value in bindings.items():
+                c = c.replace(f"%{p_name}{suffix}%", value)
+            result_json = compute_sparql(f"{p_name}_cert_{i}", c, args)
+            result_var_ = result_json["head"]["vars"][0]
+            result_bindings_ = result_json["results"]["bindings"]
+
+            assert len(result_bindings_) == 1 and \
+                result_var_ in result_bindings_[0] and \
+                "datatype" in result_bindings_[0][result_var_] and \
+                result_bindings_[0][result_var_]["datatype"] \
+                .endswith(("#int", "#integer", "#decimal")), \
+                "Certificate queries must return a single numeric score " + \
+                f"value, but query for {p_name} returned {repr(result_json)}"
+
+            val = float(result_bindings_[0][result_var_]["value"])
+            log.debug(f"Certificate {i} score: {val}")
+            if _max is None or val > _max:
+                _max, _max_i = val, i
+        log.debug(f"Certificate maximum row is {_max_i} with score {_max}")
+        return _max_i
 
     for query in placeholders:
         p_name = query["name"]
+
+        # If the placeholder has children, this means from the same row of the
+        # placeholder query, multiple bindings will become placeholders. This is
+        # required for example to obtain matching predicates for join
+        # operations.
+        children: Optional[dict[str, str]] = None
+        if "children" in query:
+            children = {}
+            for child in query["children"]:
+                var = child["variable"]
+                if var.startswith("?"):
+                    var = var[1:]
+                children[var] = child["suffix"]
+        log.debug(f"Computing placeholder {p_name}")
+        res_pl = [
+            p_name + s for s in children.values()
+        ] if children else [p_name]
+        log.info(colored(
+            f"Computing placeholder{'' if len(res_pl) == 1 else 's'} " +
+            f"{', '.join(res_pl)}...", "blue"))
+
+        log.debug(f"Placeholder Children: {repr(children)}")
+
+        # Get the result of the main placeholder query. This may contain
+        # multiple rows and cols of interest.
         sparql_query = add_interal_services(query["query"])
         result_json = compute_sparql(p_name, sparql_query, args)
+
+        #
+        certificate_raw = query.get("certificate")
 
         result_vars = []
         result_bindings = []
         row = None
-        value = None
+        values: dict[str, str] = {}
         try:
             # For ASK queries, we want the value of the field `boolean`. For
             # SELECT queries, we want the first value of the first variable.
             if "boolean" in result_json:
-                value = str(result_json["boolean"]).lower()
+                values = {"": str(result_json["boolean"]).lower()}
             else:
                 result_vars = result_json["head"]["vars"]
                 result_bindings = result_json["results"]["bindings"]
+                n_rows = len(result_bindings)
                 log.debug(f"result_vars: {result_vars}")
-                value, row = get_placeholder_value(
-                    result_vars, result_bindings)
+                tmp = {}
+                if not children:
+                    children = {result_vars[0]: ""}
+                for column, suffix in children.items():
+                    tmp[suffix] = list(get_placeholder_values(
+                        result_vars, result_bindings, column))
+                if certificate_raw:
+                    # We use a certificate to determine which value to use
+                    # for the actual placeholder
+                    row_number = evaluate_certificate(p_name, certificate_raw, [
+                        {suffix: tmp[suffix][i][0]}
+                        for i in range(n_rows) for suffix in children.values()])
+                    assert row_number is not None
+                    row = result_bindings[row_number]
+                    values = {
+                        suffix: add_iri_brackets(row[column]) for column, suffix in children.items()
+                    }
+                else:
+                    row = result_bindings[0]
+                    values = {
+                        suffix: add_iri_brackets(row[column]) for column, suffix in children.items()
+                    }
         except Exception as e:
             log.error(f'Error computing placeholder "{p_name}": {e}')
             raise
@@ -289,19 +376,25 @@ def compute_placeholders(
         # Log the computed value. If the result had a second variable, log that
         # as well (it is typically a count that is useful to know).
         additional_info = ""
-        log.debug(f"result_bindings for used row: {row}")
+        log.debug(
+            f"Placeholder values: {repr(values)}, result_bindings for used row: {row}")
         if row:
             for var, cell in row.items():
                 val: Binding = cell  # type: ignore
-                if "datatype" in val and val["datatype"].endswith(
-                        ("#int", "#integer")):
-                    additional_info += f" [{var} = {int(val['value']):,}]"
+                if "datatype" in val:
+                    if val["datatype"].endswith(("#int", "#integer")):
+                        additional_info += f" [{var} = {int(val['value']):,}]"
+                    if val["datatype"].endswith(("#numeric", "#decimal")):
+                        additional_info += \
+                            f" [{var} = {float(val['value']):.2f}]"
 
-        value_disp, _ = apply_prefix_definitions(value, prefix_definitions)
-        log.info(colored(f"{p_name} = {value_disp}{additional_info}", "blue"))
+        for suffix, value in values.items():
+            value_disp, _ = apply_prefix_definitions(value, prefix_definitions)
+            log.info(
+                colored(f"{p_name}{suffix} = {value_disp}{additional_info}", "blue"))
 
-        # Add to result dict.
-        result[p_name] = value
+            # Add to result dict.
+            result[p_name + suffix] = value
     return result
 
 
@@ -571,7 +664,12 @@ if __name__ == "__main__":
     log.info("Starting HTTP server for precomputed queries ...")
     handler = make_precomputed_queries_handler_class(
         precomputed_queries_result)
-    httpd = socketserver.TCPServer(("", args.port), handler)
+    try:
+        httpd = socketserver.TCPServer(("", args.port), handler)
+    except OSError as e:
+        log.error(
+            f"Could not start internal HTTP server on port {args.port}: {e}")
+        exit(1)
     try:
         server_thread = threading.Thread(target=httpd.serve_forever)
         server_thread.daemon = True
