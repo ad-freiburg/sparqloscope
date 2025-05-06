@@ -125,7 +125,7 @@ placeholders:
       LIMIT 1
 
   # Predicates for subject join of two large predicates with large result
-  - name: PREDICATE_FOR_LARGE_SUBJ_JOIN
+  - name: PREDICATE_FOR_LARGEST_SUBJ_JOIN
     description: Predicates for subject join of two large predicates with large result
     children:
       - suffix: _1
@@ -357,14 +357,14 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
-  - name: join-2-large-large-with-large-result
+  - name: join-2-largest-result
     description: JOIN of two large predicates with a large result
     group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
-        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
-        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 }
+        ?s %PREDICATE_FOR_LARGEST_SUBJ_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_LARGEST_SUBJ_JOIN_2% ?o2 }
   - name: join-2-large-large-with-small-result
     description: JOIN of two large predicates with a small result
     group: join
