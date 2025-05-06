@@ -23,6 +23,7 @@ import re
 import http.server
 import socketserver
 import threading
+import time
 
 
 class LogFormatter(logging.Formatter):
@@ -66,6 +67,10 @@ Binding = TypedDict("Binding", {
 Head = TypedDict("Head", {"vars": list[str]})
 Results = TypedDict("Results", {"bindings": list[Binding]})
 ResultJson = TypedDict("ResultJson", {"head": Head, "results": Results})
+
+# Cache version
+CACHE_VERSION_PLACEHOLDERS = 1
+CACHE_VERSION_CERTIFICATES = 0
 
 
 @contextmanager
@@ -257,6 +262,24 @@ def compute_placeholders(
                 raise AssertionError(f"Replacement {substr} unknown")
         return out
 
+    def get_precomputed_queries_mtimes(query: str) -> Iterator[int]:
+        "Get modification times of precomputed queries for cache integrity"
+        for match in re.finditer(r'%[\w\-]+%', query):
+            substr = match.group(0)
+            precomputed_query = substr[1:-1]
+            if precomputed_query in precomputed_queries_result:
+                fn = Path(
+                    f"precomputed.{args.kg_name}.{precomputed_query}.json")
+                if fn.exists():
+                    yield round(fn.stat().st_mtime)
+                elif Path("precomputed-cache", fn).exists():
+                    yield round(Path("precomputed-cache", fn).stat().st_mtime)
+                else:
+                    log.debug(
+                        f"Precomputed query {fn} not found. Invalidating " +
+                        "placeholder cache.")
+                    yield round(time.time())
+
     def add_iri_brackets(binding: dict[str, str]) -> str:
         "Make a SPARQL literal from a result JSON binding"
         if binding["type"] == "uri":
@@ -304,6 +327,11 @@ def compute_placeholders(
         if not args.overwrite_cached_results and query_cache_pth.exists():
             with open(query_cache_pth, "r") as f:
                 cert_cache = json.load(f)
+            if cert_cache.get("_version") != CACHE_VERSION_CERTIFICATES:
+                log.debug(
+                    f"Discarding cache {query_cache_pth}, " +
+                    "because of version mismatch")
+                cert_cache = {}
 
         for i, bindings in enumerate(candidates):
             # Replace names of placeholders with values of current candidate
@@ -341,7 +369,7 @@ def compute_placeholders(
 
         # Store computed certificates for this placeholder to cache file
         with open(query_cache_pth, "w") as f:
-            json.dump(cert_cache, f)
+            json.dump(cert_cache | {"_version": CACHE_VERSION_CERTIFICATES}, f)
             log.debug(f"Wrote cached certificate queries to {query_cache_pth}")
 
         # Return row index for placeholder query result with maximum certificate
@@ -349,97 +377,143 @@ def compute_placeholders(
         log.debug(f"Certificate maximum row is {_max_i} with score {_max}")
         return _max_i
 
+    placeholder_cache_dir = Path("placeholder-cache")
+    placeholder_cache_dir.mkdir(exist_ok=True)
+
     for query in placeholders:
         p_name = query["name"]
+        precomputed_mtimes = list(
+            get_precomputed_queries_mtimes(query["query"]))
 
-        # If the placeholder has children, this means from the same row of the
-        # placeholder query, multiple bindings will become placeholders. This is
-        # required for example to obtain matching predicates for join
-        # operations.
-        children: Optional[dict[str, str]] = None
-        if "children" in query:
-            children = {}
-            for child in query["children"]:
-                var = child["variable"]
-                if var.startswith("?"):
-                    var = var[1:]
-                children[var] = child["suffix"]
+        cache_pth = Path(placeholder_cache_dir, f"placeholder.{p_name}.json")
+        cached = None
+        if not args.overwrite_cached_results and cache_pth.exists():
+            with open(cache_pth, "r") as f:
+                cached = json.load(f)
+            # Cache does not match
+            if cached.get("query") != query:
+                cached = None
+                log.debug(
+                    "Discarding cached placeholder data because " +
+                    "configuration of cached placeholder does not match " +
+                    "placeholder in template yaml file.")
+            elif cached.get("_version") != CACHE_VERSION_PLACEHOLDERS:
+                cached = None
+                log.debug("Discarding cached placeholder becasue of version " +
+                          "mismatch.")
+            elif cached.get("precomputed_mtimes") != precomputed_mtimes:
+                cached = None
+                log.debug("Discarding cached placeholder because at least " +
+                          "one of the used placeholder queries has been " +
+                          "recomputed since caching.")
 
-        # Log current computation as this may be a longer running task
-        res_pl = [
-            p_name + s for s in children.values()
-        ] if children else [p_name]
-        log.info(colored(
-            f"Computing placeholder{'' if len(res_pl) == 1 else 's'} " +
-            f"{', '.join(res_pl)}...", "blue"))
-        log.debug(f"Placeholder Children: {repr(children)}")
-
-        # Get the result of the main placeholder query. This may contain
-        # multiple rows and cols of interest.
-        sparql_query = add_interal_services(query["query"])
-        result_json = compute_sparql(p_name, sparql_query, args)
-
-        certificate_raw = query.get("certificate")
-
-        result_vars = []
-        result_bindings = []
         row = None
         values: dict[str, str] = {}
-        try:
-            # For ASK queries, we want the value of the field `boolean`. For
-            # SELECT queries, we want the first value of the first variable.
-            if "boolean" in result_json:
-                values = {"": str(result_json["boolean"]).lower()}
-            else:
-                result_vars = result_json["head"]["vars"]
-                result_bindings = result_json["results"]["bindings"]
-                n_rows = len(result_bindings)
-                log.debug(f"result_vars: {result_vars}")
 
-                # Extract all possible values for each child placeholder from
-                # the query result
-                possible_values_per_child = {}
-                if not children:
-                    children = {result_vars[0]: ""}
-                for column, suffix in children.items():
-                    possible_values_per_child[suffix] = list(
-                        get_placeholder_values(
-                            result_vars, result_bindings, column))
+        if cached:
+            log.debug(f"Restoring cached placeholder from {cache_pth}")
+            row = cached["row"]
+            values = cached["values"]
+        else:
+            # If the placeholder has children, this means from the same row of
+            # the placeholder query, multiple bindings will become placeholders.
+            # This is required for example to obtain matching predicates for
+            # join operations.
+            children: Optional[dict[str, str]] = None
+            if "children" in query:
+                children = {}
+                for child in query["children"]:
+                    var = child["variable"]
+                    if var.startswith("?"):
+                        var = var[1:]
+                    children[var] = child["suffix"]
 
-                if certificate_raw:
-                    # We use a certificate to determine which row of the
-                    # placeholder query will be used to set the placeholder
-                    # child values
+            # Log current computation as this may be a longer running task
+            res_pl = [
+                p_name + s for s in children.values()
+            ] if children else [p_name]
+            log.info(colored(
+                f"Computing placeholder{'' if len(res_pl) == 1 else 's'} " +
+                f"{', '.join(res_pl)}...", "blue"))
+            log.debug(f"Placeholder Children: {repr(children)}")
 
-                    # Candidates for certificate
-                    candidates = []
-                    for i in range(n_rows):
-                        candidate = {}
-                        for suffix in children.values():
-                            candidate[suffix] = \
-                                possible_values_per_child[suffix][i][0]
-                            candidates.append(candidate)
-                    # Run certificate queries
-                    row_number = evaluate_certificate(p_name, certificate_raw,
-                                                      candidates)
-                    assert row_number is not None
-                    row = result_bindings[row_number]
+            # Get the result of the main placeholder query. This may contain
+            # multiple rows and cols of interest.
+            sparql_query = add_interal_services(query["query"])
+            result_json = compute_sparql(p_name, sparql_query, args)
+
+            certificate_raw = query.get("certificate")
+
+            result_vars = []
+            result_bindings = []
+
+            try:
+                # For ASK queries, we want the value of the field `boolean`. For
+                # SELECT queries, we want the first value of the first variable.
+                if "boolean" in result_json:
+                    values = {"": str(result_json["boolean"]).lower()}
                 else:
-                    # If no certificate is used: must be one result row
-                    assert n_rows == 1, "If no certificate" + \
-                        " query is used, the result of a placeholder query" + \
-                        f" must have exactly one row, but query for {p_name}" + \
-                        f" had {n_rows} rows."
-                    row = result_bindings[0]
+                    result_vars = result_json["head"]["vars"]
+                    result_bindings = result_json["results"]["bindings"]
+                    n_rows = len(result_bindings)
+                    log.debug(f"result_vars: {result_vars}")
 
-                # Values for each of the child placeholders
-                values = {
-                    suffix: add_iri_brackets(row[column])
-                    for column, suffix in children.items()
-                }
-        except Exception as e:
-            log.error(f'Error computing placeholder "{p_name}": {e}')
-            raise
+                    # Extract all possible values for each child placeholder
+                    # from the query result
+                    possible_values_per_child = {}
+                    if not children:
+                        children = {result_vars[0]: ""}
+                    for column, suffix in children.items():
+                        possible_values_per_child[suffix] = list(
+                            get_placeholder_values(
+                                result_vars, result_bindings, column))
+
+                    if certificate_raw:
+                        # We use a certificate to determine which row of the
+                        # placeholder query will be used to set the placeholder
+                        # child values
+
+                        # Candidates for certificate
+                        candidates = []
+                        for i in range(n_rows):
+                            candidate = {}
+                            for suffix in children.values():
+                                candidate[suffix] = \
+                                    possible_values_per_child[suffix][i][0]
+                                candidates.append(candidate)
+                        # Run certificate queries
+                        row_number = evaluate_certificate(p_name,
+                                                          certificate_raw,
+                                                          candidates)
+                        assert row_number is not None
+                        row = result_bindings[row_number]
+                    else:
+                        # If no certificate is used: must be one result row
+                        assert n_rows == 1, \
+                            "If no certificate query is used, the result " + \
+                            f"of a placeholder query  must have exactly " +\
+                            f"one row, but query for {p_name}" + \
+                            f" had {n_rows} rows."
+                        row = result_bindings[0]
+
+                    # Values for each of the child placeholders
+                    values = {
+                        suffix: add_iri_brackets(row[column])
+                        for column, suffix in children.items()
+                    }
+            except Exception as e:
+                log.error(f'Error computing placeholder "{p_name}": {e}')
+                raise
+
+            with open(cache_pth, "w") as f:
+                json.dump({
+                    "_version": CACHE_VERSION_PLACEHOLDERS,
+                    "precomputed_mtimes": precomputed_mtimes,
+                    "query": query,
+                    "row": row,
+                    "values": values
+                }, f)
+                log.debug(f"Wrote cached placeholder result to {cache_pth}")
 
         # Log the computed values. If the result had further numeric variables,
         # log that as well (it is typically a count that is useful to know).
