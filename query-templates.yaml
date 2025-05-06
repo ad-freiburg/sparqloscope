@@ -159,8 +159,13 @@ placeholders:
       - suffix: _2
         variable: "?p2"
     query: |
-      SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
-      ORDER BY ASC(?count_join / (?count_p1 * ?count_p2))
+      SELECT * {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        FILTER(?count_join > 1000 && ?count_p1 < ?count_p2) }
+      ORDER BY DESC(?count_p1 / ?count_join) LIMIT 1
+    # query: |
+    #   SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
+    #   ORDER BY ASC(?count_join / (?count_p1 * ?count_p2))
 
   # Star subject join with larges sum of join sizes
   - name: PREDICATE_FOR_SUBJ_STAR_JOIN
