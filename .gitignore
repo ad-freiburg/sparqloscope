@@ -1,6 +1,7 @@
 .venv
 precomputed.*.json
 certificate.*.json
+placeholder.*.json
 benchmark-queries.*.tsv
 *.benchmark.tsv
 .vscode
