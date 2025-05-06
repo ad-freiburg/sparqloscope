@@ -126,7 +126,7 @@ placeholders:
 
   # Predicates for non-self subject join with largest possible result
   - name: PREDICATE_FOR_LARGEST_SUBJ_JOIN
-    description: Predicates for subject join of two large predicates with large result
+    description: Predicates for subject join with the largest possible result
     children:
       - suffix: _1
         variable: "?p1"
@@ -134,6 +134,20 @@ placeholders:
         variable: "?p2"
     query: |
       SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
+      ORDER BY DESC(?count_join) LIMIT 1
+
+  # Predicates for non-self subject join with large but not cartesian result
+  - name: PREDICATE_FOR_LARGE_SUBJ_JOIN
+    description: Predicates for subject join of two large predicates with a large but not too large result
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        FILTER(?count_join <= 3 * (?count_p1 + ?count_p2)) }
       ORDER BY DESC(?count_join) LIMIT 1
 
   # Predicates for subject join with two small predicates and large result
@@ -187,6 +201,7 @@ placeholders:
         } }
         FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
+    # TODO:
     # certificate: |
     #   SELECT (...TODO... AS ?score) {
     #     { SELECT (COUNT(*) AS ?count_join) {
@@ -383,13 +398,21 @@ queries:
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
   - name: join-2-largest-result
-    description: JOIN of two large predicates with a large result
+    description: JOIN of two predicates with the largest possible result
     group: join
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
         ?s %PREDICATE_FOR_LARGEST_SUBJ_JOIN_1% ?o1 .
         ?s %PREDICATE_FOR_LARGEST_SUBJ_JOIN_2% ?o2 }
+  - name: join-2-large-large-with-large-result
+    description: JOIN of two large predicates with a reasonably large result
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 }
   - name: join-2-large-large-with-small-result
     description: JOIN of two large predicates with a small result
     group: join
@@ -448,6 +471,14 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 OPTIONAL { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: optional-join-2-large-large-with-large-result
+    description: OPTIONAL JOIN of two large predicates with a reasonably large join result
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        OPTIONAL { ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 } }
   - name: optional-join-2-large-large-with-small-join-result-1
     description: OPTIONAL JOIN of two large predicates with a small join result
     group: optional-join
@@ -528,6 +559,14 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 MINUS { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: minus-join-2-large-large-with-large-result
+    description: MINUS JOIN of two large predicates with a reasonably large join result
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        MINUS { ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 } }
   - name: minus-join-2-large-large-with-small-join-result-1
     description: MINUS JOIN of two large predicates with a small join result
     group: minus-join
@@ -608,6 +647,14 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 FILTER EXISTS { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: exists-join-2-large-large-with-large-result
+    description: EXISTS JOIN of two large predicates with a reasonably large join result
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        FILTER EXISTS { ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 } }
   - name: exists-join-2-large-large-with-small-join-result-1
     description: EXISTS JOIN of two large predicates with a small join result
     group: exists-join
