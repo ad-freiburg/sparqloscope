@@ -286,7 +286,7 @@ def compute_placeholders(
         is used to assign a score to each result. The final placeholder will be
         argmax over this score.
         """
-
+        assert candidates, "Certificate query needs at least one candidate"
         _max: Optional[float] = None
         _max_i: Optional[int] = None
 
@@ -296,6 +296,7 @@ def compute_placeholders(
             c = certificate
             for suffix, value in bindings.items():
                 c = c.replace(f"%{p_name}{suffix}%", value)
+            log.debug(f"Certificate query for candidate: {repr(bindings)}")
 
             # Evaluate certificate query
             result_json = compute_sparql(f"{p_name}_cert_{i}", c, args)
@@ -383,10 +384,18 @@ def compute_placeholders(
                     # We use a certificate to determine which row of the
                     # placeholder query will be used to set the placeholder
                     # child values
-                    row_number = evaluate_certificate(p_name, certificate_raw, [
-                        # Candidates for certificate
-                        {suffix: possible_values_per_child[suffix][i][0]}
-                        for i in range(n_rows) for suffix in children.values()])
+
+                    # Candidates for certificate
+                    candidates = []
+                    for i in range(n_rows):
+                        candidate = {}
+                        for suffix in children.values():
+                            candidate[suffix] = \
+                                possible_values_per_child[suffix][i][0]
+                            candidates.append(candidate)
+                    # Run certificate queries
+                    row_number = evaluate_certificate(p_name, certificate_raw,
+                                                      candidates)
                     assert row_number is not None
                     row = result_bindings[row_number]
                 else:
@@ -585,7 +594,12 @@ def command_line_args() -> argparse.Namespace:
     """
     Parse the command line arguments and return them.
     """
-    arg_parser = argparse.ArgumentParser()
+    arg_parser = argparse.ArgumentParser(
+        description="""
+        SPARQL Benchmark Generator: Apply generic benchmark templates to a
+        concrete knowledge graph.
+        """
+    )
     arg_parser.add_argument(
         "--query-templates",
         type=str,
