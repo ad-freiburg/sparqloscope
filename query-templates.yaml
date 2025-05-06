@@ -133,7 +133,8 @@ placeholders:
       - suffix: _2
         variable: "?p2"
     query: |
-      SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+       %JOIN_ON_SUBJECT_SIZE_QUERY% }
       ORDER BY DESC(?count_join) LIMIT 1
 
   # Predicates for non-self subject join with large but not cartesian result
@@ -159,7 +160,7 @@ placeholders:
       - suffix: _2
         variable: "?p2"
     query: |
-      SELECT ?p1 ?count_p1 ?p2 ?count_p2 {
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
         %JOIN_ON_SUBJECT_SIZE_QUERY% 
         FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
       } ORDER BY DESC(?count_join) LIMIT 1
