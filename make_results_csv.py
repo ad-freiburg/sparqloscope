@@ -12,6 +12,7 @@ import yaml
 from typing import Optional
 from pathlib import Path
 import csv
+import statistics
 
 RESULTS_YAML_FILENAME_RE = re.compile(
     r'^(?P<dataset>[a-zA-Z\-]+)\.(?P<engine>[a-zA-Z\-]+)\.results\.ya?ml$')
@@ -100,14 +101,36 @@ def make_column_name(dataset: str, engine: str) -> str:
     return clean_d[0].lower() + clean_d[1:] + clean_e.capitalize()
 
 
-def make_csv_head(inp: AllResultsDict) -> list[str]:
+def make_aggregated(inp: AllResultsDict):
+    per_ds_engine = {}
+    for query_results in inp.values():
+        for ds_engine, qtime in query_results.items():
+            if ds_engine not in per_ds_engine:
+                per_ds_engine[ds_engine] = []
+            per_ds_engine[ds_engine].append(qtime)
+    # TODO: also mark best?
+    return {
+        "errors": {
+            k: f"{(sum(1 for i in v if i is None) / len(v))*100:.2f}\\%"
+            for k, v in per_ds_engine.items()},
+        "geometric mean": {
+            k: f"{statistics.geometric_mean(i for i in v if i is not None):.2f}"
+            for k, v in per_ds_engine.items()},
+        "median": {
+            k: f"{statistics.median(i for i in v if i is not None):.2f}"
+            for k, v in per_ds_engine.items()}}
+
+
+def make_csv_head(inp: AllResultsDict, rownamecol: str = "queryname",
+                  add_fastest_col: bool = True) \
+        -> list[str]:
     """
     Generate the CSV head for csv.DictWriter
     """
-    res = ["queryname"]
+    res = [rownamecol]
     for dataset, engine in next(iter(inp.values())):
         f = make_column_name(dataset, "fastest")
-        if f not in res:
+        if add_fastest_col and f not in res:
             res.append(f)
         res.append(make_column_name(dataset, engine))
     assert len(res) == len(set(res)), \
@@ -141,6 +164,19 @@ def write_csv(inp: AllResultsDict, filename: str):
             writer.writerow(row)
 
 
+def write_agg_csv(inp: AllResultsDict, filename: str):
+    """
+    Write the aggregated results to a csv file with the given name.
+    """
+    with open(filename, "w") as f:
+        writer = csv.DictWriter(f, make_csv_head(
+            inp, "metricname", False), quoting=csv.QUOTE_NONE)
+        writer.writeheader()
+        for metric, row in make_aggregated(inp).items():
+            writer.writerow({make_column_name(*k): v for k, v in row.items()} | {
+                            "metricname": metric})
+
+
 def command_line_args() -> argparse.Namespace:
     """
     Parse the command line arguments and return them
@@ -159,8 +195,12 @@ def command_line_args() -> argparse.Namespace:
         """
     )
     arg_parser.add_argument(
-        "--output", nargs=1, type=str, required=True,
+        "--output", "-o", nargs=1, type=str, required=True,
         help="The filename for the output CSV file."
+    )
+    arg_parser.add_argument(
+        "--output-agg", "-oa", nargs=1, type=str, required=True,
+        help="The filename for the aggregated data output CSV file."
     )
 
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
@@ -184,5 +224,6 @@ if __name__ == "__main__":
     merged = merge_multiple_results(parsed)
     filter_results_dict(merged, args.filter_queries or [])
 
-    # Make csv output file
+    # Make csv output files
     write_csv(merged, args.output[0])
+    write_agg_csv(merged, args.output_agg[0])
