@@ -71,7 +71,7 @@ ResultJson = TypedDict("ResultJson", {"head": Head, "results": Results})
 
 # Cache version
 CACHE_VERSION_PLACEHOLDERS = 1
-CACHE_VERSION_CERTIFICATES = 0
+CACHE_VERSION_ARGMAXS = 0
 
 
 @contextmanager
@@ -220,7 +220,7 @@ Placeholder = TypedDict("Placeholder", {
     "name": str,
     "description": NotRequired[str],
     "query": str,
-    "certificate": NotRequired[str],
+    "argmax": NotRequired[str],
     "children": NotRequired[list[PlaceholderChild]]
 })
 
@@ -308,27 +308,27 @@ def compute_placeholders(
             (add_iri_brackets(row[column]), i)
             for i, row in enumerate(result_bindings))
 
-    def evaluate_certificate(p_name: str, certificate: str,
-                             candidates: list[dict[str, str]]) -> Optional[int]:
+    def evaluate_argmax(p_name: str, argmax: str,
+                        candidates: list[dict[str, str]]) -> Optional[int]:
         """
-        If a placeholder query has multiple result rows, the certificate query
+        If a placeholder query has multiple result rows, the argmax query
         is used to assign a score to each result. The final placeholder will be
         argmax over this score.
         """
-        assert candidates, "Certificate query needs at least one candidate"
+        assert candidates, "Argmax query needs at least one candidate"
         _max: Optional[float] = None
         _max_i: Optional[int] = None
 
-        log.debug(f"Evaluating certificate for {p_name}")
-        cache_dir = Path("certificate-cache")
+        log.debug(f"Evaluating argmax for {p_name}")
+        cache_dir = Path("argmax-cache")
         cache_dir.mkdir(exist_ok=True)
         cert_cache = {}
         query_cache_pth = cache_dir / \
-            Path(f"certificate.{args.kg_name}.{p_name}.json")
+            Path(f"argmax.{args.kg_name}.{p_name}.json")
         if not args.overwrite_cached_results and query_cache_pth.exists():
             with open(query_cache_pth, "r") as f:
                 cert_cache = json.load(f)
-            if cert_cache.get("_version") != CACHE_VERSION_CERTIFICATES:
+            if cert_cache.get("_version") != CACHE_VERSION_ARGMAXS:
                 log.debug(
                     f"Discarding cache {query_cache_pth}, " +
                     "because of version mismatch")
@@ -336,16 +336,16 @@ def compute_placeholders(
 
         for i, bindings in enumerate(candidates):
             # Replace names of placeholders with values of current candidate
-            c = certificate
+            c = argmax
             for suffix, value in bindings.items():
                 c = c.replace(f"%{p_name}{suffix}%", value)
-            log.debug(f"Certificate query for candidate: {repr(bindings)}")
+            log.debug(f"Argmax query for candidate: {repr(bindings)}")
 
-            # Evaluate certificate query
+            # Evaluate argmax query
             if c in cert_cache:
                 result_json = cert_cache[c]
                 log.debug(
-                    f"Reusing cached query result for certificate query {i}")
+                    f"Reusing cached query result for argmax query {i}")
             else:
                 result_json = compute_sparql(f"{p_name}_cert_{i}", c, args)
                 cert_cache[c] = result_json
@@ -359,23 +359,23 @@ def compute_placeholders(
                 "datatype" in result_bindings_[0][result_var_] and \
                 result_bindings_[0][result_var_]["datatype"] \
                 .endswith(("#int", "#integer", "#decimal")), \
-                "Certificate queries must return a single numeric score " + \
+                "Argmax queries must return a single numeric score " + \
                 f"value, but query for {p_name} returned {repr(result_json)}"
 
-            # Extract score from result of certificate query
+            # Extract score from result of argmax query
             val = float(result_bindings_[0][result_var_]["value"])
-            log.debug(f"Certificate {i} score: {val}")
+            log.debug(f"Argmax {i} score: {val}")
             if _max is None or val > _max:
                 _max, _max_i = val, i
 
-        # Store computed certificates for this placeholder to cache file
+        # Store computed argmaxs for this placeholder to cache file
         with open(query_cache_pth, "w") as f:
-            json.dump(cert_cache | {"_version": CACHE_VERSION_CERTIFICATES}, f)
-            log.debug(f"Wrote cached certificate queries to {query_cache_pth}")
+            json.dump(cert_cache | {"_version": CACHE_VERSION_ARGMAXS}, f)
+            log.debug(f"Wrote cached argmax queries to {query_cache_pth}")
 
-        # Return row index for placeholder query result with maximum certificate
+        # Return row index for placeholder query result with maximum argmax
         # score
-        log.debug(f"Certificate maximum row is {_max_i} with score {_max}")
+        log.debug(f"Argmax maximum row is {_max_i} with score {_max}")
         return _max_i
 
     placeholder_cache_dir = Path("placeholder-cache")
@@ -443,7 +443,7 @@ def compute_placeholders(
             sparql_query = add_interal_services(query["query"])
             result_json = compute_sparql(p_name, sparql_query, args)
 
-            certificate_raw = query.get("certificate")
+            argmax_raw = query.get("argmax")
 
             result_vars = []
             result_bindings = []
@@ -469,12 +469,12 @@ def compute_placeholders(
                             get_placeholder_values(
                                 result_vars, result_bindings, column))
 
-                    if certificate_raw:
-                        # We use a certificate to determine which row of the
+                    if argmax_raw:
+                        # We use a argmax to determine which row of the
                         # placeholder query will be used to set the placeholder
                         # child values
 
-                        # Candidates for certificate
+                        # Candidates for argmax
                         candidates = []
                         for i in range(n_rows):
                             candidate = {}
@@ -482,16 +482,16 @@ def compute_placeholders(
                                 candidate[suffix] = \
                                     possible_values_per_child[suffix][i][0]
                                 candidates.append(candidate)
-                        # Run certificate queries
-                        row_number = evaluate_certificate(p_name,
-                                                          certificate_raw,
-                                                          candidates)
+                        # Run argmax queries
+                        row_number = evaluate_argmax(p_name,
+                                                     argmax_raw,
+                                                     candidates)
                         assert row_number is not None
                         row = result_bindings[row_number]
                     else:
-                        # If no certificate is used: must be one result row
+                        # If no argmax is used: must be one result row
                         assert n_rows == 1, \
-                            "If no certificate query is used, the result " + \
+                            "If no argmax query is used, the result " + \
                             f"of a placeholder query  must have exactly " +\
                             f"one row, but query for {p_name}" + \
                             f" had {n_rows} rows."

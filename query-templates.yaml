@@ -203,7 +203,7 @@ placeholders:
         FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
     # TODO:
-    # certificate: |
+    # argmax: |
     #   SELECT (...TODO... AS ?score) {
     #     { SELECT (COUNT(*) AS ?count_join) {
     #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
@@ -217,7 +217,7 @@ placeholders:
     #     { SELECT (COUNT(*) AS ?count_p3) {
     #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o1 . } }
     #   }
-    certificate: |
+    argmax: |
       SELECT (COUNT(*) AS ?count_join) {
           ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
           ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
@@ -244,14 +244,14 @@ placeholders:
         } }
         FILTER(?p1 != ?p4)
       } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
-    certificate: |
+    argmax: |
       SELECT (COUNT(*) AS ?count)
       WHERE {
         ?a %PREDICATE_FOR_LARGE_CHAIN_JOIN_1% ?b .
         ?b %PREDICATE_FOR_LARGE_CHAIN_JOIN_2% ?c .
         ?c %PREDICATE_FOR_LARGE_CHAIN_JOIN_3% ?d .
       }
-    # TODO certificate for actual join size
+    # TODO argmax for actual join size
 
   # Boolean checks
   - name: HAS_RDFS_LABEL
@@ -311,7 +311,7 @@ placeholders:
     description: A predicate with a very large blow-up when used as a transitive path with plus
     query: |
       SELECT * { %TRANSITIVE_PATH_PREDICATES_QUERY% } LIMIT 10
-    certificate: |
+    argmax: |
       SELECT (?count_path / ?count_p AS ?sort) {
         {SELECT (COUNT(*) AS ?count_path) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }}
         {SELECT (COUNT(*) AS ?count_p) { ?s %PREDICATE_TRANSITIVE_PATH% ?o }}
