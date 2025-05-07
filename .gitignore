@@ -1,4 +1,5 @@
 .venv
+argmax.*.json
 precomputed.*.json
 certificate.*.json
 placeholder.*.json

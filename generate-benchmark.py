@@ -469,6 +469,9 @@ def compute_placeholders(
                             get_placeholder_values(
                                 result_vars, result_bindings, column))
 
+                    assert not (argmax_raw and query.get("multiplaceholder")), \
+                        "You may not use the argmax and multiplaceholder " + \
+                        "options together in one placeholder configuration"
                     if argmax_raw:
                         # We use a argmax to determine which row of the
                         # placeholder query will be used to set the placeholder
@@ -488,20 +491,34 @@ def compute_placeholders(
                                                      candidates)
                         assert row_number is not None
                         row = result_bindings[row_number]
+                        # Values for each of the child placeholders
+                        values = {
+                            suffix: add_iri_brackets(row[column])
+                            for column, suffix in children.items()
+                        }
                     else:
-                        # If no argmax is used: must be one result row
-                        assert n_rows == 1, \
-                            "If no argmax query is used, the result " + \
-                            f"of a placeholder query  must have exactly " +\
-                            f"one row, but query for {p_name}" + \
-                            f" had {n_rows} rows."
-                        row = result_bindings[0]
+                        # If no argmax is used: must be one result row or
+                        # declared as a multiplaceholder
+                        if not query.get("multiplaceholder"):
+                            assert n_rows == 1, \
+                                "If no argmax query is used, the result " + \
+                                f"of a placeholder query  must have " + \
+                                f"exactly one row, but query for {p_name}" + \
+                                f" had {n_rows} rows."
+                            row = result_bindings[0]
+                            # Values for each of the child placeholders
+                            values = {
+                                suffix: add_iri_brackets(row[column])
+                                for column, suffix in children.items()
+                            }
+                        else:
+                            # Multiplaceholder
+                            values = {
+                                f"{suffix}_{i}": add_iri_brackets(row[column])
+                                for column, suffix in children.items()
+                                for i, row in enumerate(result_bindings)
+                            } | {"_NUM": str(n_rows)}
 
-                    # Values for each of the child placeholders
-                    values = {
-                        suffix: add_iri_brackets(row[column])
-                        for column, suffix in children.items()
-                    }
             except Exception as e:
                 log.error(f'Error computing placeholder "{p_name}": {e}')
                 raise
@@ -618,9 +635,42 @@ def generate_queries(
                 num_queries_condition_false += 1
                 continue
 
+        # Resolve loops for multiplaceholders first
+        m = list(re.finditer(r'%begin-foreach:(?P<name>[A-Z0-9_]+)%', query))
+        assert len(m) <= 1, \
+            "Currently at most one foreach per template is allowed"
+        if m:
+            begin = m[0]
+            end = re.search(r'%end-foreach:(?P<name>[A-Z0-9_]+)%', query)
+            assert begin and end and begin.group("name") == end.group("name"), \
+                "Foreach begin and end don't match"
+            foreach_name = begin.group("name")
+
+            # Replace foreach
+            def replace_foreach(match: re.Match) -> str:
+                num_pl = foreach_name + "_NUM"
+                assert num_pl in placeholders, \
+                    f"Loop range placeholder {num_pl} not defined"
+                assert re.match(r'\d+$', placeholders[num_pl]), \
+                    f"{num_pl} must be a positive integer"
+                n = int(placeholders[num_pl])
+                body = match.group("body")
+                res = ""
+                for i in range(n):
+                    def replace_foreach_loop_var(match: re.Match) -> str:
+                        if match.group("modifier"):
+                            return str(i + int(match.group("modifier")))
+                        return str(i)
+                    res += re.sub(r'%#i(?P<modifier>[+-]?\d+)?%',
+                                  replace_foreach_loop_var, body)
+                return res
+            query = re.sub(
+                r'%begin-foreach:[A-Z0-9_]+%(?P<body>(.|\n|\r)*)' +
+                r'%end-foreach:[A-Z0-9_]+%', replace_foreach, query)
+
         # Helper function for replacing a placeholder. Throws an exception
         # if the placeholder is not defined.
-        def replace_placeholder(match):
+        def replace_placeholder(match: re.Match) -> str:
             placeholder = match.group(1)
             if placeholder in placeholders:
                 return placeholders[placeholder]
