@@ -501,7 +501,9 @@ def compute_placeholders(
                         # declared as a multiplaceholder
                         if not query.get("multiplaceholder"):
                             assert n_rows == 1, \
-                                "If no argmax query is used, the result " + \
+                                "If no argmax query is used and the " + \
+                                "placeholder is not declared as a " + \
+                                "multiplaceholder, the result " + \
                                 f"of a placeholder query  must have " + \
                                 f"exactly one row, but query for {p_name}" + \
                                 f" had {n_rows} rows."
