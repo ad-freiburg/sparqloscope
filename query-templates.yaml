@@ -903,6 +903,42 @@ queries:
     query: |
       SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
+  
+  # STRING functions
+  - name: str-warmup
+    description: String predicate warmup
+    query: |
+      SELECT (SUM(STRLEN(?o)) AS ?checksum)  {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: str-baseline
+    description: String reading baseline
+    query: |
+      SELECT (SUM(STRLEN(?o)) AS ?checksum)  {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strbefore
+    description: STRBEFORE string function
+    group: str-functions
+    query: |
+      SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strafter
+    description: STRAFTER string function
+    group: str-functions
+    query: |
+      SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strstarts
+    description: STRSTARTS string function
+    group: str-functions
+    query: |
+      SELECT (SUM(STRSTARTS(?o, "a")) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strends
+    description: STRENDS string function
+    group: str-functions
+    query: |
+      SELECT (SUM(STRENDS(?o, "a")) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
 
   # SIZE MATTERS queries.
   - name: result-size-tiny
