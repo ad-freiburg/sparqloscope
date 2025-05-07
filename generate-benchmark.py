@@ -221,7 +221,8 @@ Placeholder = TypedDict("Placeholder", {
     "description": NotRequired[str],
     "query": str,
     "argmax": NotRequired[str],
-    "children": NotRequired[list[PlaceholderChild]]
+    "children": NotRequired[list[PlaceholderChild]],
+    "multiplaceholder": NotRequired[bool]
 })
 
 
@@ -504,7 +505,7 @@ def compute_placeholders(
                                 "If no argmax query is used and the " + \
                                 "placeholder is not declared as a " + \
                                 "multiplaceholder, the result " + \
-                                f"of a placeholder query  must have " + \
+                                "of a placeholder query must have " + \
                                 f"exactly one row, but query for {p_name}" + \
                                 f" had {n_rows} rows."
                             row = result_bindings[0]
