@@ -126,7 +126,11 @@ def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
     sparql_endpoint.setQuery(sparql_query)
     sparql_endpoint.setReturnFormat(JSON)
     try:
-        return sparql_endpoint.query().convert()  # type: ignore
+        s = time.monotonic()
+        qr = sparql_endpoint.query()
+        log.debug('End to end time of ' +
+                  f'{name}: {(time.monotonic() - s) * 1000:.0f} ms')
+        return qr.convert()  # type: ignore
     except Exception as e:
         log.error(
             f'Error executing query for "{name}" on SPARQL endpoint '
