@@ -877,10 +877,12 @@ queries:
       LIMIT %LIMIT%
   - name: transitive-path-warmup
     description: Transitive path predicate warmup
+    group: property-path
     query: |
       SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH% ?o }
   - name: transitive-path-plus
     description: Transitive path with plus
+    group: property-path
     query: |
       SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
 
