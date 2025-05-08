@@ -431,7 +431,8 @@ def compute_placeholders(
         precomputed_mtimes = list(
             get_precomputed_queries_mtimes(query["query"]))
 
-        cache_pth = Path(placeholder_cache_dir, f"placeholder.{p_name}.json")
+        cache_pth = Path(placeholder_cache_dir,
+                         f"placeholder.{args.kg_name}.{p_name}.json")
         cached = None
         if not args.overwrite_cached_results and cache_pth.exists():
             with open(cache_pth, "r") as f:
