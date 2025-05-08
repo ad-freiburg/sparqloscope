@@ -17,7 +17,9 @@ from typing import Iterator, NotRequired, TextIO, TypedDict, Literal, \
     Generator, Optional
 from termcolor import colored
 import yaml
-from SPARQLWrapper import SPARQLWrapper, JSON
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+from urllib.request import Request, urlopen
+from urllib.error import HTTPError
 from pathlib import Path
 import json
 import re
@@ -115,22 +117,44 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
     return result
 
 
-def compute_sparql(name: str, sparql_query: str, args: argparse.Namespace) \
-        -> ResultJson:
+def add_url_param(url: str, param_key: str, param_value: str) -> str:
+    "Safely add a parameter to a given URL"
+    parsed = urlparse(url)
+    parameters = parse_qs(parsed.query)
+    parameters[param_key] = [param_value]
+    new_url = urlunparse(parsed._replace(
+        query=urlencode(parameters, doseq=True)))
+    return new_url
+
+
+def compute_sparql(name: str, sparql_query: str,
+                   args: argparse.Namespace,
+                   timeout_sec: Optional[int] = None) -> ResultJson:
     """
     Helper function to execute a SPARQL query on the given endpoint.
     """
     log.debug(f'Computing result for "{name}" ...')
     log.debug(sparql_query)
-    sparql_endpoint = SPARQLWrapper(args.sparql_endpoint)
-    sparql_endpoint.setQuery(sparql_query)
-    sparql_endpoint.setReturnFormat(JSON)
+    url = args.sparql_endpoint
+    if timeout_sec is not None:
+        url = add_url_param(url, "timeout", f"{timeout_sec}s")
+    req = Request(url, data=sparql_query.encode(), headers={
+        "Accept": "application/sparql-results+json",
+        "Content-type": "application/sparql-query"
+    })
     try:
         s = time.monotonic()
-        qr = sparql_endpoint.query()
+        with urlopen(req, timeout=timeout_sec) as response:
+            qr = response.read().decode('utf-8')
         log.debug('End to end time of ' +
                   f'{name}: {(time.monotonic() - s) * 1000:.0f} ms')
-        return qr.convert()  # type: ignore
+        return json.loads(qr)
+    except HTTPError as e:
+        error_body = e.read().decode('utf-8')
+        log.error(
+            f"HTTP Error {e.code} ({e.reason}) during execution of SPARQL " +
+            f"query {name}:\n {error_body}")
+        raise
     except Exception as e:
         log.error(
             f'Error executing query for "{name}" on SPARQL endpoint '
@@ -339,6 +363,8 @@ def compute_placeholders(
                     "because of version mismatch")
                 cert_cache = {}
 
+        error_count = 0
+
         for i, bindings in enumerate(candidates):
             # Replace names of placeholders with values of current candidate
             c = argmax
@@ -352,20 +378,31 @@ def compute_placeholders(
                 log.debug(
                     f"Reusing cached query result for argmax query {i}")
             else:
-                result_json = compute_sparql(f"{p_name}_cert_{i}", c, args)
-                cert_cache[c] = result_json
+                try:
+                    result_json = compute_sparql(
+                        f"{p_name}_argmax_{i}", c, args, args.argmax_timeout)
+                    cert_cache[c] = result_json
+                except Exception as e:
+                    log.warning(
+                        f"Skipping this argmax candidate due to error: {e}")
+                    error_count += 1
+                    continue
 
             result_var_ = result_json["head"]["vars"][0]
             result_bindings_ = result_json["results"]["bindings"]
 
             # Check result has expected form
-            assert len(result_bindings_) == 1 and \
-                result_var_ in result_bindings_[0] and \
-                "datatype" in result_bindings_[0][result_var_] and \
-                result_bindings_[0][result_var_]["datatype"] \
-                .endswith(("#int", "#integer", "#decimal")), \
-                "Argmax queries must return a single numeric score " + \
-                f"value, but query for {p_name} returned {repr(result_json)}"
+            if not (len(result_bindings_) == 1 and
+                    result_var_ in result_bindings_[0] and
+                    "datatype" in result_bindings_[0][result_var_] and
+                    result_bindings_[0][result_var_]["datatype"]
+                    .endswith(("#int", "#integer", "#decimal"))):
+                error_count += 1
+                log.warning(
+                    "Argmax queries must return a single numeric score " +
+                    f"value, but query for {p_name} returned " +
+                    f"{repr(result_json)}")
+                continue
 
             # Extract score from result of argmax query
             val = float(result_bindings_[0][result_var_]["value"])
@@ -380,6 +417,9 @@ def compute_placeholders(
 
         # Return row index for placeholder query result with maximum argmax
         # score
+        assert _max_i is not None and _max is not None, \
+            f"No argmax result could be found. {error_count} queries were " + \
+            "skipped due to errors."
         log.debug(f"Argmax maximum row is {_max_i} with score {_max}")
         return _max_i
 
@@ -827,6 +867,13 @@ def command_line_args() -> argparse.Namespace:
         "--pause-on-service",
         action="store_true",
         help="Pause for debugging when SERVICE is started"
+    )
+    arg_parser.add_argument(
+        "--argmax-timeout",
+        type=int,
+        default=300,
+        help="Discard placeholder candidates if the argmax query exceeds this "
+        "amout of seconds in runtime."
     )
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
     args = arg_parser.parse_args()
