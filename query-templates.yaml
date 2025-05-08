@@ -182,9 +182,9 @@ placeholders:
     #   SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
     #   ORDER BY ASC(?count_join / (?count_p1 * ?count_p2))
 
-  # Star subject join with largest sum of join sizes
+  # Star subject join with large result but not extreme result
   - name: PREDICATE_FOR_SUBJ_STAR_JOIN
-    description: Star subject join predicates with larges sum of join sizes
+    description: Star subject join predicates with large result but not extreme result
     children:
       - suffix: _1
         variable: "?p1"
@@ -224,9 +224,9 @@ placeholders:
         FILTER(?count_join <= 2 * (?count_p1 + ?count_p2 + ?count_p3))
       }
 
-  # Subject and diagonal join with largest sum of join sizes
+  # Subject and diagonal join with large but not extreme result
   - name: PREDICATE_FOR_CHAIN_JOIN
-    description: Diagonal chain join predicates with larges sum of join sizes
+    description: Diagonal chain join predicates with large but not extreme result
     children:
       - suffix: _1
         variable: "?p1"
@@ -844,7 +844,28 @@ queries:
       } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
   
   # DISTINCT queries.
-  # todo
+  - name: distinct-count-object-high-multiplicity
+    description: COUNT DISTINCT, for object with high multiplicity
+    group: distinct
+    query: |
+      SELECT (COUNT(DISTINCT ?object) AS ?count) {
+        ?subject %PREDICATE_HIGH_MULTIPLICITY% ?object .
+      }
+  - name: distinct-count-object-low-multiplicity
+    description: COUNT DISTINCT, for object with low multiplicity
+    group: distinct
+    query: |
+      SELECT (COUNT(DISTINCT ?object) AS ?count) {
+      ?subject %PREDICATE_LOW_MULTIPLICITY% ?object .
+      }
+  - name: distinct-count-object-wrong-sort-order
+    description: COUNT DISTINCT, for object but not sorted by object
+    group: distinct
+    query: |
+      SELECT (COUNT(DISTINCT ?o1) AS ?count) {
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_1% ?o1 .
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_2% ?o2 .
+      }
 
   # PROPERTY_PATH queries.
   - name: wdt-P31-wdt-P279-star
