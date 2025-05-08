@@ -152,18 +152,18 @@ placeholders:
       ORDER BY DESC(?count_join) LIMIT 1
 
   # Predicates for subject join with two small predicates and large result
-  - name: SMALL_PREDICATE_FOR_SUBJ_JOIN
-    description: Predicates for subject join with two small predicates and large result
-    children:
-      - suffix: _1
-        variable: "?p1"
-      - suffix: _2
-        variable: "?p2"
-    query: |
-      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
-        %JOIN_ON_SUBJECT_SIZE_QUERY% 
-        FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
-      } ORDER BY DESC(?count_join) LIMIT 1
+  # - name: SMALL_PREDICATE_FOR_SUBJ_JOIN
+  #   description: Predicates for subject join with two small predicates and large result
+  #   children:
+  #     - suffix: _1
+  #       variable: "?p1"
+  #     - suffix: _2
+  #       variable: "?p2"
+  #   query: |
+  #     SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+  #       %JOIN_ON_SUBJECT_SIZE_QUERY% 
+  #       FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
+  #     } ORDER BY DESC(?count_join) LIMIT 1
 
   # Predicates for a join between two large predicates with a small result
   - name: LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN
@@ -196,32 +196,32 @@ placeholders:
       SELECT * {
         { SELECT * WHERE { %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
         { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
-        { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
-          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
-          %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
-        } }
-        FILTER(?p1 != ?p4)
-      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
-    # TODO:
-    # argmax: |
-    #   SELECT (...TODO... AS ?score) {
-    #     { SELECT (COUNT(*) AS ?count_join) {
-    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
-    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
-    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 .
-    #     } }
-    #     { SELECT (COUNT(*) AS ?count_p1) {
-    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 . } }
-    #     { SELECT (COUNT(*) AS ?count_p2) {
-    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o1 . } }
-    #     { SELECT (COUNT(*) AS ?count_p3) {
-    #       ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o1 . } }
-    #   }
+            { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) 
+                (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+                %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 } } }
+        { SELECT ?p1 ?count_p1 (?p2 AS ?p4) (?count_p2 AS ?count_p4) 
+            (?count_join AS ?count_join3) {
+            %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        FILTER (?p1 != ?p4)
+        FILTER (?count_join <= (?count_p1 + ?count_p2))
+        FILTER (?count_join2 <= (?count_p2 + ?count_p4))
+        FILTER (?count_join3 <= (?count_p1 + ?count_p4))
+      }
+      ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
     argmax: |
-      SELECT (COUNT(*) AS ?count_join) {
+      SELECT ?count_join {
+        { SELECT (COUNT(*) AS ?count_join) {
           ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
           ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
           ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 .
+        } }
+        { SELECT (COUNT(*) AS ?count_p1) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 . } }
+        { SELECT (COUNT(*) AS ?count_p2) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o1 . } }
+        { SELECT (COUNT(*) AS ?count_p3) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o1 . } }
+        FILTER(?count_join <= 2 * (?count_p1 + ?count_p2 + ?count_p3))
       }
 
   # Subject and diagonal join with largest sum of join sizes
@@ -243,16 +243,12 @@ placeholders:
           %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
         } }
         FILTER(?p1 != ?p4)
-      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
-    argmax: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE {
-        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
-        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
-        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d .
-      }
-    # TODO argmax for actual join size
-  
+        FILTER(?count_join <= 3 * (?count_p1 + ?count_p2))
+        FILTER(?count_join2 <= 3 * (?count_p2 + ?count_p4))
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+
+  # Very long chain / very large star, where we only care about the query
+  # planning, not if there is a result
   - name: SMALL_PREDICATE_FOR_XLARGE_JOIN
     description:
     multiplaceholder: true
@@ -428,14 +424,14 @@ queries:
       WHERE {
         ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
         ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 }
-  - name: join-2-small-small-with-large-result
-    description: JOIN of two small predicates
-    group: join
-    query: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE {
-        ?s %SMALL_PREDICATE_FOR_SUBJ_JOIN_1% ?o1 .
-        ?s %SMALL_PREDICATE_FOR_SUBJ_JOIN_2% ?o2 }
+  # - name: join-2-small-small-with-large-result
+  #   description: JOIN of two small predicates
+  #   group: join
+  #   query: |
+  #     SELECT (COUNT(*) AS ?count)
+  #     WHERE {
+  #       ?s %SMALL_PREDICATE_FOR_SUBJ_JOIN_1% ?o1 .
+  #       ?s %SMALL_PREDICATE_FOR_SUBJ_JOIN_2% ?o2 }
 
   # JOIN of three triple patterns
   - name: join-3-star-largest-sum-of-join-sizes
@@ -846,6 +842,9 @@ queries:
         ?s %LARGE_PREDICATE_FOR_GROUP_BY_1% ?o1 .
         ?s %LARGE_PREDICATE_FOR_GROUP_BY_2% ?o2 .
       } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
+  
+  # DISTINCT queries.
+  # todo
 
   # PROPERTY_PATH queries.
   - name: wdt-P31-wdt-P279-star
