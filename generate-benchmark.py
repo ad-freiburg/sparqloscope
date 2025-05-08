@@ -71,9 +71,38 @@ Head = TypedDict("Head", {"vars": list[str]})
 Results = TypedDict("Results", {"bindings": list[Binding]})
 ResultJson = TypedDict("ResultJson", {"head": Head, "results": Results})
 
+# Type annotations for precomputed queries configuration
+PrecomputedQuery = TypedDict("PrecomputedQuery", {
+    "name": str,
+    "query": str,
+    "cache_result": NotRequired[bool]
+})
+PrecomputedQueries = list[PrecomputedQuery]
+PrecomputedQueriesResult = dict[str, ResultJson]
+
+# Type annotations for placeholder configuration
+PlaceholderChild = TypedDict("PlaceholderChild", {
+    "variable": str,
+    "suffix": str
+})
+Placeholder = TypedDict("Placeholder", {
+    "name": str,
+    "description": NotRequired[str],
+    "query": str,
+    "argmax": NotRequired[str],
+    "children": NotRequired[list[PlaceholderChild]],
+    "multiplaceholder": NotRequired[bool]
+})
+
 # Cache version
 CACHE_VERSION_PLACEHOLDERS = 1
 CACHE_VERSION_ARGMAXS = 0
+
+# Request headers to send in an HTTP POST to the SPARQL endpoint
+SPARQL_REQ_HEADERS = {
+    "Accept": "application/sparql-results+json",
+    "Content-type": "application/sparql-query"
+}
 
 
 @contextmanager
@@ -118,7 +147,10 @@ def parse_prefix_definitions(prefix_definitions: str) -> dict[str, str]:
 
 
 def add_url_param(url: str, param_key: str, param_value: str) -> str:
-    "Safely add a parameter to a given URL"
+    """
+    Safely add a parameter to a given URL which may or may not have URL query
+    parameters already.
+    """
     parsed = urlparse(url)
     parameters = parse_qs(parsed.query)
     parameters[param_key] = [param_value]
@@ -131,44 +163,42 @@ def compute_sparql(name: str, sparql_query: str,
                    args: argparse.Namespace,
                    timeout_sec: Optional[int] = None) -> ResultJson:
     """
-    Helper function to execute a SPARQL query on the given endpoint.
+    Helper function to execute a SPARQL query on the given endpoint, optionally
+    with a timeout which will be passed to the SPARQL engine but also be
+    enforced client-side.
     """
-    log.debug(f'Computing result for "{name}" ...')
+    log.debug(f'Computing result for SPARQL query "{name}" ...')
     log.debug(sparql_query)
+
+    # Prepare HTTP request
     url = args.sparql_endpoint
     if timeout_sec is not None:
         url = add_url_param(url, "timeout", f"{timeout_sec}s")
-    req = Request(url, data=sparql_query.encode(), headers={
-        "Accept": "application/sparql-results+json",
-        "Content-type": "application/sparql-query"
-    })
+    req = Request(url, data=sparql_query.encode(), headers=SPARQL_REQ_HEADERS)
+
     try:
+        # Send HTTP request and measure end-to-end running time
         s = time.monotonic()
         with urlopen(req, timeout=timeout_sec) as response:
             qr = response.read().decode('utf-8')
-        log.debug('End to end time of ' +
+        log.debug('End to end time of query ' +
                   f'{name}: {(time.monotonic() - s) * 1000:.0f} ms')
+
+        # Parse result as JSON
         return json.loads(qr)
     except HTTPError as e:
+        # Catch HTTP errors separately for a more informative error message
         error_body = e.read().decode('utf-8')
         log.error(
             f"HTTP Error {e.code} ({e.reason}) during execution of SPARQL " +
             f"query {name}:\n {error_body}")
         raise
     except Exception as e:
+        # Generic error
         log.error(
             f'Error executing query for "{name}" on SPARQL endpoint '
             + f'{args.sparql_endpoint}: {e}')
         raise
-
-
-PrecomputedQuery = TypedDict("PrecomputedQuery", {
-    "name": str,
-    "query": str,
-    "cache_result": NotRequired[bool]
-})
-PrecomputedQueries = list[PrecomputedQuery]
-PrecomputedQueriesResult = dict[str, ResultJson]
 
 
 def precompute_queries(precomputed_queries: PrecomputedQueries,
@@ -180,6 +210,7 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
     """
     result = {}
     for query in precomputed_queries:
+        # Config from YAML
         query_name = query["name"]
         sparql_query = query["query"]
         cache = bool(query.get("cache_result"))
@@ -189,6 +220,8 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
         result_json = None
         cache_dir = Path("precomputed-cache")
         cache_dir.mkdir(exist_ok=True)
+
+        # Backward compatibility: load cache from pwd or subdirectory
         if cache and not args.overwrite_cached_results and \
                 (Path(filename).exists() or
                  Path(cache_dir, filename).exists()):
@@ -198,13 +231,16 @@ def precompute_queries(precomputed_queries: PrecomputedQueries,
             with open(filename, "r") as f:
                 result_json = json.load(f)
         else:
+            # No cached result available, run SPARQL query
             log.info(f"Computing query result for {query_name}")
             result_json = compute_sparql(query_name, sparql_query, args)
+            # Write to cache
             if cache:
                 log.debug(
                     f"Writing precomputed query result to file {filename}")
                 with open(Path(cache_dir, filename), "w") as f:
                     json.dump(result_json, f)
+        # Always also store result in memory during this run
         result[query_name] = result_json
     return result
 
@@ -220,8 +256,11 @@ def make_precomputed_queries_handler_class(
         "Custom request handler class to return SPARQL JSON results from a dict"
 
         def __respond(self):
+            # The path segment of the SERVICE request IRI is expected to be the
+            # name of the precomputed query to fetch
             path = self.path[1:]
             if path in precomputed_queries_result:
+                # Return query from cache with appropriate MIME type
                 self.send_response(200)
                 self.send_header(
                     "Content-Type", "application/sparql-results+json")
@@ -229,6 +268,8 @@ def make_precomputed_queries_handler_class(
                 self.wfile.write(json.dumps(
                     precomputed_queries_result[path]).encode("utf-8"))
             else:
+                # No cached result is available -> SERVICE returns Internal
+                # Server Error
                 self.send_response(500)
                 self.end_headers()
 
@@ -237,21 +278,8 @@ def make_precomputed_queries_handler_class(
 
         def do_POST(self):
             self.__respond()
+
     return PrecomputedQueriesHandler
-
-
-PlaceholderChild = TypedDict("PlaceholderChild", {
-    "variable": str,
-    "suffix": str
-})
-Placeholder = TypedDict("Placeholder", {
-    "name": str,
-    "description": NotRequired[str],
-    "query": str,
-    "argmax": NotRequired[str],
-    "children": NotRequired[list[PlaceholderChild]],
-    "multiplaceholder": NotRequired[bool]
-})
 
 
 def compute_placeholders(
@@ -278,7 +306,12 @@ def compute_placeholders(
         for match in re.finditer(r'%[\w\-]+%', query):
             substr = match.group(0)
             precomputed_query = substr[1:-1]
+
             if precomputed_query in precomputed_queries_result:
+                # The placeholder refers to a precomputed query. Replace the
+                # placeholder with a SERVICE request to the internal HTTP server
+                # and an appropriate empty VALUES clause defining the variables
+                # provided by the SERVICE result.
                 variables = precomputed_queries_result[
                     precomputed_query]["head"]["vars"]
                 vars_str = ' '.join(f'?{v}' for v in variables)
@@ -287,13 +320,20 @@ def compute_placeholders(
                     f"{{ SERVICE <{args.external_url}/{precomputed_query}>" +
                     f" {{ VALUES ({vars_str}) {{}} }} }}")
             elif precomputed_query in result:
+                # The placeholder refers to a placeholder that was computed
+                # before the current one. It is substituted from the dict of
+                # placeholder results.
                 out = out.replace(substr, result[precomputed_query])
             else:
                 raise AssertionError(f"Replacement {substr} unknown")
         return out
 
     def get_precomputed_queries_mtimes(query: str) -> Iterator[int]:
-        "Get modification times of precomputed queries for cache integrity"
+        """
+        Get the file system modification times of all precomputed queries
+        used in the given placeholder query (this is required for cache
+        integrity)
+        """
         for match in re.finditer(r'%[\w\-]+%', query):
             substr = match.group(0)
             precomputed_query = substr[1:-1]
@@ -345,15 +385,21 @@ def compute_placeholders(
         argmax over this score.
         """
         assert candidates, "Argmax query needs at least one candidate"
+
+        # Argmax so far
         _max: Optional[float] = None
         _max_i: Optional[int] = None
 
         log.debug(f"Evaluating argmax for {p_name}")
+
+        # Caching configuration
         cache_dir = Path("argmax-cache")
         cache_dir.mkdir(exist_ok=True)
         cert_cache = {}
         query_cache_pth = cache_dir / \
             Path(f"argmax.{args.kg_name}.{p_name}.json")
+
+        # Load cache if allowed and present
         if not args.overwrite_cached_results and query_cache_pth.exists():
             with open(query_cache_pth, "r") as f:
                 cert_cache = json.load(f)
@@ -365,6 +411,7 @@ def compute_placeholders(
 
         error_count = 0
 
+        # Apply the argmax query to each candidate individually
         for i, bindings in enumerate(candidates):
             # Replace names of placeholders with values of current candidate
             c = argmax
@@ -378,6 +425,7 @@ def compute_placeholders(
                 log.debug(
                     f"Reusing cached query result for argmax query {i}")
             else:
+                # Not present in cache: compute argmax query
                 try:
                     result_json = compute_sparql(
                         f"{p_name}_argmax_{i}", c, args, args.argmax_timeout)
@@ -423,6 +471,7 @@ def compute_placeholders(
         log.debug(f"Argmax maximum row is {_max_i} with score {_max}")
         return _max_i
 
+    # Placeholder cache configuration
     placeholder_cache_dir = Path("placeholder-cache")
     placeholder_cache_dir.mkdir(exist_ok=True)
 
@@ -431,6 +480,7 @@ def compute_placeholders(
         precomputed_mtimes = list(
             get_precomputed_queries_mtimes(query["query"]))
 
+        # Can we load this placeholder from cache?
         cache_pth = Path(placeholder_cache_dir,
                          f"placeholder.{args.kg_name}.{p_name}.json")
         cached = None
@@ -454,7 +504,7 @@ def compute_placeholders(
                           "one of the used placeholder queries has been " +
                           "recomputed since caching.")
 
-        row = None
+        row: Optional[Binding] = None
         values: dict[str, str] = {}
 
         if cached:
@@ -491,8 +541,8 @@ def compute_placeholders(
 
             argmax_raw = query.get("argmax")
 
-            result_vars = []
-            result_bindings = []
+            result_vars: list[str] = []
+            result_bindings: list[Binding] = []
 
             try:
                 # For ASK queries, we want the value of the field `boolean`. For
@@ -507,7 +557,8 @@ def compute_placeholders(
 
                     # Extract all possible values for each child placeholder
                     # from the query result
-                    possible_values_per_child = {}
+                    possible_values_per_child: \
+                        dict[str, list[tuple[str, int]]] = {}
                     if not children:
                         children = {result_vars[0]: ""}
                     for column, suffix in children.items():
@@ -518,19 +569,21 @@ def compute_placeholders(
                     assert not (argmax_raw and query.get("multiplaceholder")), \
                         "You may not use the argmax and multiplaceholder " + \
                         "options together in one placeholder configuration"
+
                     if argmax_raw:
                         # We use a argmax to determine which row of the
                         # placeholder query will be used to set the placeholder
                         # child values
 
                         # Candidates for argmax
-                        candidates = []
+                        candidates: list[dict[str, str]] = []
                         for i in range(n_rows):
-                            candidate = {}
+                            candidate: dict[str, str] = {}
                             for suffix in children.values():
                                 candidate[suffix] = \
                                     possible_values_per_child[suffix][i][0]
                                 candidates.append(candidate)
+
                         # Run argmax queries
                         row_number = evaluate_argmax(p_name,
                                                      argmax_raw,
@@ -543,8 +596,9 @@ def compute_placeholders(
                             for column, suffix in children.items()
                         }
                     else:
-                        # If no argmax is used: must be one result row or
-                        # declared as a multiplaceholder
+                        # If no argmax is used: the SPARQL result must have
+                        # exactly one row or the placeholder must be declared as
+                        # a multiplaceholder
                         if not query.get("multiplaceholder"):
                             assert n_rows == 1, \
                                 "If no argmax query is used and the " + \
@@ -553,14 +607,22 @@ def compute_placeholders(
                                 "of a placeholder query must have " + \
                                 f"exactly one row, but query for {p_name}" + \
                                 f" had {n_rows} rows."
+
                             row = result_bindings[0]
+
                             # Values for each of the child placeholders
                             values = {
                                 suffix: add_iri_brackets(row[column])
                                 for column, suffix in children.items()
                             }
                         else:
-                            # Multiplaceholder
+                            # Multiplaceholder: Multiple placeholders with the
+                            # same semantics will be generated for multiple rows
+                            # in the SPARQL result. They will be available using
+                            # the placeholder name followed by '_i' for row i.
+                            # Additionally, there will be a placeholder with
+                            # suffix '_NUM' which contains the number of rows.
+                            # This can be used with a for-each template.
                             values = {
                                 f"{suffix}_{i}": add_iri_brackets(row[column])
                                 for column, suffix in children.items()
@@ -571,6 +633,9 @@ def compute_placeholders(
                 log.error(f'Error computing placeholder "{p_name}": {e}')
                 raise
 
+            # Write placeholder values to cache together with all information
+            # required to check if the placeholder values are still up to date
+            # and can be reused.
             with open(cache_pth, "w") as f:
                 json.dump({
                     "_version": CACHE_VERSION_PLACEHOLDERS,
@@ -645,7 +710,7 @@ def generate_queries(
     for query_template in query_templates:
         # Get the values for the various fields (`condition` is optional).
         name = query_template["name"]
-        description = query_template["description"]
+        description = query_template.get("description", "")
         # group = query_template["group"]
         query = query_template["query"]
         condition = query_template.get("condition", None)
@@ -694,7 +759,7 @@ def generate_queries(
                 "Foreach begin and end don't match"
             foreach_name = begin.group("name")
 
-            # Replace foreach
+            # Replace foreach with the required number of repetitions
             def replace_foreach(match: re.Match) -> str:
                 num_pl = foreach_name + "_NUM"
                 assert num_pl in placeholders, \
@@ -705,6 +770,8 @@ def generate_queries(
                 body = match.group("body")
                 res = ""
                 for i in range(n):
+                    # Replace all occurrences of the loop variable with its
+                    # value in the current iteration
                     def replace_foreach_loop_var(match: re.Match) -> str:
                         if match.group("modifier"):
                             return str(i + int(match.group("modifier")))
@@ -881,15 +948,10 @@ def command_line_args() -> argparse.Namespace:
     return args
 
 
-if __name__ == "__main__":
+def main(args: argparse.Namespace) -> int:
     """
     Main function.
     """
-    # Parse the command line arguments.
-    args = command_line_args()
-    log.setLevel(log_levels[args.log_level])
-    log.info(f"SPARQL endpoint: {args.sparql_endpoint}")
-
     # Parse the prefix definitions (if provided).
     prefix_definitions = {}
     if args.prefix_definitions:
@@ -902,9 +964,11 @@ if __name__ == "__main__":
     # Read the YAML file.
     with open(args.query_templates, "r") as yaml_file:
         query_templates_yaml = yaml.safe_load(yaml_file)
+
     precomputed_queries = query_templates_yaml["precomputed_queries"]
     placeholders = query_templates_yaml["placeholders"]
     query_templates = query_templates_yaml["queries"]
+
     log.info(
         f"Read query templates and placeholder queries from "
         f"`{args.query_templates}` "
@@ -924,14 +988,15 @@ if __name__ == "__main__":
     except OSError as e:
         log.error(
             f"Could not start internal HTTP server on port {args.port}: {e}")
-        exit(1)
+        return 1
     try:
         server_thread = threading.Thread(target=httpd.serve_forever)
         server_thread.daemon = True
         server_thread.start()
         log.info(f"Internal HTTP server started on port {args.port}")
         if args.pause_on_service:
-            input("Paused. Press enter to continue")
+            print(colored("[PAUSED] ", "blue"), end="")
+            input("Press enter to continue: ")
 
         log.info("Computing placeholders ...")
         placeholders = compute_placeholders(
@@ -955,7 +1020,17 @@ if __name__ == "__main__":
         )
     except Exception as e:
         log.error(f"Quitting because of exception: {e}")
+        return 1
     finally:
         httpd.shutdown()
         httpd.server_close()
         httpd.socket.close()
+    return 0
+
+
+if __name__ == "__main__":
+    # Parse the command line arguments.
+    args = command_line_args()
+    log.setLevel(log_levels[args.log_level])
+    log.info(f"SPARQL endpoint: {args.sparql_endpoint}")
+    exit(main(args))
