@@ -6,6 +6,7 @@
 # Author: Christoph Ullinger <ullingec@cs.uni-freiburg.de>
 
 import argparse
+import json
 import argcomplete
 import re
 import yaml
@@ -101,24 +102,50 @@ def make_column_name(dataset: str, engine: str) -> str:
     return clean_d[0].lower() + clean_d[1:] + clean_e.capitalize()
 
 
-def make_aggregated(inp: AllResultsDict):
-    per_ds_engine = {}
-    for query_results in inp.values():
+def make_aggregated(inp: AllResultsDict, timeouts: dict[str, int],
+                    penalty: float) -> dict[str, dict[tuple[str, str], str]]:
+    # Key: dataset, engine -> Value: Times for each query (None=failure)
+    per_ds_engine: dict[tuple[str, str], list[Optional[float]]] = {}
+    # Key: dataset, query -> Value: fastest engine name, time
+    fastest: dict[tuple[str, str], tuple[Optional[str], Optional[float]]] = {}
+
+    for query_name, query_results in inp.items():
         for ds_engine, qtime in query_results.items():
             if ds_engine not in per_ds_engine:
                 per_ds_engine[ds_engine] = []
             per_ds_engine[ds_engine].append(qtime)
-    # TODO: also mark best?
+
+            # Fastest
+            dataset = ds_engine[0]
+            k = (dataset, query_name)
+            if k not in fastest:
+                fastest[k] = None, None
+            _, prev = fastest[k]
+            if prev is None or (qtime is not None and qtime < prev):
+                fastest[k] = ds_engine[1], qtime
+
+    fastest_ds_engine = {k: 0 for k in per_ds_engine}
+    total = {k[0]: 0 for k in per_ds_engine}
+    for (dataset, _), (engine, _) in fastest.items():
+        if engine is None:
+            continue
+        fastest_ds_engine[(dataset, engine)] += 1
+        total[dataset] += 1
+
     return {
-        "errors": {
+        "percentage failed": {
             k: f"{(sum(1 for i in v if i is None) / len(v))*100:.2f}\\%"
             for k, v in per_ds_engine.items()},
+        "percentage fastest": {
+            k: f"{(fastest_ds_engine[k] / total[k[0]])*100:.2f}\\%"
+            for k in per_ds_engine},
         "geometric mean": {
-            k: f"{statistics.geometric_mean(i for i in v if i is not None):.2f}"
+            k: f"{statistics.geometric_mean(i if i is not None else penalty * timeouts[k[0]] for i in v):.2f}"
             for k, v in per_ds_engine.items()},
         "median": {
-            k: f"{statistics.median(i for i in v if i is not None):.2f}"
-            for k, v in per_ds_engine.items()}}
+            k: f"{statistics.median(i if i is not None else penalty * timeouts[k[0]] for i in v):.2f}"
+            for k, v in per_ds_engine.items()},
+    }
 
 
 def make_csv_head(inp: AllResultsDict, rownamecol: str = "queryname",
@@ -164,7 +191,8 @@ def write_csv(inp: AllResultsDict, filename: str):
             writer.writerow(row)
 
 
-def write_agg_csv(inp: AllResultsDict, filename: str):
+def write_agg_csv(inp: AllResultsDict, filename: str, timeouts: dict[str, int],
+                  penalty: float):
     """
     Write the aggregated results to a csv file with the given name.
     """
@@ -172,7 +200,7 @@ def write_agg_csv(inp: AllResultsDict, filename: str):
         writer = csv.DictWriter(f, make_csv_head(
             inp, "metricname", False), quoting=csv.QUOTE_NONE)
         writer.writeheader()
-        for metric, row in make_aggregated(inp).items():
+        for metric, row in make_aggregated(inp, timeouts, penalty).items():
             writer.writerow({make_column_name(*k): v for k, v in row.items()} | {
                             "metricname": metric})
 
@@ -195,12 +223,25 @@ def command_line_args() -> argparse.Namespace:
         """
     )
     arg_parser.add_argument(
-        "--output", "-o", nargs=1, type=str, required=True,
-        help="The filename for the output CSV file."
+        "--output", "-o", nargs=1, type=str,
+        help="The filename for the output CSV file.",
+        default="benchmark_result.csv"
     )
     arg_parser.add_argument(
-        "--output-agg", "-oa", nargs=1, type=str, required=True,
-        help="The filename for the aggregated data output CSV file."
+        "--output-agg", "-oa", nargs=1, type=str,
+        help="The filename for the aggregated data output CSV file.",
+        default="benchmark_aggregated.csv"
+    )
+    arg_parser.add_argument(
+        "--query-timeouts", "-qt", nargs=1, type=str,
+        help="A JSON dictionary mapping datasets to query timeouts in seconds.",
+        default=json.dumps({"dblp": 180, "wikidata-truthy": 300})
+    )
+    arg_parser.add_argument(
+        "--error-penalty", "-ep", nargs=1, type=float,
+        help="In aggregated time statistics, timeout * penalty will be used for"
+        "failed queries.",
+        default=2
     )
 
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
@@ -226,4 +267,5 @@ if __name__ == "__main__":
 
     # Make csv output files
     write_csv(merged, args.output[0])
-    write_agg_csv(merged, args.output_agg[0])
+    write_agg_csv(merged, args.output_agg[0],
+                  json.loads(args.query_timeouts), args.error_penalty)
