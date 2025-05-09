@@ -870,22 +870,6 @@ queries:
         ?s %PREDICATE_LARGE_MULTICOL_JOIN_2% ?o }
 
   # GROUP BY queries.
-  - name: group-by-count-subject-large-predicate
-    description: GROUP BY with COUNT, for subject of large predicate
-    group: group-by
-    query: |
-      SELECT ?subject (COUNT(?subject) AS ?count)
-      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-      GROUP BY ?subject ORDER BY DESC(?count)
-      LIMIT %LIMIT%
-  - name: group-by-count-object-large-predicate
-    description: GROUP BY with COUNT, for object of large predicate
-    group: group-by
-    query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-      LIMIT %LIMIT%
   - name: group-by-count-object-high-multiplicity
     description: GROUP BY with COUNT, for object with high multiplicity
     group: group-by
