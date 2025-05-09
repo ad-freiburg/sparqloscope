@@ -108,13 +108,6 @@ placeholders:
     description: A large predicate that has numeric literals as objects
     query: |
       SELECT * { %PREDICATE_LARGE_WITH_NUMERIC_QUERY% } LIMIT 1
-  - name: AVG_PREDICATE_LARGE_WITH_NUMERIC
-    description: todo
-    query: |
-      SELECT (AVG(?o) AS ?avg) {
-        { SELECT * { %PREDICATE_LARGE_WITH_NUMERIC_QUERY% } LIMIT 1 }
-        ?s ?p ?o .
-      } GROUP BY ?p
   - name: PREDICATE_LARGE_WITH_DATE
     description: A large predicate that has date literals as objects
     query: |
@@ -123,6 +116,38 @@ placeholders:
       WHERE { ?s ?p ?o FILTER (?o >= "-9999-01-01"^^xsd:date && ?o <= "9999-12-31"^^xsd:date) }
       GROUP BY ?p ORDER BY DESC(?count)
       LIMIT 1
+
+  # Dataset-dependent values for testing numeric filters
+  - name: PREDICATE_LARGE_WITH_NUMERIC_OFFSET
+    description: Offsets to split the numeric values for FILTER benchmarks
+    children:
+      - suffix: _MEDIAN
+        variable: "?median"
+      - suffix: _PERCENTILE_SEVENTY
+        variable: "?percentile70"
+      - suffix: _PERCENTILE_NINETYFIVE
+        variable: "?percentile95"
+    query: |
+      SELECT (floor(COUNT(*) * 0.5) AS ?median)
+             (floor(COUNT(*) * 0.7) AS ?percentile70)
+             (floor(COUNT(*) * 0.95) AS ?percentile95) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . }
+  - name: VALUE_FOR_NUMERIC_BIN_SEARCH_1
+    description: todo
+    query: |
+      SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o)
+      LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_MEDIAN%
+  - name: VALUE_FOR_NUMERIC_BIN_SEARCH_2
+    description: todo
+    query: |
+      SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o) 
+      LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_PERCENTILE_SEVENTY%
+  - name: VALUE_FOR_NUMERIC_BIN_SEARCH_3
+    description: todo
+    query: |
+      SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o)
+      LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_PERCENTILE_NINETYFIVE%
+
 
   # Predicates for non-self subject join with largest possible result
   - name: PREDICATE_FOR_LARGEST_SUBJ_JOIN
@@ -1066,13 +1091,27 @@ queries:
       WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
   
   # Numeric (Binary Search) Filter
-  - name: numeric-filter-bin-search
-    description: todo
+  - name: numeric-filter-bin-search-fifty-fifty
+    description: Numeric FILTER that filters out 50 percent of the values
     group: filter
     query: |
       SELECT (COUNT(?s) AS ?count) {
         ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
-        FILTER (?o >= %AVG_PREDICATE_LARGE_WITH_NUMERIC%) }
+        FILTER (?o >= %VALUE_FOR_NUMERIC_BIN_SEARCH_1%) }
+  - name: numeric-filter-bin-search-seventy-thirty
+    description: Numeric FILTER that filters out 70 percent of the values
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
+        FILTER (?o >= %VALUE_FOR_NUMERIC_BIN_SEARCH_2%) }
+  - name: numeric-filter-bin-search-ninetyfive-five
+    description: Numeric FILTER that filters out 95 percent of the values
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
+        FILTER (?o >= %VALUE_FOR_NUMERIC_BIN_SEARCH_3%) }
   
   # Other Filters
   - name: filter-few-results
