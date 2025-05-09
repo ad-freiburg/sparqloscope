@@ -363,6 +363,40 @@ placeholders:
         FILTER (%PREDICATE_TRANSITIVE_PATH% != ?p)
       } GROUP BY ?p HAVING(?count_join >= 1000) ORDER BY ASC(?count_join) LIMIT 1
 
+  # Predicates for multicolumn join
+  - name: PREDICATE_LARGE_MULTICOL_JOIN
+    description: Predicates for a multicolumn join between large predicates that have large single column joins
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?p2 ?count_s ?count_o ?min_count WHERE {
+        { SELECT ?p1 ?p2 (?count_join AS ?count_s) { 
+            %JOIN_ON_SUBJECT_SIZE_QUERY% } }
+        { SELECT ?p1 ?p2 (?count_join AS ?count_o) {
+            %JOIN_ON_OBJECT_SIZE_QUERY% } }
+        BIND(IF(?count_s < ?count_o, ?count_s, ?count_o) AS ?min_count)
+        FILTER(?min_count >= 1000) 
+      }  ORDER BY DESC(?min_count) LIMIT 1
+  - name: PREDICATE_SMALL_MULTICOL_JOIN
+    description: Predicates for a multicolumn join between predicates that have smaller single column joins
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?p2 ?count_s ?count_o ?min_count WHERE {
+        { SELECT ?p1 ?p2 (?count_join AS ?count_s) { 
+            %JOIN_ON_SUBJECT_SIZE_QUERY% } }
+        { SELECT ?p1 ?p2 (?count_join AS ?count_o) {
+            %JOIN_ON_OBJECT_SIZE_QUERY% } }
+        BIND(IF(?count_s < ?count_o, ?count_s, ?count_o) AS ?min_count)
+        FILTER(?min_count >= 1000) 
+      }  ORDER BY ASC(?min_count) LIMIT 1
+
 
 # The benchmark queries with placeholders.
 #
@@ -820,24 +854,20 @@ queries:
       }
 
   # MULTICOLUMN JOIN queries.
-  - name: multicolumn-join-small-large
-    description: Multicolumn JOIN of a small and a large predicate
+  - name: multicolumn-join-small
+    description: Multicolumn JOIN small todo 
     group: multicolumn-join
     query: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE { ?s %PREDICATE_SMALL_1% ?o . ?s %PREDICATE_LARGE_1% ?o }
-  - name: multicolumn-join-large-small
-    description: Multicolumn JOIN of a large and a small predicate
+      SELECT (COUNT(*) AS ?count) WHERE { 
+        ?s %PREDICATE_SMALL_MULTICOL_JOIN_1% ?o .
+        ?s %PREDICATE_SMALL_MULTICOL_JOIN_2% ?o }
+  - name: multicolumn-join-large
+    description: Multicolumn JOIN large todo
     group: multicolumn-join
     query: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_SMALL_1% ?o }
-  - name: multicolumn-join-large-large
-    description: Multicolumn JOIN of two large predicates
-    group: multicolumn-join
-    query: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE { ?s %PREDICATE_LARGE_1% ?o . ?s %PREDICATE_LARGE_2% ?o }
+      SELECT (COUNT(*) AS ?count) WHERE { 
+        ?s %PREDICATE_LARGE_MULTICOL_JOIN_1% ?o .
+        ?s %PREDICATE_LARGE_MULTICOL_JOIN_2% ?o }
 
   # GROUP BY queries.
   - name: group-by-count-subject-large-predicate
