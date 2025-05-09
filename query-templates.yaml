@@ -333,7 +333,7 @@ placeholders:
   #       ?s %PREDICATE_LOW_MULTIPLICITY% ?o }
   #     GROUP BY ?o ORDER BY ASC(?count) LIMIT 1
 
-  #
+  # Transitive path
   - name: PREDICATE_TRANSITIVE_PATH
     description: A predicate with a very large blow-up when used as a transitive path with plus
     query: |
@@ -343,6 +343,26 @@ placeholders:
         {SELECT (COUNT(*) AS ?count_path) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }}
         {SELECT (COUNT(*) AS ?count_p) { ?s %PREDICATE_TRANSITIVE_PATH% ?o }}
       }
+  - name: FIXED_SUBJECT_FOR_TRANSITIVE_PATH
+    description: A fixed subject to perform a more restricted transitive path with plus
+    query: |
+      SELECT ?s (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
+      GROUP BY ?s ORDER BY DESC(?count) LIMIT 1
+  - name: PREDICATE_LARGE_JOIN_FOR_TRANSITIVE_PATH
+    description: A predicate that has a large join with the transitive path predicate
+    query: |
+      SELECT ?p (COUNT(*) AS ?count_join) WHERE {
+        ?s ?p ?m . ?m %PREDICATE_TRANSITIVE_PATH% ?o .
+        FILTER (%PREDICATE_TRANSITIVE_PATH% != ?p)
+      } GROUP BY ?p ORDER BY DESC(?count_join) LIMIT 1
+  - name: PREDICATE_SMALL_JOIN_FOR_TRANSITIVE_PATH
+    description: A predicate that has a small join with the transitive path predicate
+    query: |
+      SELECT ?p (COUNT(*) AS ?count_join) WHERE {
+        ?s ?p ?m . ?m %PREDICATE_TRANSITIVE_PATH% ?o .
+        FILTER (%PREDICATE_TRANSITIVE_PATH% != ?p)
+      } GROUP BY ?p HAVING(?count_join >= 1000) ORDER BY ASC(?count_join) LIMIT 1
+
 
 # The benchmark queries with placeholders.
 #
@@ -905,6 +925,25 @@ queries:
     group: property-path
     query: |
       SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
+  - name: transitive-path-plus-fixed-subject
+    description: Transitive path with plus and a fixed subject
+    group: property-path
+    query: |
+      SELECT (COUNT(*) AS ?count) {
+        %FIXED_SUBJECT_FOR_TRANSITIVE_PATH% %PREDICATE_TRANSITIVE_PATH%+ ?o }
+  - name: transitive-path-large-join-and-plus
+    description: Transitive path with a large join and plus
+    group: property-path
+    query: |
+      SELECT (COUNT(*) AS ?count) {
+        ?s %PREDICATE_LARGE_JOIN_FOR_TRANSITIVE_PATH%/%PREDICATE_TRANSITIVE_PATH%+ ?o }
+  - name: transitive-path-small-join-and-plus
+    description: Transitive path with a small join and plus
+    group: property-path
+    query: |
+      SELECT (COUNT(*) AS ?count) {
+        ?s %PREDICATE_SMALL_JOIN_FOR_TRANSITIVE_PATH%/%PREDICATE_TRANSITIVE_PATH%+ ?o }
+
 
   # REGEX queries.
   - name: regex-3-contains
