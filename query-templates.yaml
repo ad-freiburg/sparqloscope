@@ -397,6 +397,46 @@ placeholders:
         FILTER(?min_count >= 1000) 
       }  ORDER BY ASC(?min_count) LIMIT 1
 
+  # Predicates for union constrained by join
+  - name: PREDICATES_FOR_UNION_CONSTRAINT_SMALL
+    description: Predicates for UNION with two large predicates and a join with small result
+    children:
+      - suffix: _U1
+        variable: "?p1"
+      - suffix: _U2
+        variable: "?p4"
+      - suffix: _J
+        variable: "?p2"
+    query: |
+      SELECT * {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) 
+              (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+               %JOIN_ON_SUBJECT_SIZE_QUERY% } } } }
+        FILTER (?p1 != ?p4 && ?count_join > 1000 && ?count_p1 < ?count_p2) } 
+      ORDER BY DESC(?count_p1 / ?count_join) LIMIT 1
+
+  - name: PREDICATES_FOR_UNION_CONSTRAINT_LARGE
+    description: Predicates for UNION with two large predicates and a join with large result
+    children:
+      - suffix: _U1
+        variable: "?p1"
+      - suffix: _U2
+        variable: "?p4"
+      - suffix: _J
+        variable: "?p2"
+    query: |
+      SELECT * {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) 
+              (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+               %JOIN_ON_SUBJECT_SIZE_QUERY% } } } }
+        FILTER ((?p1 != ?p4) && (?count_join <= 3 * (?count_p1 + ?count_p2)) &&
+              (?count_join2 <= 3 * (?count_p2 + ?count_p4)) &&
+              (?count_join > 1000) && (?count_p2 < ?count_p1) && (?count_p2 < ?count_p4)) } 
+      ORDER BY DESC(?count_join) LIMIT 1
 
 # The benchmark queries with placeholders.
 #
@@ -827,29 +867,40 @@ queries:
     group: union
     query: |
       SELECT (COUNT(*) AS ?count)
-      WHERE { { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o } }
-  - name: union-constraint-small-join
-    description: UNION of two large predicates, constraint by small predicate
+      WHERE { { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_2% ?o } }
+  - name: union-constraint-from-star
+    description: UNION of two large predicates, constraint by a large predicate known to have join partners
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
-        { ?s %PREDICATE_LARGE_1% ?o1 } UNION { ?s %PREDICATE_LARGE_1% ?o1 }
-        ?s %PREDICATE_SMALL_1% ?o2
+        { ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 }
+        UNION { ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o1 }
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o2
+      }
+  - name: union-constraint-small-join
+    description: UNION of two large predicates, constrained by a join with a small result
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATES_FOR_UNION_CONSTRAINT_SMALL_U1% ?o1 }
+        UNION { ?s %PREDICATES_FOR_UNION_CONSTRAINT_SMALL_U2% ?o1 }
+        ?s %PREDICATES_FOR_UNION_CONSTRAINT_SMALL_J% ?o2
       }
   - name: union-constraint-large-join
-    description: UNION of two large predicates, constraint by large predicate
+    description: UNION of two large predicates, constrained by a join with a large result
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
-        { ?s %PREDICATE_LARGE_1% ?o1 } UNION { ?s %PREDICATE_LARGE_1% ?o1 }
-        ?s %PREDICATE_LARGE_2% ?o2
+        { ?s %PREDICATES_FOR_UNION_CONSTRAINT_LARGE_U1% ?o1 }
+        UNION { ?s %PREDICATES_FOR_UNION_CONSTRAINT_LARGE_U2% ?o1 }
+        ?s %PREDICATES_FOR_UNION_CONSTRAINT_LARGE_J% ?o2
       }
   - name: union-constraint-filter-restrictive
     description: UNION of two large predicates, constraint by restrictive FILTER
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
-        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_1% ?o }
+        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_2% ?o }
         FILTER (?s = ?o)
       }
 
