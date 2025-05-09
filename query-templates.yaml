@@ -119,7 +119,7 @@ placeholders:
 
   # Dataset-dependent values for testing numeric filters
   - name: PREDICATE_LARGE_WITH_NUMERIC_OFFSET
-    description: Offsets to split the numeric values for FILTER benchmarks
+    description: Offsets to split the numeric values into percentiles for FILTER benchmarks
     children:
       - suffix: _MEDIAN
         variable: "?median"
@@ -133,17 +133,17 @@ placeholders:
              (floor(COUNT(*) * 0.95) AS ?percentile95) {
         ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . }
   - name: VALUE_FOR_NUMERIC_BIN_SEARCH_1
-    description: todo
+    description: The median of the numeric values
     query: |
       SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o)
       LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_MEDIAN%
   - name: VALUE_FOR_NUMERIC_BIN_SEARCH_2
-    description: todo
+    description: The 70 percentile of the numeric values
     query: |
       SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o) 
       LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_PERCENTILE_SEVENTY%
   - name: VALUE_FOR_NUMERIC_BIN_SEARCH_3
-    description: todo
+    description: The 95 percentile of the numeric values
     query: |
       SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o)
       LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_PERCENTILE_NINETYFIVE%
