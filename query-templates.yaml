@@ -875,11 +875,6 @@ queries:
     query: |
       SELECT ?s ?o WHERE { ?s wdt:P31/wdt:P279* ?o }
       LIMIT %LIMIT%
-  - name: transitive-path-warmup
-    description: Transitive path predicate warmup
-    group: property-path
-    query: |
-      SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH% ?o }
   - name: transitive-path-plus
     description: Transitive path with plus
     group: property-path
@@ -931,11 +926,6 @@ queries:
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
   
   # STRING functions
-  - name: str-warmup
-    description: String predicate warmup
-    query: |
-      SELECT (SUM(STRLEN(?o)) AS ?checksum)  {
-        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
   - name: str-baseline
     description: String reading baseline
     query: |
@@ -1032,12 +1022,6 @@ queries:
   # * TODO: How to measure the time for the functions minus the time for computing the input?
   # * TODO: Find simple query, where the function or expression is the bottleneck
   # * IDEA: generate large inputs via VALUES (with Cartesian product) and BIND
-  - name: numeric-predicate-warmup
-    description: Warmup query for reading predicate
-    group: numeric-function
-    query: |
-      SELECT (COUNT(*) AS ?count)
-      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
   - name: numeric-baseline
     description: Baseline for numeric queries
     group: numeric-function
@@ -1105,12 +1089,6 @@ queries:
         ?s %PREDICATE_LARGE_1% ?o . FILTER (?s != ?o) }
 
   # DATE function queries (e.g., NOW, YEAR, MONTH, DAY)
-  - name: date-predicate-warmup
-    description: Warmup query for reading date predicate
-    group: date-function
-    query: |
-      SELECT (COUNT(?o) AS ?count)
-      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
   - name: date-baseline
     description: Baseline for date queries
     group: date-function
