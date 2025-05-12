@@ -225,20 +225,6 @@ placeholders:
         FILTER(?count_join <= 3 * (?count_p1 + ?count_p2)) }
       ORDER BY DESC(?count_join) LIMIT 1
 
-  # Predicates for subject join with two small predicates and large result
-  # - name: SMALL_PREDICATE_FOR_SUBJ_JOIN
-  #   description: Predicates for subject join with two small predicates and large result
-  #   children:
-  #     - suffix: _1
-  #       variable: "?p1"
-  #     - suffix: _2
-  #       variable: "?p2"
-  #   query: |
-  #     SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
-  #       %JOIN_ON_SUBJECT_SIZE_QUERY% 
-  #       FILTER(?count_p1 <= 1000 && ?count_p2 <= 1000)
-  #     } ORDER BY DESC(?count_join) LIMIT 1
-
   # Predicates for a join between two large predicates with a small result
   - name: LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN
     description: Predicates for subject join with two large predicates and small result
@@ -252,9 +238,6 @@ placeholders:
         %JOIN_ON_SUBJECT_SIZE_QUERY%
         FILTER(?count_join > 1000 && ?count_p1 < ?count_p2) }
       ORDER BY DESC(?count_p1 / ?count_join) LIMIT 1
-    # query: |
-    #   SELECT ?p1 ?count_p1 ?p2 ?count_p2 { %JOIN_ON_SUBJECT_SIZE_QUERY% }
-    #   ORDER BY ASC(?count_join / (?count_p1 * ?count_p2))
 
   # Star subject join with large result but not extreme result
   - name: PREDICATE_FOR_SUBJ_STAR_JOIN
@@ -362,20 +345,6 @@ placeholders:
           %MULTIPLICITY_ON_OBJECT_QUERY%
         } }
       } ORDER BY DESC(?order) LIMIT 1
-
-  # For filter (use with multiplicity predicates)
-  # - name: FILTER_OUT_MANY_VALUES
-  #   description: todo
-  #   query: |
-  #     SELECT ?o (COUNT(?o) AS ?count) WHERE {
-  #       ?s %PREDICATE_HIGH_MULTIPLICITY% ?o }
-  #     GROUP BY ?o ORDER BY DESC(?count) LIMIT 1
-  # - name: FILTER_OUT_FEW_VALUES
-  #   description: todo
-  #   query: |
-  #     SELECT ?o (COUNT(?o) AS ?count) WHERE {
-  #       ?s %PREDICATE_LOW_MULTIPLICITY% ?o }
-  #     GROUP BY ?o ORDER BY ASC(?count) LIMIT 1
 
   # Transitive path
   - name: PREDICATE_TRANSITIVE_PATH
@@ -487,39 +456,6 @@ placeholders:
 # NOTE: Do not add PREFIX declarations here, they will be added automatically
 # by `generate-queries.py` (if the user provides a mean to obtain prefix
 # definitions for the dataset).
-#
-# TODO: functions
-# * Numeric unary functions (e.g., ABS, CEIL, FLOOR, ROUND)
-# * Numeric binary functions (e.g., +, -, *, /)
-# * String functions (e.g., STRLEN, SUBSTR, UCASE, LCASE)
-# * Date functions (e.g., NOW, YEAR, MONTH, DAY)
-# * Variadic functions (e.g., IF, COALESCE, CONCAT) 
-# * Expression with one function [chunked might make a difference]
-# * Expression with many functions [tests chunked vs. entry by entry evaluation]
-# * TODO: How to measure the time for the functions minus the time for computing the input?
-# * TODO: Find simple query, where the function or expression is the bottleneck
-# * IDEA: generate large inputs via VALUES (with Cartesian product) and BIND
-#
-# TODO: property paths
-# * <pred>+, with/without left or right side bound 
-# * <pred1>/<pred2> nothing special, just a join
-# * property paths involving the empty path   ?x <p>* ?y 
-# * wdt:P31/wdt:P279*, with/without left or right side bound [dataset specific]
-#
-# TODO: UNIONs
-# * UNION of two, outside is very constraining [multiplication is essential]
-# * UNION of two, outside is not very constraining
-# * join of UNIONs [(a + b) * (c + d)], should avoid the sort
-#
-# TODO: Which engines
-# * QLever
-# * MilleniumDB [research prototype]
-# * GraphDB [good commercial representative]
-# * Fuseki [Java, standard-complete, slow]
-# * Virtuoso [quick and dirty]
-# * Oxigraph [Rust, upcoming]
-#
-# TODO: index scans with FILTER with contiguous range [realhannes stuff]
 queries:
   # JOIN of two triple patterns
   - name: join-2-small-large
@@ -564,14 +500,6 @@ queries:
       WHERE {
         ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
         ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 }
-  # - name: join-2-small-small-with-large-result
-  #   description: JOIN of two small predicates
-  #   group: join
-  #   query: |
-  #     SELECT (COUNT(*) AS ?count)
-  #     WHERE {
-  #       ?s %SMALL_PREDICATE_FOR_SUBJ_JOIN_1% ?o1 .
-  #       ?s %SMALL_PREDICATE_FOR_SUBJ_JOIN_2% ?o2 }
 
   # JOIN of three triple patterns
   - name: join-3-star-largest-sum-of-join-sizes
@@ -1188,36 +1116,8 @@ queries:
       SELECT ?s ?o
       WHERE { ?s %PREDICATE_LARGE_1% ?o }
       LIMIT 10000000
-  
-  # # Full scans
-  # - name: full-scan-constrained # TODO
-  #   description: x
-  #   group: full-scan
-  #   query: |
-  #     SELECT (COUNT(*) AS ?count) { ?s ?p ?o }
-  # - name: full-scan-filter
-  #   description: x
-  #   group: full-scan
-  #   query: |
-  #     SELECT (COUNT(*) AS ?count) {
-  #       ?s ?p ?o . FILTER(?p != %PREDICATE_LARGE_1%) }
 
   # NUMERIC function queries.
-  #
-  # TODO: Add functionality to ignore the time for warmup queries (but execute them)
-  # TODO: Add functionality to subtract time of baseline query. And note the aw
-  #
-  # TODO: functions
-  # * Numeric unary functions (e.g., ABS, CEIL, FLOOR, ROUND)
-  # * Numeric binary functions (e.g., +, -, *, /)
-  # * String functions (e.g., STRLEN, SUBSTR, UCASE, LCASE)
-  # * Date functions (e.g., NOW, YEAR, MONTH, DAY)
-  # * Variadic functions (e.g., IF, COALESCE, CONCAT) 
-  # * Expression with one function [chunked might make a difference]
-  # * Expression with many functions [tests chunked vs. entry by entry evaluation]
-  # * TODO: How to measure the time for the functions minus the time for computing the input?
-  # * TODO: Find simple query, where the function or expression is the bottleneck
-  # * IDEA: generate large inputs via VALUES (with Cartesian product) and BIND
   - name: numeric-baseline
     description: Baseline for numeric queries
     group: numeric-function
@@ -1367,41 +1267,3 @@ queries:
     query: |
       SELECT (COUNT(?s) AS ?count)
       WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
-  # TODO: add queries
-  # ORDER BY
-  # * large predicate + order by
-  #
-  # JOINS
-  # * join large predicates, small result
-  # * join large predicates, medium result
-  # * join large predicates, large result
-  # * star joins
-  # * chain joins
-  #
-  # SPECIAL JOINS
-  # * optional join
-  # * minus join
-  # * multi-column join
-  # * union
-  #
-  # LANGUAGE FILTER
-  # * rdfs:label und FILTER(LANG(?o) = "en")
-  # * rdfs:label und FILTER(LANGMATCHES(LANG(?o), "en"))
-  # * rdfs:label und FILTER(LANG(?o) != "en")  [no optimization]
-  # * rdfs:label und FILTER(LANG(?o) IN ("en", "de"))
-  #
-  # EXPRESSIONS
-  # * Large predicate with binary FILTER expression
-  # * All sorts of functions
-  #
-  # GRAPHS
-  # * check that graph filters work efficiently
-  #
-  #
-  # SELECT ?p1 ?p2 (COUNT(?m) AS ?count) WHERE {
-  #   ?s ?p1 ?m .
-  #   ?m ?p2 ?o .
-  # }
-  # GROUP BY ?p1 ?p2
-  # ORDER BY DESC(?count)
-  #
