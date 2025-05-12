@@ -1085,7 +1085,6 @@ queries:
     group: property-path
     condition: HAS_WDT_P31_WDT_P279_STAR
     query: |
-      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
       SELECT ?s ?o WHERE { ?s wdt:P31/wdt:P279* ?o }
       LIMIT %LIMIT%
   - name: transitive-path-plus
