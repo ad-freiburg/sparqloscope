@@ -1,38 +1,27 @@
-# SPARQL Benchmark
+# Sparqloscope: A generic benchmark for comprehensive performance evaluation of SPARQL engines
 
-This is a benchmark for measuring the SPARQL query performance of a triplestore
-aka SPARQL engine. It has three unique features that set it apart from other
-benchmarks:
+We provide a new benchmark, called Sparqloscope for evaluating the query performance of SPARQL engines. The benchmark has three unique features that separate it from other such benchmarks:
 
-1. It does not only benchmark the performance of basic graph patterns, but
-   considers all features of the SPARQL 1.1 query language that are relevant
-   for performance, such as subqueries, property paths, aggregates,
-   expressions, etc.
+1. Sparqloscope is comprehensive in that it considers most features of the SPARQL 1.1 query language that are relevant in practice. In particular: basic graph patterns, OPTIONAL, FILTER, ORDER BY, LIMIT, DISTINCT, GROUP BY and aggregates, UNION, EXISTS, MINUS, SPARQL functions (for numerical values, strings, and dates).
+2. Sparqloscope is generic in the sense that it can be applied to any given RDF dataset and will then produce a comprehensive benchmark for that particular dataset. Existing benchmarks are either synthetic or manually constructed for a fixed dataset.
+3. Sparqloscope is specific in the sense that it aims to evaluate features in isolation (independent from other features) as much as possible. This allows pinpointing specific strengths and weaknesses of a particular engine.
 
-2. Each feature is tested in isolation (to provide clear evidence of the
-   performance of a triplestore for that feature), as well as in combination
-   with other features (wherever the combination poses challenges that are
-   not simply the sum of the challenges of the individual features).
+Sparqloscope is free and open-source software and easy to use. As a showcase we use it to evaluate the performance of three high-performing SPARQL engines (Virtuoso, MillenniumDB, QLever) on two widely used RDF datasets (DBLP and Wikidata).
 
-3. The benchmarks is generic and can create a concrete benchmark for any given 
-   RDF dataset. For example, to generate the SPARQL query that benchmarks the
-   performance of GROUP BY on the object of a predicate with many triples,
-   the benchmark generator will first query the dataset to find such a
-   predicate. The generation is configurable.
+## Usage
 
-Concrete benchmarks are provided for the following RDF datasets: DBLP,
-DBLP+Citations, Wikidata, TODO: add more.
+### Example for DBLP
 
-# Quickstart
-
-Here is the command line to generate a benchmark for the Wikidata dataset.
-There are more options available, see the help message of the script or use
-the autocomplete feature of your shell to see them (you might have to call
-`eval "$(register-python-argcomplete generate-benchmark.py)"` first).
-
+Assuming a SPARQL endpoint for the DBLP dataset is running on port 7015 on your machine, you can generate a benchmark for this dataset using the following command-line.
+ 
+```bash
+python3 generate-benchmark.py --sparql-endpoint http://localhost:7015 --prefix-definitions "$(curl -s https://qlever.cs.uni-freiburg.de/api/prefixes/dblp)" --kg-name dblp --external-url http://localhost:8008 --port 8008
 ```
-NAME=wikidata
-ENDPOINT_URL=https://qlever.cs.uni-freiburg.de/api/wikidata
-PREFIXES_URL=https://qlever.cs.uni-freiburg.de/api/prefixes/wikidata
-python3 generate-benchmark.py --sparql-endpoint $ENDPOINT_URL --prefix-definitions "$(curl -s $PREFIXES_URL)" --output-file benchmark-queries.$NAME.tsv
-```
+
+### Further information
+
+Detailed setup instructions can be found in the [setup documentation](docs/setup.md).
+
+## License
+
+This project is licensed under the Apache 2.0 License. For more information, see the [LICENSE](LICENSE) file.
