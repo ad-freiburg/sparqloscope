@@ -493,29 +493,6 @@ placeholders:
 # by `generate-queries.py` (if the user provides a mean to obtain prefix
 # definitions for the dataset).
 #
-# TODO: more meaningful joins [requires pre-computation of all join sizes]
-#
-# * two large inputs, large result
-# * two large inputs, small result
-# * one large input, one small input
-# * three large inputs, star, one pair has small result, one has large result
-# * three large inputs, star, all pairs have large result
-# * three large inputs, line (one sort needed)
-# * very many inputs, star (to test the query planner)
-# * very many inputs, line 
-#
-# TODO: more advanced joins
-#
-# * optional join, payload only, one, few UNDEFs
-# * optional join, payload only, one, many UNDEFs
-# * optional join, payload only, multiple
-# * optional join, fallback for UNDEF, single column
-# * optional join, FILTER in optional which connects inner and outer [people and their spouse if born in same year]
-# * two-column join [x and y are married and have written a book together]
-# * optional two-column join
-# * minus join
-# * THINK: all the ordinary joins above, where each join can also be optional or minus
-#
 # TODO: functions
 # * Numeric unary functions (e.g., ABS, CEIL, FLOOR, ROUND)
 # * Numeric binary functions (e.g., +, -, *, /)
@@ -1178,13 +1155,13 @@ queries:
     description: STRSTARTS string function
     group: str-functions
     query: |
-      SELECT (SUM(STRSTARTS(?o, "a")) AS ?count) {
+      SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) {
         ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
   - name: strends
     description: STRENDS string function
     group: str-functions
     query: |
-      SELECT (SUM(STRENDS(?o, "a")) AS ?count) {
+      SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) {
         ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
 
   # SIZE MATTERS queries.
