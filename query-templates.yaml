@@ -1018,29 +1018,29 @@ queries:
     group: group-by
     query: |
       SELECT (MIN(?o) AS ?min) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
-  - name: group-by-implicit-numeric-sum
+  - name: group-by-implicit-numeric-max
     description: Implicit GROUP BY with MAX on numeric predicate
     group: group-by
     query: |
       SELECT (MAX(?o) AS ?max) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
-  - name: group-by-implicit-numeric-sum
+  - name: group-by-implicit-numeric-avg
     description: Implicit GROUP BY with AVG on numeric predicate
     group: group-by
     query: |
       SELECT (AVG(?o) AS ?avg) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
   
   # Implicit aggregation on string values
-  - name: group-by-implicit-numeric-sum
+  - name: group-by-implicit-string-baseline
     description: Implicit GROUP BY with COUNT on string predicate as baseline
     group: group-by
     query: |
       SELECT (COUNT(?o) AS ?count) { ?s %PREDICATE_LARGE_STRING% ?o. }
-  - name: group-by-implicit-numeric-min
+  - name: group-by-implicit-string-min
     description: Implicit GROUP BY with MIN on string predicate
     group: group-by
     query: |
       SELECT (MIN(?o) AS ?min) { ?s %PREDICATE_LARGE_STRING% ?o. }
-  - name: group-by-implicit-numeric-max
+  - name: group-by-implicit-string-max
     description: Implicit GROUP BY with MAX on string predicate
     group: group-by
     query: |
