@@ -335,11 +335,6 @@ placeholders:
     query: |
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       ASK { ?s rdfs:label ?o }
-  - name: HAS_WDT_P31_WDT_P279_STAR
-    description: Check if wdt:P31/wdt:P279* is present
-    query: |
-      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-      ASK { ?s wdt:P31/wdt:P279* ?o }
   
   # Predicate with low and high multiplicity
   - name: PREDICATE_LOW_MULTIPLICITY
@@ -1057,13 +1052,6 @@ queries:
       }
 
   # PROPERTY_PATH queries.
-  - name: wdt-P31-wdt-P279-star
-    description: Subjects with their wdt:P31/wdt:P279* type
-    group: property-path
-    condition: HAS_WDT_P31_WDT_P279_STAR
-    query: |
-      SELECT ?s ?o WHERE { ?s wdt:P31/wdt:P279* ?o }
-      LIMIT %LIMIT%
   - name: transitive-path-plus
     description: Transitive path with plus
     group: property-path
