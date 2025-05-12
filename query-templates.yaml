@@ -1029,7 +1029,7 @@ queries:
     description: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
     group: group-by
     query: |
-      SELECT (STRLEN(GROUP_CONCAT(?o)) AS ?len) {
+      SELECT (STRLEN(GROUP_CONCAT(?o; SEPARATOR=" ")) AS ?len) {
         ?s %PREDICATE_LARGE_STRING% ?o. } GROUP BY ?s LIMIT %LIMIT%
   
   # DISTINCT queries.
