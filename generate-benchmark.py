@@ -680,13 +680,14 @@ def apply_prefix_definitions(query: str, prefix_definitions: dict[str, str]) \
     each such prefix definition, abbreviate the corresponding IRIs. Return the
     modified query and the set of prefixes used.
     """
+    original_query = query
     prefixes_used = set()
     for prefix, iri in prefix_definitions.items():
-        if f"<{iri}" in query:
+        if f"<{iri}" in original_query:
             # Raw IRI is given and is substituted with the prefix
             query = re.sub(r"<" + iri + "([^/>]*)>", f"{prefix}:\\g<1>", query)
             prefixes_used.add(prefix)
-        elif f"{prefix}:" in query:
+        elif f"{prefix}:" in original_query:
             # Query already uses the prefixed version
             prefixes_used.add(prefix)
     return query, prefixes_used
