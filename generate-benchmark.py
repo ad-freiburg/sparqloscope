@@ -104,6 +104,10 @@ SPARQL_REQ_HEADERS = {
     "Content-type": "application/sparql-query"
 }
 
+# HTTP Server settings for SERVICE-based cache
+DEFAULT_PORT = 8000
+DEFAULT_EXTERNAL_URL = f"http://localhost:{DEFAULT_PORT}"
+
 
 @contextmanager
 def open_file_for_writing(filename: str) -> Generator[TextIO, None, None]:
@@ -496,7 +500,7 @@ def compute_placeholders(
                     "placeholder in template yaml file.")
             elif cached.get("_version") != CACHE_VERSION_PLACEHOLDERS:
                 cached = None
-                log.debug("Discarding cached placeholder becasue of version " +
+                log.debug("Discarding cached placeholder because of version " +
                           "mismatch.")
             elif cached.get("precomputed_mtimes") != precomputed_mtimes:
                 cached = None
@@ -546,7 +550,7 @@ def compute_placeholders(
 
             try:
                 # For ASK queries, we want the value of the field `boolean`. For
-                # SELECT queries, we want the first value of the first variable.
+                # SELECT queries, we want values depending on user config.
                 if "boolean" in result_json:
                     values = {"": str(result_json["boolean"]).lower()}
                 else:
@@ -571,7 +575,7 @@ def compute_placeholders(
                         "options together in one placeholder configuration"
 
                     if argmax_raw:
-                        # We use a argmax to determine which row of the
+                        # We use argmax to determine which row of the
                         # placeholder query will be used to set the placeholder
                         # child values
 
@@ -926,13 +930,13 @@ def command_line_args() -> argparse.Namespace:
     arg_parser.add_argument(
         "--external-url",
         type=str,
-        default="http://localhost:8000",
+        default=DEFAULT_EXTERNAL_URL,
         help="The URL where the SPARQL endpoint can reach this program"
     )
     arg_parser.add_argument(
         "--port",
         type=int,
-        default=8000,
+        default=DEFAULT_PORT,
         help="Port where this program can serve a SERVICE used by the " +
         "SPARQL endpoint"
     )
@@ -1038,4 +1042,13 @@ if __name__ == "__main__":
     args = command_line_args()
     log.setLevel(log_levels[args.log_level])
     log.info(f"SPARQL endpoint: {args.sparql_endpoint}")
+    if (args.port != DEFAULT_PORT and
+            args.external_url == DEFAULT_EXTERNAL_URL) or \
+        (args.port == DEFAULT_PORT and
+         args.external_url != DEFAULT_EXTERNAL_URL):
+        log.warning(
+            "Only --port or --external-url was set to a custom value." +
+            "Ensure that both are configured properly if you are not " +
+            "using the default port.")
+    # Run main program
     exit(main(args))
