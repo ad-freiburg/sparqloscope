@@ -41,7 +41,7 @@ def load_results_yaml(filename: str) \
     engine = fn_match.group("engine")
     query_results: SingleDatasetAndEngineResultsDict = {}
     for query_result in res["queries"]:
-        name = query_result["query"].split()[0]
+        name = query_result["query"]
         if query_result["headers"] == [] and \
                 isinstance(query_result["results"], str):
             # Error
@@ -70,24 +70,30 @@ def merge_multiple_results(parsed: list[SingleDatasetAndEngineResults]) \
     return by_query
 
 
-def filter_results_dict(inp: AllResultsDict, filters: list[str]):
+def filter_results_dict(inp: AllResultsDict, filters: dict[str, str]):
     """
     Filters the AllResultsDict in-place by applying the regex filters on
     each query name.
     """
 
-    if not filters:
-        return
+    assert len(filters)
 
     # Compile regexes
-    rexps: list[re.Pattern] = []
-    for re_str in filters:
-        rexps.append(re.compile(re_str))
+    rexps: list[tuple[re.Pattern, str]] = []
+    for re_str, new_name in filters.items():
+        rexps.append((re.compile(re_str), new_name))
 
     # Apply filters
+    out = {}
     for query_name in list(inp.keys()):
-        if not any(r.search(query_name) for r in rexps):
-            del inp[query_name]
+        for r, new_name in rexps:
+            if r.search(query_name):
+                if not new_name:
+                    new_name = query_name
+                assert new_name not in out, f"{new_name} in {repr(out)}"
+                out[new_name] = inp[query_name]
+                break
+    return out
 
 
 def make_column_name(dataset: str, engine: str) -> str:
@@ -216,10 +222,11 @@ def command_line_args() -> argparse.Namespace:
         script during execution of a benchmark. Their filenames must be of the
         form DATASET.ENGINE.results.yaml.""")
     arg_parser.add_argument(
-        "--filter-queries", nargs='*', type=str,
+        "--filter-queries", nargs='?', type=str,
         help="""
-        Regular expressions to match query names. If any of the filters matches,
-        the results for the respective query are included from all input files.
+        Filename of JSON dictionary: Regular expressions to match query names,
+        optionally mapping to renaming of queries for output table (otherwise
+        to value null).
         """
     )
     arg_parser.add_argument(
@@ -263,9 +270,13 @@ if __name__ == "__main__":
 
     # Merge input
     merged = merge_multiple_results(parsed)
-    filter_results_dict(merged, args.filter_queries or [])
+    write_agg_csv(merged, args.output_agg[0],
+                  json.loads(args.query_timeouts), args.error_penalty)
+
+    # Apply filters
+    if args.filter_queries:
+        with open(args.filter_queries, "r") as f:
+            merged = filter_results_dict(merged, json.load(f))
 
     # Make csv output files
     write_csv(merged, args.output[0])
-    write_agg_csv(merged, args.output_agg[0],
-                  json.loads(args.query_timeouts), args.error_penalty)
