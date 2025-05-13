@@ -1,195 +1,1271 @@
+# SPARQL queries to gain insight on the characteristics of the knowledge graph,
+# used to generate placeholders in the next step.
+precomputed_queries:
+  - name: PREDICATE_SIZE_QUERY
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
+      GROUP BY ?p ORDER BY DESC(?count)
+  - name: PREDICATE_SIZE_SMALL_QUERY
+    query: |
+      SELECT ?p ?count WHERE {
+        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
+        FILTER (?count <= 1000)
+      } ORDER BY DESC(?count)
+  - name: PREDICATE_LARGE_WITH_NUMERIC_QUERY
+    query: |
+      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o FILTER ISNUMERIC(?o) }
+      GROUP BY ?p ORDER BY DESC(?count)
+    cache_result: true
+  - name: JOIN_ON_SUBJECT_SIZE_QUERY
+    query: |
+      SELECT * {
+        { SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
+          { SELECT ?a ?p1 (COUNT(?a) as ?cnt1) { ?a ?p1 ?o } GROUP BY ?a ?p1 }
+          { SELECT ?a ?p2 (COUNT(?a) as ?cnt2) { ?a ?p2 ?o } GROUP BY ?a ?p2 }
+          FILTER(?p1 != ?p2)
+        } GROUP BY ?p1 ?p2 }
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+        { SELECT ?p2 (COUNT(?p2) AS ?count_p2) { ?a ?p2 ?o } GROUP BY ?p2 }
+      } ORDER BY DESC(?count_join) LIMIT 1000
+    cache_result: true
+  - name: JOIN_DIAGONAL_SIZE_QUERY
+    query: |
+      SELECT * {
+        { SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
+          { SELECT ?m ?p1 (COUNT(?m) as ?cnt1) { ?s ?p1 ?m } GROUP BY ?m ?p1 }
+          { SELECT ?m ?p2 (COUNT(?m) as ?cnt2) { ?m ?p2 ?o } GROUP BY ?m ?p2 }
+          FILTER(?p1 != ?p2)
+        } GROUP BY ?p1 ?p2 }
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+        { SELECT ?p2 (COUNT(?p2) AS ?count_p2) { ?a ?p2 ?o } GROUP BY ?p2 }
+      } ORDER BY DESC(?count_join) LIMIT 1000
+    cache_result: true
+  - name: JOIN_ON_OBJECT_SIZE_QUERY
+    query: |
+      SELECT * {
+        {SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
+          { SELECT ?p1 ?o (COUNT(?o) as ?cnt1) { ?s ?p1 ?o } GROUP BY ?o ?p1 }
+          { SELECT ?p2 ?o (COUNT(?o) as ?cnt2) { ?s ?p2 ?o } GROUP BY ?o ?p2 }
+          FILTER(?p1 != ?p2)
+        } GROUP BY ?p1 ?p2 }
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+        { SELECT ?p2 (COUNT(?p2) AS ?count_p2) { ?a ?p2 ?o } GROUP BY ?p2 }
+      } ORDER BY DESC(?count_join) LIMIT 1000
+    cache_result: true
+  - name: MULTIPLICITY_ON_OBJECT_QUERY
+    query: |
+      SELECT ?p (SUM(?count_s) AS ?count) (COUNT(?p) AS ?count_distinct)
+        (?count / ?count_distinct AS ?multiplicity) WHERE {
+        SELECT ?p ?x (COUNT(?s) AS ?count_s) WHERE { ?s ?p ?x } GROUP BY ?p ?x }
+      GROUP BY ?p ORDER BY DESC(?multiplicity)
+    cache_result: true
+  - name: MULTIPLICITY_ON_SUBJECT_QUERY
+    query: |
+      SELECT ?p (SUM(?count_o) AS ?count) (COUNT(?p) AS ?count_distinct)
+        (?count / ?count_distinct AS ?multiplicity) WHERE {
+        SELECT ?p ?x (COUNT(?o) AS ?count_o) WHERE { ?x ?p ?o } GROUP BY ?p ?x }
+      GROUP BY ?p ORDER BY DESC(?multiplicity)
+    cache_result: true
+  - name: TRANSITIVE_PATH_PREDICATES_QUERY
+    query: |
+      SELECT ?p1 ?count_p1 ?count ((?count / ?count_p1) AS ?x) WHERE {
+        { SELECT ?p1 (COUNT(*) AS ?count) WHERE {
+          ?s ?p1 ?m . ?m ?p2 ?o . FILTER(?p1 = ?p2) } GROUP BY ?p1}
+        { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
+      } ORDER BY DESC(?x) LIMIT 1000
+    cache_result: true
+  - name: PREDICATE_DATATYPES_QUERY
+    # We can't use FILTER(isLiteral(?o)) here to prefilter out IRIs because of
+    # QLever bug #1930
+    query: |
+      SELECT ?p ?dt (?cnt / ?p_count AS ?percent) ?p_count {
+        { SELECT ?p (COUNT(?p) AS ?p_count) WHERE { ?s ?p ?o } GROUP BY ?p }
+        { SELECT (MAX(?cnt_) AS ?cnt) { { SELECT ?p ?dt (COUNT(*) AS ?cnt_) {
+          ?s ?p ?o . BIND(datatype(?o) AS ?dt) FILTER(BOUND(?dt)) }
+          GROUP BY ?p ?dt } } GROUP BY ?p }
+        { SELECT ?p ?dt (COUNT(*) AS ?cnt) {
+          ?s ?p ?o . BIND(datatype(?o) AS ?dt) FILTER(BOUND(?dt)) }
+          GROUP BY ?p ?dt } }
+    cache_result: true
+  # - name: PREDICATE_LANGUAGE_TAGS
+  #   query: |
+  #     SELECT ?p ?lang (COUNT(*) AS ?count) {
+  #       ?s ?p ?o .
+  #       BIND(LANG(?o) AS ?lang)
+  #       FILTER(?lang != "")
+  #       } GROUP BY ?p ?lang  ORDER BY  DESC(?count)
+  #   cache_result: true
+
 # SPARQL SELECT queries to compute the placeholders for a given dataset.
 placeholders:
+  # Single predicates of various sizes
   - name: PREDICATE_LARGE_1
     description: A large predicate (with many triples)
     query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 0
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1
   - name: PREDICATE_LARGE_2
     description: A large predicate, different from the first one
     query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 1
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1 OFFSET 1
   - name: PREDICATE_MEDIUM_1
     description: A medium-sized predicate
     query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 10
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1 OFFSET 10
   - name: PREDICATE_MEDIUM_2
     description: A medium-sized predicate, different from the first one
     query: |
-      SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
-      GROUP BY ?p ORDER BY DESC(?count)
-      LIMIT 1 OFFSET 11
+      SELECT ?p ?count { %PREDICATE_SIZE_QUERY% } LIMIT 1 OFFSET 11
   - name: PREDICATE_SMALL_1
     description: A small predicate
     query: |
-      SELECT ?p ?count WHERE {
-        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
-        FILTER (?count <= 1000)
-      }
-      ORDER BY DESC(?count) LIMIT 1 OFFSET 0
+      SELECT ?p ?count { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 1
   - name: PREDICATE_SMALL_2
-    description: A small predicate
+    description: A small predicate, different from the first one
     query: |
-      SELECT ?p ?count WHERE {
-        { SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o } GROUP BY ?p }
-        FILTER (?count <= 1000)
-      }
-      ORDER BY DESC(?count) LIMIT 1 OFFSET 1
+      SELECT ?p ?count { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 1 OFFSET 1
+
+  # Predicates for certain datatypes
   - name: PREDICATE_LARGE_WITH_LITERAL
     description: A large predicate that has literals as objects
     query: |
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       SELECT (rdfs:label AS ?p) (COUNT(?s) AS ?count)
       WHERE { ?s rdfs:label ?o }
+  - name: PREDICATE_LARGE_WITH_NUMERIC
+    description: A large predicate that has numeric literals as objects
+    # The join on ?count from PREDICATE_LARGE_WITH_NUMERIC_QUERY and
+    # PREDICATE_SIZE_QUERY guarantees that the predicate contains ONLY
+    # numeric values (required for numeric aggregates to not be UNDEF)
+    query: |
+      SELECT * {
+        %PREDICATE_LARGE_WITH_NUMERIC_QUERY%
+        %PREDICATE_SIZE_QUERY% } LIMIT 1
+  - name: PREDICATE_LARGE_WITH_DATE
+    description: A large predicate that has date literals as objects
+    # Like above, the join with PREDICATE_SIZE_QUERY ensures a homogenous
+    # predicate.
+    query: |
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT * {
+        { SELECT ?p (COUNT(?p) AS ?count) {
+          ?s ?p ?o .
+          FILTER (?o >= "-9999-01-01"^^xsd:date && ?o <= "9999-12-31"^^xsd:date)
+        } GROUP BY ?p }
+        %PREDICATE_SIZE_QUERY%
+      } ORDER BY DESC(?count) LIMIT 1
+  - name: PREDICATE_LARGE_STRING
+    description: A large predicate with string literals as objects
+    query: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT ?p ?p_count {
+        %PREDICATE_DATATYPES_QUERY%
+        FILTER(?dt = rdf:langString || ?dt = xsd:string)
+      } ORDER BY DESC(?p_count) LIMIT 1
+  - name: PREDICATE_STRING_HIGH_MULTIPLICITY
+    description: A large predicate with string literals as objects and a high multiplicity
+    query: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT ?p ?p_count ?multiplicity {
+        %PREDICATE_DATATYPES_QUERY%
+        %MULTIPLICITY_ON_SUBJECT_QUERY%
+        FILTER(?dt = rdf:langString || ?dt = xsd:string)
+      } ORDER BY DESC(?multiplicity) LIMIT 1
 
+  # Dataset-dependent values for testing numeric filters
+  - name: PREDICATE_LARGE_WITH_NUMERIC_OFFSET
+    description: Offsets to split the numeric values into percentiles for FILTER benchmarks
+    children:
+      - suffix: _MEDIAN
+        variable: "?median"
+      - suffix: _PERCENTILE_SEVENTY
+        variable: "?percentile70"
+      - suffix: _PERCENTILE_NINETYFIVE
+        variable: "?percentile95"
+    query: |
+      SELECT (floor(COUNT(*) * 0.5) AS ?median)
+             (floor(COUNT(*) * 0.7) AS ?percentile70)
+             (floor(COUNT(*) * 0.95) AS ?percentile95) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . }
+  - name: VALUE_FOR_NUMERIC_BIN_SEARCH_1
+    description: The median of the numeric values
+    query: |
+      SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o)
+      LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_MEDIAN%
+  - name: VALUE_FOR_NUMERIC_BIN_SEARCH_2
+    description: The 70 percentile of the numeric values
+    query: |
+      SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o) 
+      LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_PERCENTILE_SEVENTY%
+  - name: VALUE_FOR_NUMERIC_BIN_SEARCH_3
+    description: The 95 percentile of the numeric values
+    query: |
+      SELECT ?o { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . } ORDER BY ASC(?o)
+      LIMIT 1 OFFSET %PREDICATE_LARGE_WITH_NUMERIC_OFFSET_PERCENTILE_NINETYFIVE%
+
+
+  # Predicates for non-self subject join with largest possible result
+  - name: PREDICATE_FOR_LARGEST_SUBJ_JOIN
+    description: Predicates for subject join with the largest possible result
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+       %JOIN_ON_SUBJECT_SIZE_QUERY% }
+      ORDER BY DESC(?count_join) LIMIT 1
+
+  # Predicates for non-self subject join with large but not cartesian result
+  - name: PREDICATE_FOR_LARGE_SUBJ_JOIN
+    description: Predicates for subject join of two large predicates with a large but not too large result
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?count_p1 ?p2 ?count_p2 ?count_join {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        FILTER(?count_join <= 3 * (?count_p1 + ?count_p2)) }
+      ORDER BY DESC(?count_join) LIMIT 1
+
+  # Predicates for a join between two large predicates with a small result
+  - name: LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN
+    description: Predicates for subject join with two large predicates and small result
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT * {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        FILTER(?count_join > 1000 && ?count_p1 < ?count_p2) }
+      ORDER BY DESC(?count_p1 / ?count_join) LIMIT 1
+
+  # Star subject join with large result but not extreme result
+  - name: PREDICATE_FOR_SUBJ_STAR_JOIN
+    description: Star subject join predicates with large result but not extreme result
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+      - suffix: _3
+        variable: "?p4"
+    query: |
+      SELECT * {
+        { SELECT * WHERE { %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+            { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) 
+                (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+                %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 } } }
+        { SELECT ?p1 ?count_p1 (?p2 AS ?p4) (?count_p2 AS ?count_p4) 
+            (?count_join AS ?count_join3) {
+            %JOIN_ON_SUBJECT_SIZE_QUERY% } LIMIT 1000 }
+        FILTER (?p1 != ?p4)
+        FILTER (?count_join <= (?count_p1 + ?count_p2))
+        FILTER (?count_join2 <= (?count_p2 + ?count_p4))
+        FILTER (?count_join3 <= (?count_p1 + ?count_p4))
+      }
+      ORDER BY DESC(?count_join + ?count_join2) LIMIT 10
+    argmax: |
+      SELECT ?count_join {
+        { SELECT (COUNT(*) AS ?count_join) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 .
+        } }
+        { SELECT (COUNT(*) AS ?count_p1) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 . } }
+        { SELECT (COUNT(*) AS ?count_p2) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o1 . } }
+        { SELECT (COUNT(*) AS ?count_p3) {
+          ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o1 . } }
+        FILTER(?count_join <= 2 * (?count_p1 + ?count_p2 + ?count_p3))
+      }
+
+  # Subject and diagonal join with large but not extreme result
+  - name: PREDICATE_FOR_CHAIN_JOIN
+    description: Diagonal chain join predicates with large but not extreme result
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+      - suffix: _3
+        variable: "?p4"
+    query: |
+      SELECT * {
+        { SELECT * WHERE { %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4)
+          (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+          %JOIN_DIAGONAL_SIZE_QUERY% } LIMIT 1000 }
+        } }
+        FILTER(?p1 != ?p4)
+        FILTER(?count_join <= 3 * (?count_p1 + ?count_p2))
+        FILTER(?count_join2 <= 3 * (?count_p2 + ?count_p4))
+      } ORDER BY DESC(?count_join + ?count_join2) LIMIT 1
+
+  # Very long chain / very large star, where we only care about the query
+  # planning, not if there is a result
+  - name: SMALL_PREDICATE_FOR_XLARGE_JOIN
+    description: Many small predicates for testing if query planning can handle large connected pattern
+    multiplaceholder: true
+    query: |
+      SELECT * { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 25
+
+  # Boolean checks
   - name: HAS_RDFS_LABEL
     description: Check if rdfs:label is present
     query: |
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       ASK { ?s rdfs:label ?o }
-  - name: HAS_WDT_P31_WDT_P279_STAR
-    description: Check if wdt:P31/wdt:P279* is present
+  
+  # Predicate with low and high multiplicity
+  - name: PREDICATE_LOW_MULTIPLICITY
+    description: A predicate with a low multiplicity on the object (many groups)
     query: |
-      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-      ASK { ?s wdt:P31/wdt:P279* ?o }
+      SELECT ?p ?count ?count_distinct ?multiplicity {
+        %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?count_distinct) LIMIT 1
+  - name: PREDICATE_HIGH_MULTIPLICITY
+    description: A predicate with a high multiplicity on the object (few groups)
+    query: |
+      SELECT ?p ?count ?count_distinct ?multiplicity {
+        %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?multiplicity) LIMIT 1
+  
+  # Predicates for group by and join combination
+  - name: LARGE_PREDICATE_FOR_GROUP_BY
+    description: Large predicates for a JOIN and GROUP BY, where the first predicate has high multiplicity on object
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?p2 (?count_join / ?count_distinct AS ?order) {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p AS ?p1) ?count_distinct ?multiplicity {
+          %MULTIPLICITY_ON_OBJECT_QUERY%
+        } }
+      } ORDER BY DESC(?order) LIMIT 1
+
+  # Transitive path
+  - name: PREDICATE_TRANSITIVE_PATH
+    description: A predicate with a very large blow-up when used as a transitive path with plus
+    query: |
+      SELECT * { %TRANSITIVE_PATH_PREDICATES_QUERY% } LIMIT 10
+    argmax: |
+      SELECT (?count_path / ?count_p AS ?sort) {
+        {SELECT (COUNT(*) AS ?count_path) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }}
+        {SELECT (COUNT(*) AS ?count_p) { ?s %PREDICATE_TRANSITIVE_PATH% ?o }}
+      }
+  - name: FIXED_SUBJECT_FOR_TRANSITIVE_PATH
+    description: A fixed subject to perform a more restricted transitive path with plus
+    query: |
+      SELECT ?s (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
+      GROUP BY ?s ORDER BY DESC(?count) LIMIT 1
+  - name: PREDICATE_LARGE_JOIN_FOR_TRANSITIVE_PATH
+    description: A predicate that has a large join with the transitive path predicate
+    query: |
+      SELECT ?p (COUNT(*) AS ?count_join) WHERE {
+        ?s ?p ?m . ?m %PREDICATE_TRANSITIVE_PATH% ?o .
+        FILTER (%PREDICATE_TRANSITIVE_PATH% != ?p)
+      } GROUP BY ?p ORDER BY DESC(?count_join) LIMIT 1
+  - name: PREDICATE_SMALL_JOIN_FOR_TRANSITIVE_PATH
+    description: A predicate that has a small join with the transitive path predicate
+    query: |
+      SELECT ?p (COUNT(*) AS ?count_join) WHERE {
+        ?s ?p ?m . ?m %PREDICATE_TRANSITIVE_PATH% ?o .
+        FILTER (%PREDICATE_TRANSITIVE_PATH% != ?p)
+      } GROUP BY ?p HAVING(?count_join >= 1000) ORDER BY ASC(?count_join) LIMIT 1
+
+  # Predicates for multicolumn join
+  - name: PREDICATE_LARGE_MULTICOL_JOIN
+    description: Predicates for a multicolumn join between large predicates that have large single column joins
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?p2 ?count_s ?count_o ?min_count WHERE {
+        { SELECT ?p1 ?p2 (?count_join AS ?count_s) { 
+            %JOIN_ON_SUBJECT_SIZE_QUERY% } }
+        { SELECT ?p1 ?p2 (?count_join AS ?count_o) {
+            %JOIN_ON_OBJECT_SIZE_QUERY% } }
+        BIND(IF(?count_s < ?count_o, ?count_s, ?count_o) AS ?min_count)
+        FILTER(?min_count >= 1000) 
+      }  ORDER BY DESC(?min_count) LIMIT 1
+  - name: PREDICATE_SMALL_MULTICOL_JOIN
+    description: Predicates for a multicolumn join between predicates that have smaller single column joins
+    children:
+      - suffix: _1
+        variable: "?p1"
+      - suffix: _2
+        variable: "?p2"
+    query: |
+      SELECT ?p1 ?p2 ?count_s ?count_o ?min_count WHERE {
+        { SELECT ?p1 ?p2 (?count_join AS ?count_s) { 
+            %JOIN_ON_SUBJECT_SIZE_QUERY% } }
+        { SELECT ?p1 ?p2 (?count_join AS ?count_o) {
+            %JOIN_ON_OBJECT_SIZE_QUERY% } }
+        BIND(IF(?count_s < ?count_o, ?count_s, ?count_o) AS ?min_count)
+        FILTER(?min_count >= 1000) 
+      }  ORDER BY ASC(?min_count) LIMIT 1
+
+  # Predicates for union constrained by join
+  - name: PREDICATES_FOR_UNION_CONSTRAINT_SMALL
+    description: Predicates for UNION with two large predicates and a join with small result
+    children:
+      - suffix: _U1
+        variable: "?p1"
+      - suffix: _U2
+        variable: "?p4"
+      - suffix: _J
+        variable: "?p2"
+    query: |
+      SELECT * {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) 
+              (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+               %JOIN_ON_SUBJECT_SIZE_QUERY% } } } }
+        FILTER (?p1 != ?p4 && ?count_join > 1000 && ?count_p1 < ?count_p2) } 
+      ORDER BY DESC(?count_p1 / ?count_join) LIMIT 1
+
+  - name: PREDICATES_FOR_UNION_CONSTRAINT_LARGE
+    description: Predicates for UNION with two large predicates and a join with large result
+    children:
+      - suffix: _U1
+        variable: "?p1"
+      - suffix: _U2
+        variable: "?p4"
+      - suffix: _J
+        variable: "?p2"
+    query: |
+      SELECT * {
+        %JOIN_ON_SUBJECT_SIZE_QUERY%
+        { SELECT (?p3 AS ?p2) ?p4 ?count_p4 ?count_join2 {
+          { SELECT (?p1 AS ?p3) (?count_p1 AS ?count_p3) (?p2 AS ?p4) 
+              (?count_p2 AS ?count_p4) (?count_join AS ?count_join2) {
+               %JOIN_ON_SUBJECT_SIZE_QUERY% } } } }
+        FILTER ((?p1 != ?p4) && (?count_join <= 3 * (?count_p1 + ?count_p2)) &&
+              (?count_join2 <= 3 * (?count_p2 + ?count_p4)) &&
+              (?count_join > 1000) && (?count_p2 < ?count_p1) && (?count_p2 < ?count_p4)) } 
+      ORDER BY DESC(?count_join) LIMIT 1
 
 # The benchmark queries with placeholders.
 #
 # NOTE: Do not add PREFIX declarations here, they will be added automatically
 # by `generate-queries.py` (if the user provides a mean to obtain prefix
-# definitions for the dataset).
+# definitions for the dataset, also see `prefixes/` directory).
 queries:
-  # JOIN queries.
-  - name: single-join-medium
-    description: JOIN of two medium-sized predicates
-    group: join
-    query: |
-      SELECT ?s ?o1 ?o2
-      WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_MEDIUM_2% ?o2 }
-  - name: single-join-small-large
+  # JOIN of two triple patterns
+  - name: join-2-small-large
     description: JOIN of a small and a large predicate
     group: join
     query: |
-      SELECT ?s ?o1 ?o2
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_SMALL_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
-  - name: single-join-medium-large
-    description: JOIN of a medium-sized and a large predicate
+  - name: join-2-large-small
+    description: JOIN of a large and a small predicate
     group: join
     query: |
-      SELECT ?s ?o1 ?o2
-      WHERE { ?s %PREDICATE_MEDIUM_1% ?o1 . ?s %PREDICATE_LARGE_1% ?o2 }
-  - name: single-join-large
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_SMALL_1% ?o2 }
+  - name: join-2-large-large
     description: JOIN of two large predicates
     group: join
     query: |
-      SELECT ?s ?o1 ?o2
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_1% ?o1 . ?s %PREDICATE_LARGE_2% ?o2 }
+  - name: join-2-largest-result
+    description: JOIN of two predicates with the largest possible result
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGEST_SUBJ_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_LARGEST_SUBJ_JOIN_2% ?o2 }
+  - name: join-2-large-large-with-large-result
+    description: JOIN of two large predicates with a reasonably large result
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 }
+  - name: join-2-large-large-with-small-result
+    description: JOIN of two large predicates with a small result
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 }
+
+  # JOIN of three triple patterns
+  - name: join-3-star-largest-sum-of-join-sizes
+    description: JOIN star of three large predicates with the largest sum of join sizes
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 .
+      }
+  - name: join-3-chain-largest-sum-of-join-sizes
+    description: JOIN chain of three large predicates with the largest sum of join sizes
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d .
+      }
+  
+  # JOIN of many small triple patterns
+  - name: join-xlarge-star-on-small-predicates
+    description: JOIN star of many small predicates
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+       %begin-foreach:SMALL_PREDICATE_FOR_XLARGE_JOIN%
+        ?s %SMALL_PREDICATE_FOR_XLARGE_JOIN_%#i%% ?o%#i% .
+       %end-foreach:SMALL_PREDICATE_FOR_XLARGE_JOIN%
+      }
+  - name: join-xlarge-chain-on-small-predicates
+    description: JOIN chain of many small predicates
+    group: join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+       %begin-foreach:SMALL_PREDICATE_FOR_XLARGE_JOIN%
+        ?v%#i% %SMALL_PREDICATE_FOR_XLARGE_JOIN_%#i%% ?v%#i+1% .
+       %end-foreach:SMALL_PREDICATE_FOR_XLARGE_JOIN%
+      }
+
+  # OPTIONAL JOIN queries.
+  - name: optional-join-small-large
+    description: OPTIONAL JOIN of a small and a large predicate
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 OPTIONAL { ?s %PREDICATE_LARGE_1% ?o2 } }
+  - name: optional-join-large-small
+    description: OPTIONAL JOIN of a large and a small predicate
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 OPTIONAL { ?s %PREDICATE_SMALL_1% ?o2 } }
+  - name: optional-join-large-large
+    description: OPTIONAL JOIN of two large predicates
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 OPTIONAL { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: optional-join-2-large-large-with-large-result
+    description: OPTIONAL JOIN of two large predicates with a reasonably large join result
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        OPTIONAL { ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 } }
+  - name: optional-join-2-large-large-with-small-join-result-1
+    description: OPTIONAL JOIN of two large predicates with a small join result
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        OPTIONAL { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 } }
+  - name: optional-join-2-large-large-with-small-join-result-2
+    description: OPTIONAL JOIN of two large predicates with a small join result
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o1 .
+        OPTIONAL { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o2 } }
+  - name: optional-join-3-star-1
+    description: OPTIONAL JOIN star of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        OPTIONAL {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: optional-join-3-star-2
+    description: OPTIONAL JOIN star of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        OPTIONAL {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: optional-join-3-chain-1
+    description: OPTIONAL JOIN chain of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        OPTIONAL {
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d . }
+      }
+  - name: optional-join-3-chain-2
+    description: OPTIONAL JOIN chain of three large predicates with the largest sum of join sizes
+    group: optional-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        OPTIONAL {
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d . }
+      }
+
+  # MINUS JOIN queries.
+  - name: minus-join-small-large
+    description: MINUS JOIN of a small and a large predicate
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 MINUS { ?s %PREDICATE_LARGE_1% ?o2 } }
+  - name: minus-join-large-small
+    description: MINUS JOIN of a large and a small predicate
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 MINUS { ?s %PREDICATE_SMALL_1% ?o2 } }
+  - name: minus-join-large-large
+    description: MINUS JOIN of two large predicates
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 MINUS { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: minus-join-2-large-large-with-large-result
+    description: MINUS JOIN of two large predicates with a reasonably large join result
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        MINUS { ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 } }
+  - name: minus-join-2-large-large-with-small-join-result-1
+    description: MINUS JOIN of two large predicates with a small join result
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        MINUS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 } }
+  - name: minus-join-2-large-large-with-small-join-result-2
+    description: MINUS JOIN of two large predicates with a small join result
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o1 .
+        MINUS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o2 } }
+  - name: minus-join-3-star-1
+    description: MINUS JOIN star of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        MINUS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: minus-join-3-star-2
+    description: MINUS JOIN star of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        MINUS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: minus-join-3-chain-1
+    description: MINUS JOIN chain of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        MINUS {
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d . }
+      }
+  - name: minus-join-3-chain-2
+    description: MINUS JOIN chain of three large predicates with the largest sum of join sizes
+    group: minus-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        MINUS {
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d . }
+      }
+
+  # EXIST JOIN queries.
+  - name: exists-join-small-large
+    description: EXISTS JOIN of a small and a large predicate
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_SMALL_1% ?o1 FILTER EXISTS { ?s %PREDICATE_LARGE_1% ?o2 } }
+  - name: exists-join-large-small
+    description: EXISTS JOIN of a large and a small predicate
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 FILTER EXISTS { ?s %PREDICATE_SMALL_1% ?o2 } }
+  - name: exists-join-large-large
+    description: EXISTS JOIN of two large predicates
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_1% ?o1 FILTER EXISTS { ?s %PREDICATE_LARGE_2% ?o2 } }
+  - name: exists-join-2-large-large-with-large-result
+    description: EXISTS JOIN of two large predicates with a reasonably large join result
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_1% ?o1 .
+        FILTER EXISTS { ?s %PREDICATE_FOR_LARGE_SUBJ_JOIN_2% ?o2 } }
+  - name: exists-join-2-large-large-with-small-join-result-1
+    description: EXISTS JOIN of two large predicates with a small join result
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o1 .
+        FILTER EXISTS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o2 } }
+  - name: exists-join-2-large-large-with-small-join-result-2
+    description: EXISTS JOIN of two large predicates with a small join result
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_2% ?o1 .
+        FILTER EXISTS { ?s %LARGE_PREDICATE_FOR_SMALL_SUBJ_JOIN_1% ?o2 } }
+  - name: exists-join-3-star-1
+    description: EXISTS JOIN star of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        FILTER EXISTS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: exists-join-3-star-2
+    description: EXISTS JOIN star of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 .
+        FILTER EXISTS {
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o2 .
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o3 . }
+      }
+  - name: exists-join-3-chain-1
+    description: EXISTS JOIN chain of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        FILTER EXISTS {
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d . }
+      }
+  - name: exists-join-3-chain-2
+    description: EXISTS JOIN chain of three large predicates with the largest sum of join sizes
+    group: exists-join
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE {
+        ?a %PREDICATE_FOR_CHAIN_JOIN_1% ?b .
+        FILTER EXISTS {
+        ?b %PREDICATE_FOR_CHAIN_JOIN_2% ?c .
+        ?c %PREDICATE_FOR_CHAIN_JOIN_3% ?d . }
+      }
+
+  # UNION queries.
+  - name: union-no-constraint
+    description: UNION of two large predicates, no constraint
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_2% ?o } }
+  - name: union-constraint-from-star
+    description: UNION of two large predicates, constrained by a large predicate known to have join partners
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_1% ?o1 }
+        UNION { ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_2% ?o1 }
+        ?s %PREDICATE_FOR_SUBJ_STAR_JOIN_3% ?o2
+      }
+  - name: union-constraint-small-join
+    description: UNION of two large predicates, constrained by a join with a small result
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATES_FOR_UNION_CONSTRAINT_SMALL_U1% ?o1 }
+        UNION { ?s %PREDICATES_FOR_UNION_CONSTRAINT_SMALL_U2% ?o1 }
+        ?s %PREDICATES_FOR_UNION_CONSTRAINT_SMALL_J% ?o2
+      }
+  - name: union-constraint-large-join
+    description: UNION of two large predicates, constrained by a join with a large result
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATES_FOR_UNION_CONSTRAINT_LARGE_U1% ?o1 }
+        UNION { ?s %PREDICATES_FOR_UNION_CONSTRAINT_LARGE_U2% ?o1 }
+        ?s %PREDICATES_FOR_UNION_CONSTRAINT_LARGE_J% ?o2
+      }
+  - name: union-constraint-filter-restrictive
+    description: UNION of two large predicates, constraint by restrictive FILTER
+    group: union
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE {
+        { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_2% ?o }
+        FILTER (?s = ?o)
+      }
+
+  # MULTICOLUMN JOIN queries.
+  - name: multicolumn-join-small
+    description: Multicolumn JOIN small 
+    group: multicolumn-join
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE { 
+        ?s %PREDICATE_SMALL_MULTICOL_JOIN_1% ?o .
+        ?s %PREDICATE_SMALL_MULTICOL_JOIN_2% ?o }
+  - name: multicolumn-join-large
+    description: Multicolumn JOIN large
+    group: multicolumn-join
+    query: |
+      SELECT (COUNT(*) AS ?count) WHERE { 
+        ?s %PREDICATE_LARGE_MULTICOL_JOIN_1% ?o .
+        ?s %PREDICATE_LARGE_MULTICOL_JOIN_2% ?o }
 
   # GROUP BY queries.
-  - name: group-by-count-object-small
-    description: GROUP_BY with COUNT, for object of large predicate
+  - name: group-by-count-object-high-multiplicity
+    description: GROUP BY with COUNT, for object with high multiplicity
     group: group-by
     query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_SMALL_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-  - name: group-by-count-object-medium
-    description: GROUP_BY with COUNT, for object of large predicate
+      SELECT ?object (COUNT(?subject) AS ?count) {
+      ?subject %PREDICATE_HIGH_MULTIPLICITY% ?object .
+      } GROUP BY ?object ORDER BY DESC(?count) LIMIT %LIMIT%
+  - name: group-by-count-object-low-multiplicity
+    description: GROUP BY with COUNT, for object with low multiplicity
     group: group-by
     query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_MEDIUM_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-  - name: group-by-count-object-large
-    description: GROUP_BY with COUNT, for object of large predicate
+      SELECT ?object (COUNT(?subject) AS ?count) {
+      ?subject %PREDICATE_LOW_MULTIPLICITY% ?object .
+      } GROUP BY ?object ORDER BY DESC(?count) LIMIT %LIMIT%
+  - name: group-by-count-object-wrong-sort-order
+    description: GROUP BY with COUNT, for object but not sorted by object
     group: group-by
     query: |
-      SELECT ?object (COUNT(?object) AS ?count)
-      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-      GROUP BY ?object ORDER BY DESC(?count)
-  - name: group-by-count-subject-large
-    description: GROUP_BY with COUNT, for subject of large predicate
+      SELECT ?o1 (COUNT(?s) AS ?count) {
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_1% ?o1 .
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_2% ?o2 .
+      } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
+  - name: group-by-complex-aggregate
+    description: GROUP BY with COUNT and MIN and MAX and SAMPLE
     group: group-by
-    query:
-      SELECT ?subject (COUNT(?subject) AS ?count)
-      WHERE { ?subject %PREDICATE_LARGE_1% ?object }
-      GROUP BY ?subject ORDER BY DESC(?count)
+    query: |
+      SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max)
+        (SAMPLE(?s) AS ?sample) {
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_1% ?o1 .
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_2% ?o2 .
+      } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT %LIMIT%
+  
+  # Implicit aggregation on numeric values
+  - name: group-by-implicit-numeric-baseline
+    description: Implicit GROUP BY with COUNT on numeric predicate as baseline
+    group: group-by
+    query: |
+      SELECT (COUNT(?o) AS ?count) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
+  - name: group-by-implicit-numeric-sum
+    description: Implicit GROUP BY with SUM on numeric predicate
+    group: group-by
+    query: |
+      SELECT (SUM(?o) AS ?sum) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
+  - name: group-by-implicit-numeric-min
+    description: Implicit GROUP BY with MIN on numeric predicate
+    group: group-by
+    query: |
+      SELECT (MIN(?o) AS ?min) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
+  - name: group-by-implicit-numeric-max
+    description: Implicit GROUP BY with MAX on numeric predicate
+    group: group-by
+    query: |
+      SELECT (MAX(?o) AS ?max) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
+  - name: group-by-implicit-numeric-avg
+    description: Implicit GROUP BY with AVG on numeric predicate
+    group: group-by
+    query: |
+      SELECT (AVG(?o) AS ?avg) { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o. }
+  
+  # Implicit aggregation on string values
+  - name: group-by-implicit-string-baseline
+    description: Implicit GROUP BY with COUNT on string predicate as baseline
+    group: group-by
+    query: |
+      SELECT (COUNT(?o) AS ?count) { ?s %PREDICATE_LARGE_STRING% ?o. }
+  - name: group-by-implicit-string-min
+    description: Implicit GROUP BY with MIN on string predicate
+    group: group-by
+    query: |
+      SELECT (MIN(?o) AS ?min) { ?s %PREDICATE_LARGE_STRING% ?o. }
+  - name: group-by-implicit-string-max
+    description: Implicit GROUP BY with MAX on string predicate
+    group: group-by
+    query: |
+      SELECT (MAX(?o) AS ?max) { ?s %PREDICATE_LARGE_STRING% ?o. }
+  
+  # Explicit GROUP BY aggregation on predicate with string values and high
+  # subject multiplicity
+  - name: group-by-string-groupconcat
+    description: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
+    group: group-by
+    query: |
+      SELECT (SUM(STRLEN(?cat)) AS ?sum) {
+      { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) {
+        ?s %PREDICATE_LARGE_STRING% ?o. } GROUP BY ?s } }
+  
+  # DISTINCT queries.
+  - name: distinct-count-object-high-multiplicity
+    description: COUNT DISTINCT, for object with high multiplicity
+    group: distinct
+    query: |
+      SELECT (COUNT(DISTINCT ?object) AS ?count) {
+        ?subject %PREDICATE_HIGH_MULTIPLICITY% ?object .
+      }
+  - name: distinct-count-object-low-multiplicity
+    description: COUNT DISTINCT, for object with low multiplicity
+    group: distinct
+    query: |
+      SELECT (COUNT(DISTINCT ?object) AS ?count) {
+      ?subject %PREDICATE_LOW_MULTIPLICITY% ?object .
+      }
+  - name: distinct-count-object-wrong-sort-order
+    description: COUNT DISTINCT, for object but not sorted by object
+    group: distinct
+    query: |
+      SELECT (COUNT(DISTINCT ?o1) AS ?count) {
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_1% ?o1 .
+        ?s %LARGE_PREDICATE_FOR_GROUP_BY_2% ?o2 .
+      }
 
   # PROPERTY_PATH queries.
-  - name: wdt-P31-wdt-P279-star
-    description: Subjects with their wdt:P31/wdt:P279* type
+  - name: transitive-path-plus
+    description: Transitive path with plus
     group: property-path
-    condition: HAS_WDT_P31_WDT_P279_STAR
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      SELECT (COUNT(*) AS ?count) { ?s %PREDICATE_TRANSITIVE_PATH%+ ?o }
+  - name: transitive-path-plus-fixed-subject
+    description: Transitive path with plus and a fixed subject
+    group: property-path
+    query: |
+      SELECT (COUNT(*) AS ?count) {
+        %FIXED_SUBJECT_FOR_TRANSITIVE_PATH% %PREDICATE_TRANSITIVE_PATH%+ ?o }
+  - name: transitive-path-large-join-and-plus
+    description: Transitive path with a large join and plus
+    group: property-path
+    query: |
+      SELECT (COUNT(*) AS ?count) {
+        ?s %PREDICATE_LARGE_JOIN_FOR_TRANSITIVE_PATH%/%PREDICATE_TRANSITIVE_PATH%+ ?o }
+  - name: transitive-path-small-join-and-plus
+    description: Transitive path with a small join and plus
+    group: property-path
+    query: |
+      SELECT (COUNT(*) AS ?count) {
+        ?s %PREDICATE_SMALL_JOIN_FOR_TRANSITIVE_PATH%/%PREDICATE_TRANSITIVE_PATH%+ ?o }
+
 
   # REGEX queries.
+  - name: regex-3-contains
+    description: CONTAINS filter with fixed string of length 3
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER CONTAINS(?o, "com") }
+  - name: regex-3-fixed
+    description: REGEX filter with fixed string of length 3
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "com") }
+  - name: regex-3
+    description: REGEX filter with expression of length 3
+    group: range-filter
+    condition: HAS_RDFS_LABEL
+    query: |
+      SELECT (COUNT(*) AS ?count)
+      WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "c.m") }
   - name: regex-prefix-1
     description: REGEX filter with prefix of length 1
     group: range-filter
     condition: HAS_RDFS_LABEL
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?o FILTER REGEX(?o, "^C") }
   - name: regex-prefix-2
     description: REGEX filter with prefix of length 2
     condition: HAS_RDFS_LABEL
     group: range-filter
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Co") }
   - name: regex-prefix-3
     description: REGEX filter with prefix of length 3
     condition: HAS_RDFS_LABEL
     group: range-filter
     query: |
-      SELECT ?s ?o
+      SELECT (COUNT(*) AS ?count)
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
+  
+  # STRING functions
+  - name: strlen
+    description: String length for large string predicate
+    query: |
+      SELECT (SUM(STRLEN(?o)) AS ?checksum)  {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strbefore
+    description: STRBEFORE string function
+    group: str-functions
+    query: |
+      SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strafter
+    description: STRAFTER string function
+    group: str-functions
+    query: |
+      SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strstarts
+    description: STRSTARTS string function
+    group: str-functions
+    query: |
+      SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
+  - name: strends
+    description: STRENDS string function
+    group: str-functions
+    query: |
+      SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
 
   # SIZE MATTERS queries.
+  - name: result-size-tiny
+    description: Export 10 tuples
+    group: result-size
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 10
   - name: result-size-small
-    description: A small predicate
+    description: Export 1000 tuples
     group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_SMALL_1% ?o }
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 1000
   - name: result-size-medium
-    description: A medium-sized predicate
+    description: Export 100K tuples
     group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_MEDIUM_1% ?o }
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 100000
   - name: result-size-large
-    description: A large predicate
+    description: Export 1M tuples
     group: result-size
     query: |
-      SELECT ?s ?o WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 1000000
+  - name: result-size-xlarge
+    description: Export 10M tuples
+    group: result-size
+    query: |
+      SELECT ?s ?o
+      WHERE { ?s %PREDICATE_LARGE_1% ?o }
+      LIMIT 10000000
+
+  # NUMERIC function queries.
+  - name: numeric-baseline
+    description: Baseline for numeric queries
+    group: numeric-function
+    query: |
+      SELECT (SUM(?o) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-abs
+    description: ABS function
+    group: numeric-function
+    query: |
+      SELECT (SUM(ABS(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-ceil
+    description: CEIL function
+    group: numeric-function
+    query: |
+      SELECT (SUM(CEIL(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-floor
+    description: FLOOR function
+    group: numeric-function
+    query: |
+      SELECT (SUM(FLOOR(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-round
+    description: ROUND function
+    group: numeric-function
+    query: |
+      SELECT (SUM(ROUND(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-add
+    description: Addition
+    group: numeric-function
+    query: |
+      SELECT (SUM(?o + ?o) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  - name: numeric-greater
+    description: Greater than
+    group: numeric-function
+    query: |
+      SELECT (SUM(?o > 0) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o }
+  
+  # Numeric (Binary Search) Filter
+  - name: numeric-filter-bin-search-fifty-fifty
+    description: Numeric FILTER that filters out 50 percent of the values
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
+        FILTER (?o >= %VALUE_FOR_NUMERIC_BIN_SEARCH_1%) }
+  - name: numeric-filter-bin-search-seventy-thirty
+    description: Numeric FILTER that filters out 70 percent of the values
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
+        FILTER (?o >= %VALUE_FOR_NUMERIC_BIN_SEARCH_2%) }
+  - name: numeric-filter-bin-search-ninetyfive-five
+    description: Numeric FILTER that filters out 95 percent of the values
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o .
+        FILTER (?o >= %VALUE_FOR_NUMERIC_BIN_SEARCH_3%) }
+  
+  # Other Filters
+  - name: filter-few-results
+    description: FILTER that filters out most rows and has few results
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_1% ?o . FILTER (?s = ?o) }
+  - name: filter-many-results
+    description: FILTER that filters out few rows and has many results
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_1% ?o . FILTER (?s != ?o) }
+  - name: filter-language-en
+    description: FILTER on string predicate for only English literals
+    group: filter
+    query: |
+      SELECT (COUNT(?s) AS ?count) {
+        ?s %PREDICATE_LARGE_STRING% ?o . FILTER(LANG(?o) = "en") }
+
+  # DATE function queries (e.g., NOW, YEAR, MONTH, DAY)
+  - name: date-year
+    description: YEAR function
+    group: date-function
+    query: |
+      SELECT (SUM(YEAR(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-month
+    description: MONTH function
+    group: date-function
+    query: |
+      SELECT (SUM(MONTH(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
+  - name: date-day
+    description: DAY function
+    group: date-function
+    query: |
+      SELECT (SUM(DAY(?o)) AS ?sum)
+      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
 
   # STATISTICS queries.
   - name: number-of-triples
     description: Total number of triples
     group: statistics
-    query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(?s) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-subjects
     description: Total number of distinct subjects
     group: statistics
-    query: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(DISTINCT ?s) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-predicates
     description: Total number of distinct predicates
     group: statistics
-    query: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(DISTINCT ?p) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-objects
     description: Total number of distinct objects
     group: statistics
-    query: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+    query: |
+      SELECT (COUNT(DISTINCT ?o) AS ?count)
+      WHERE { ?s ?p ?o }
   - name: number-of-literals
     description: Total number of literals
     group: statistics
-    query: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+    query: |
+      SELECT (COUNT(?o) AS ?count)
+      WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
   - name: number-of-blank-nodes
     description: Total number of blank nodes
     group: statistics
-    query: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
+    query: |
+      SELECT (COUNT(?s) AS ?count)
+      WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
