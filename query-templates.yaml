@@ -5,7 +5,6 @@ precomputed_queries:
     query: |
       SELECT ?p (COUNT(?p) AS ?count) WHERE { ?s ?p ?o }
       GROUP BY ?p ORDER BY DESC(?count)
-    cache_result: false
   - name: PREDICATE_SIZE_SMALL_QUERY
     query: |
       SELECT ?p ?count WHERE {
@@ -21,8 +20,8 @@ precomputed_queries:
     query: |
       SELECT * {
         { SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
-          { SELECT ?a ?p1 (COUNT(?a) as ?cnt1) { ?a ?p1 ?o . } GROUP BY ?a ?p1 }
-          { SELECT ?a ?p2 (COUNT(?a) as ?cnt2) { ?a ?p2 ?o . } GROUP BY ?a ?p2 }
+          { SELECT ?a ?p1 (COUNT(?a) as ?cnt1) { ?a ?p1 ?o } GROUP BY ?a ?p1 }
+          { SELECT ?a ?p2 (COUNT(?a) as ?cnt2) { ?a ?p2 ?o } GROUP BY ?a ?p2 }
           FILTER(?p1 != ?p2)
         } GROUP BY ?p1 ?p2 }
         { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
@@ -33,8 +32,8 @@ precomputed_queries:
     query: |
       SELECT * {
         { SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
-          { SELECT ?m ?p1 (COUNT(?m) as ?cnt1) { ?s ?p1 ?m . } GROUP BY ?m ?p1 }
-          { SELECT ?m ?p2 (COUNT(?m) as ?cnt2) { ?m ?p2 ?o . } GROUP BY ?m ?p2 }
+          { SELECT ?m ?p1 (COUNT(?m) as ?cnt1) { ?s ?p1 ?m } GROUP BY ?m ?p1 }
+          { SELECT ?m ?p2 (COUNT(?m) as ?cnt2) { ?m ?p2 ?o } GROUP BY ?m ?p2 }
           FILTER(?p1 != ?p2)
         } GROUP BY ?p1 ?p2 }
         { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
@@ -45,8 +44,8 @@ precomputed_queries:
     query: |
       SELECT * {
         {SELECT ?p1 ?p2 (SUM(?cnt1 * ?cnt2) as ?count_join) WHERE {
-          { SELECT ?p1 ?o (COUNT(?o) as ?cnt1) { ?s ?p1 ?o . } GROUP BY ?o ?p1 }
-          { SELECT ?p2 ?o (COUNT(?o) as ?cnt2) { ?s ?p2 ?o . } GROUP BY ?o ?p2 }
+          { SELECT ?p1 ?o (COUNT(?o) as ?cnt1) { ?s ?p1 ?o } GROUP BY ?o ?p1 }
+          { SELECT ?p2 ?o (COUNT(?o) as ?cnt2) { ?s ?p2 ?o } GROUP BY ?o ?p2 }
           FILTER(?p1 != ?p2)
         } GROUP BY ?p1 ?p2 }
         { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
@@ -113,7 +112,7 @@ placeholders:
     query: |
       SELECT ?p ?count { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 1
   - name: PREDICATE_SMALL_2
-    description: A small predicate
+    description: A small predicate, different from the first one
     query: |
       SELECT ?p ?count { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 1 OFFSET 1
 
@@ -156,7 +155,7 @@ placeholders:
         FILTER(?dt = rdf:langString || ?dt = xsd:string)
       } ORDER BY DESC(?p_count) LIMIT 1
   - name: PREDICATE_STRING_HIGH_MULTIPLICITY
-    description: A large predicate with string literals and a high multiplicity
+    description: A large predicate with string literals as objects and a high multiplicity
     query: |
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -307,7 +306,7 @@ placeholders:
   # Very long chain / very large star, where we only care about the query
   # planning, not if there is a result
   - name: SMALL_PREDICATE_FOR_XLARGE_JOIN
-    description:
+    description: Many small predicates for testing if query planning can handle large connected pattern
     multiplaceholder: true
     query: |
       SELECT * { %PREDICATE_SIZE_SMALL_QUERY% } LIMIT 25
@@ -321,18 +320,19 @@ placeholders:
   
   # Predicate with low and high multiplicity
   - name: PREDICATE_LOW_MULTIPLICITY
-    description: todo
+    description: A predicate with a low multiplicity on the object (many groups)
     query: |
       SELECT ?p ?count ?count_distinct ?multiplicity {
         %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?count_distinct) LIMIT 1
   - name: PREDICATE_HIGH_MULTIPLICITY
-    description: todo
+    description: A predicate with a high multiplicity on the object (few groups)
     query: |
       SELECT ?p ?count ?count_distinct ?multiplicity {
         %MULTIPLICITY_ON_OBJECT_QUERY% } ORDER BY DESC(?multiplicity) LIMIT 1
   
+  # Predicates for group by and join combination
   - name: LARGE_PREDICATE_FOR_GROUP_BY
-    description: todo
+    description: Large predicates for a JOIN and GROUP BY, where the first predicate has high multiplicity on object
     children:
       - suffix: _1
         variable: "?p1"
@@ -455,7 +455,7 @@ placeholders:
 #
 # NOTE: Do not add PREFIX declarations here, they will be added automatically
 # by `generate-queries.py` (if the user provides a mean to obtain prefix
-# definitions for the dataset).
+# definitions for the dataset, also see `prefixes/` directory).
 queries:
   # JOIN of two triple patterns
   - name: join-2-small-large
@@ -544,7 +544,6 @@ queries:
         ?v%#i% %SMALL_PREDICATE_FOR_XLARGE_JOIN_%#i%% ?v%#i+1% .
        %end-foreach:SMALL_PREDICATE_FOR_XLARGE_JOIN%
       }
-
 
   # OPTIONAL JOIN queries.
   - name: optional-join-small-large
@@ -818,7 +817,7 @@ queries:
       SELECT (COUNT(*) AS ?count)
       WHERE { { ?s %PREDICATE_LARGE_1% ?o } UNION { ?s %PREDICATE_LARGE_2% ?o } }
   - name: union-constraint-from-star
-    description: UNION of two large predicates, constraint by a large predicate known to have join partners
+    description: UNION of two large predicates, constrained by a large predicate known to have join partners
     group: union
     query: |
       SELECT (COUNT(*) AS ?count) WHERE {
@@ -855,14 +854,14 @@ queries:
 
   # MULTICOLUMN JOIN queries.
   - name: multicolumn-join-small
-    description: Multicolumn JOIN small todo 
+    description: Multicolumn JOIN small 
     group: multicolumn-join
     query: |
       SELECT (COUNT(*) AS ?count) WHERE { 
         ?s %PREDICATE_SMALL_MULTICOL_JOIN_1% ?o .
         ?s %PREDICATE_SMALL_MULTICOL_JOIN_2% ?o }
   - name: multicolumn-join-large
-    description: Multicolumn JOIN large todo
+    description: Multicolumn JOIN large
     group: multicolumn-join
     query: |
       SELECT (COUNT(*) AS ?count) WHERE { 
@@ -1187,13 +1186,13 @@ queries:
   
   # Other Filters
   - name: filter-few-results
-    description: todo
+    description: FILTER that filters out most rows and has few results
     group: filter
     query: |
       SELECT (COUNT(?s) AS ?count) {
         ?s %PREDICATE_LARGE_1% ?o . FILTER (?s = ?o) }
   - name: filter-many-results
-    description: todo
+    description: FILTER that filters out few rows and has many results
     group: filter
     query: |
       SELECT (COUNT(?s) AS ?count) {
