@@ -952,8 +952,9 @@ queries:
     description: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
     group: group-by
     query: |
-      SELECT (STRLEN(GROUP_CONCAT(?o; SEPARATOR=" ")) AS ?len) {
-        ?s %PREDICATE_LARGE_STRING% ?o. } GROUP BY ?s LIMIT %LIMIT%
+      SELECT (SUM(STRLEN(?cat)) AS ?sum) {
+      { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) {
+        ?s %PREDICATE_LARGE_STRING% ?o. } GROUP BY ?s } }
   
   # DISTINCT queries.
   - name: distinct-count-object-high-multiplicity
@@ -1050,8 +1051,8 @@ queries:
       WHERE { ?s %PREDICATE_LARGE_WITH_LITERAL% ?object FILTER REGEX(?object, "^Com") }
   
   # STRING functions
-  - name: str-baseline
-    description: String reading baseline
+  - name: strlen
+    description: String length for large string predicate
     query: |
       SELECT (SUM(STRLEN(?o)) AS ?checksum)  {
         ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
@@ -1199,12 +1200,6 @@ queries:
         ?s %PREDICATE_LARGE_1% ?o . FILTER (?s != ?o) }
 
   # DATE function queries (e.g., NOW, YEAR, MONTH, DAY)
-  - name: date-baseline
-    description: Baseline for date queries
-    group: date-function
-    query: |
-      SELECT (SUM(?o = ?o) AS ?sum)
-      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
   - name: date-year
     description: YEAR function
     group: date-function
@@ -1222,12 +1217,6 @@ queries:
     group: date-function
     query: |
       SELECT (SUM(DAY(?o)) AS ?sum)
-      WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
-  - name: date-now
-    description: NOW function
-    group: date-function
-    query: |
-      SELECT (SUM(NOW()) AS ?sum)
       WHERE { ?s %PREDICATE_LARGE_WITH_DATE% ?o }
 
   # STATISTICS queries.
