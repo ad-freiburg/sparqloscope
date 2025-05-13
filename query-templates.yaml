@@ -87,6 +87,14 @@ precomputed_queries:
           ?s ?p ?o . BIND(datatype(?o) AS ?dt) FILTER(BOUND(?dt)) }
           GROUP BY ?p ?dt } }
     cache_result: true
+  # - name: PREDICATE_LANGUAGE_TAGS
+  #   query: |
+  #     SELECT ?p ?lang (COUNT(*) AS ?count) {
+  #       ?s ?p ?o .
+  #       BIND(LANG(?o) AS ?lang)
+  #       FILTER(?lang != "")
+  #       } GROUP BY ?p ?lang  ORDER BY  DESC(?count)
+  #   cache_result: true
 
 # SPARQL SELECT queries to compute the placeholders for a given dataset.
 placeholders:
