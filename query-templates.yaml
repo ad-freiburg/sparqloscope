@@ -1201,7 +1201,7 @@ queries:
     description: FILTER on string predicate for only English literals
     group: filter
     query: |
-      SELECT (COUTN(?s) AS ?count) {
+      SELECT (COUNT(?s) AS ?count) {
         ?s %PREDICATE_LARGE_STRING% ?o . FILTER(LANG(?o) = "en") }
 
   # DATE function queries (e.g., NOW, YEAR, MONTH, DAY)
