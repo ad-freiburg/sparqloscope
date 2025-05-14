@@ -94,7 +94,7 @@ Apply the configuration parameters suitable for the given dataset. For our demon
 
 - **QLever**: in the `Qleverfile`, set `SYSTEM = native`, `MEMORY_FOR_QUERIES = 26G`, `CACHE_MAX_SIZE = 6G` and `TIMEOUT = 180s` and apply `qlever settings group-by-hash-map-enabled=true` after engine start
 - **Virtuoso**: in the `virtuoso.ini` file, set `NumberOfBuffers = 2720000`, `MaxDirtyBuffers = 2000000` (the recommended values for 32 GiB of RAM) and `MaxQueryExecutionTime = 180`
-- **MillenniumDB**: start the server with these flags `mdb-server --timeout 180 --threads 2 --versioned-buffer 10GB --unversioned-buffer 1GB --private-buffer 1GB --strings-static 2GB --strings-dynamic 2GB .`
+- **MillenniumDB**: start the server with these flags `mdb-server --timeout 180 --threads 2 --versioned-buffer 20GB --unversioned-buffer 2GB --private-buffer 2GB --strings-static 4GB --strings-dynamic 4GB .`
 
 #### Recommended configuration for Wikidata Truthy
 
