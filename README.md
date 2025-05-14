@@ -24,7 +24,9 @@ You may find ready-to-use benchmarks, which we have generated using Sparqloscope
 
 ### Further information
 
-Detailed setup instructions can be found in the [setup documentation](docs/setup.md).
+An interactive web app for the evaluation results on various engines can be found at <https://purl.org/ad-freiburg/sparqloscope-evaluation>.
+
+Detailed setup instructions for running Sparqloscope can be found in the [setup documentation](docs/setup.md).
 
 Details on the precomputation queries, placeholders and template queries are described in [query-templates.yaml](query-templates.yaml). The exact procedure of benchmark generation is documented in [generate-benchmark.py](generate-benchmark.py).
 
