@@ -1,0 +1,1438 @@
+queries:
+- query: join-2-small-large [JOIN of a small and a large predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s wdtn:P8024 ?o1 . ?s schema:description ?o2 }'
+  runtime_info:
+    client_time: 0.20085859298706055
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-2-large-small [JOIN of a large and a small predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 . ?s wdtn:P8024 ?o2 }'
+  runtime_info:
+    client_time: 0.00595545768737793
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-2-large-large [JOIN of two large predicates]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 . ?s schema:name
+    ?o2 }'
+  runtime_info:
+    client_time: 251.75335097312927
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"30668612493"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:name ?o1 . ?s rdfs:label ?o2 }'
+  runtime_info:
+    client_time: 300.01575541496277
+  headers: []
+  results: 'HTTP code: 429: { "exception": "Operation timed out.", "query": "PREFIX
+    rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:name ?o1 . ?s rdfs:label ?o2 }", "resultsize": 0, "status": "ERROR",
+    "time": { "computeResult": 300011, "total": 300011 } }'
+- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 . ?s wdt:P2093 ?o2 }'
+  runtime_info:
+    client_time: 55.425270557403564
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"6092272179"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-2-large-large-with-small-res ... e predicates with a small result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . ?s wdt:P478 ?o2 }'
+  runtime_info:
+    client_time: 0.7045049667358398
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
+    . ?s wdt:P31 ?o3 }'
+  runtime_info:
+    client_time: 59.271103382110596
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3345167144"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . ?c schema:description ?d }'
+  runtime_info:
+    client_time: 139.33749771118164
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"16176593578"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s wdtn:P8024 ?o0 . ?s wdt:P8024 ?o1 . ?s wdt:P10837 ?o2 . ?s wdt:P5626 ?o3 .
+    ?s wdt:P3453 ?o4 . ?s wdt:P3177 ?o5 . ?s wdt:P7997 ?o6 . ?s wdt:P4740 ?o7 . ?s
+    wdt:P4034 ?o8 . ?s wdt:P9556 ?o9 . ?s wdt:P470 ?o10 . ?s wdt:P5052 ?o11 . ?s wdtn:P4466
+    ?o12 . ?s wdt:P4466 ?o13 . ?s wdt:P958 ?o14 . ?s wdt:P7492 ?o15 . ?s wdt:P1385
+    ?o16 . ?s wdt:P12123 ?o17 . ?s wdt:P6141 ?o18 . ?s wdt:P10916 ?o19 . ?s wdt:P10761
+    ?o20 . ?s wdt:P6019 ?o21 . ?s wdt:P3322 ?o22 . ?s wdt:P12249 ?o23 . ?s wdt:P4433
+    ?o24 }'
+  runtime_info:
+    client_time: 0.20694541931152344
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?v0 wdtn:P8024 ?v1 . ?v1 wdt:P8024 ?v2 . ?v2 wdt:P10837 ?v3 . ?v3 wdt:P5626 ?v4
+    . ?v4 wdt:P3453 ?v5 . ?v5 wdt:P3177 ?v6 . ?v6 wdt:P7997 ?v7 . ?v7 wdt:P4740 ?v8
+    . ?v8 wdt:P4034 ?v9 . ?v9 wdt:P9556 ?v10 . ?v10 wdt:P470 ?v11 . ?v11 wdt:P5052
+    ?v12 . ?v12 wdtn:P4466 ?v13 . ?v13 wdt:P4466 ?v14 . ?v14 wdt:P958 ?v15 . ?v15
+    wdt:P7492 ?v16 . ?v16 wdt:P1385 ?v17 . ?v17 wdt:P12123 ?v18 . ?v18 wdt:P6141 ?v19
+    . ?v19 wdt:P10916 ?v20 . ?v20 wdt:P10761 ?v21 . ?v21 wdt:P6019 ?v22 . ?v22 wdt:P3322
+    ?v23 . ?v23 wdt:P12249 ?v24 . ?v24 wdt:P4433 ?v25 }'
+  runtime_info:
+    client_time: 0.5122201442718506
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s wdtn:P8024 ?o1 OPTIONAL { ?s schema:description ?o2 } }'
+  runtime_info:
+    client_time: 4.226346969604492
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 OPTIONAL { ?s wdtn:P8024 ?o2 } }'
+  runtime_info:
+    client_time: 36.617908239364624
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 OPTIONAL { ?s schema:name
+    ?o2 } }'
+  runtime_info:
+    client_time: 257.9804174900055
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"30673320904"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 . OPTIONAL { ?s wdt:P2093 ?o2 } }'
+  runtime_info:
+    client_time: 74.38972330093384
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"7679383970"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . OPTIONAL { ?s wdt:P478 ?o2
+    } }'
+  runtime_info:
+    client_time: 0.8343932628631592
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33959393"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . OPTIONAL { ?s wdt:P50 ?o2
+    } }'
+  runtime_info:
+    client_time: 1.0186455249786377
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"58200974"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
+    . OPTIONAL { ?s wdt:P31 ?o3 } }'
+  runtime_info:
+    client_time: 81.82291460037231
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3346689978"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . OPTIONAL { ?s schema:description
+    ?o2 . ?s wdt:P31 ?o3 } }'
+  runtime_info:
+    client_time: 79.10078763961792
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3473068852"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . OPTIONAL { ?c schema:description ?d } }'
+  runtime_info:
+    client_time: 157.71382093429565
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"16176594500"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . OPTIONAL { ?b wdt:P31 ?c . ?c schema:description ?d } }'
+  runtime_info:
+    client_time: 23.665995121002197
+  headers: []
+  results: 'HTTP code: 500: { "exception": "Tried to allocate 25.9 GB, but only 15.2
+    GB were available. Clear the cache or allow more memory for QLever during startup",
+    "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . OPTIONAL { ?b wdt:P31 ?c . ?c schema:description ?d } }", "resultsize":
+    0, "status": "ERROR", "time": { "computeResult": 23661, "total": 23661 } }'
+- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s wdtn:P8024 ?o1 MINUS { ?s schema:description ?o2 } }'
+  runtime_info:
+    client_time: 4.0987420082092285
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 MINUS { ?s wdtn:P8024 ?o2 } }'
+  runtime_info:
+    client_time: 23.886805772781372
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3273353121"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-large-large [MINUS JOIN of two large predicates]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 MINUS { ?s schema:name
+    ?o2 } }'
+  runtime_info:
+    client_time: 66.85900545120239
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"4708411"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 . MINUS { ?s wdt:P2093 ?o2 } }'
+  runtime_info:
+    client_time: 35.44915270805359
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1587111791"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . MINUS { ?s wdt:P478 ?o2 }
+    }'
+  runtime_info:
+    client_time: 0.6357505321502686
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"4209248"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . MINUS { ?s wdt:P50 ?o2 }
+    }'
+  runtime_info:
+    client_time: 0.7712438106536865
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"28450829"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
+    . MINUS { ?s wdt:P31 ?o3 } }'
+  runtime_info:
+    client_time: 67.06667041778564
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1522834"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . MINUS { ?s schema:description
+    ?o2 . ?s wdt:P31 ?o3 } }'
+  runtime_info:
+    client_time: 48.36306715011597
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"127901708"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . MINUS { ?c schema:description ?d } }'
+  runtime_info:
+    client_time: 44.319873332977295
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"922"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . MINUS { ?b wdt:P31 ?c . ?c schema:description ?d } }'
+  runtime_info:
+    client_time: 23.69235372543335
+  headers: []
+  results: 'HTTP code: 500: { "exception": "Tried to allocate 25.9 GB, but only 15.2
+    GB were available. Clear the cache or allow more memory for QLever during startup",
+    "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . MINUS { ?b wdt:P31 ?c . ?c schema:description ?d } }", "resultsize":
+    0, "status": "ERROR", "time": { "computeResult": 23687, "total": 23687 } }'
+- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s wdtn:P8024 ?o1 FILTER EXISTS { ?s schema:description ?o2 } }'
+  runtime_info:
+    client_time: 4.6314778327941895
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1000"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 FILTER EXISTS { ?s wdtn:P8024 ?o2 } }'
+  runtime_info:
+    client_time: 12.673435926437378
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-large-large [EXISTS JOIN of two large predicates]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 FILTER EXISTS {
+    ?s schema:name ?o2 } }'
+  runtime_info:
+    client_time: 33.94403147697449
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3268678416"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?s schema:description ?o1 . FILTER EXISTS { ?s wdt:P2093 ?o2 } }'
+  runtime_info:
+    client_time: 29.971302270889282
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1686275036"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . FILTER EXISTS { ?s wdt:P478
+    ?o2 } }'
+  runtime_info:
+    client_time: 0.6725382804870605
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"29748245"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . FILTER EXISTS { ?s wdt:P50
+    ?o2 } }'
+  runtime_info:
+    client_time: 0.49120283126831055
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"11561944"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
+    . FILTER EXISTS { ?s wdt:P31 ?o3 } }'
+  runtime_info:
+    client_time: 89.67215251922607
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3273154906"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . FILTER EXISTS { ?s schema:description
+    ?o2 . ?s wdt:P31 ?o3 } }'
+  runtime_info:
+    client_time: 37.6885929107666
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"108029262"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . FILTER EXISTS { ?c schema:description ?d } }'
+  runtime_info:
+    client_time: 15.084810495376587
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"315089523"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . FILTER EXISTS { ?b wdt:P31 ?c . ?c schema:description ?d } }'
+  runtime_info:
+    client_time: 22.98669743537903
+  headers: []
+  results: 'HTTP code: 500: { "exception": "Tried to allocate 25.9 GB, but only 15.2
+    GB were available. Clear the cache or allow more memory for QLever during startup",
+    "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    ?a wdt:P2860 ?b . FILTER EXISTS { ?b wdt:P31 ?c . ?c schema:description ?d } }",
+    "resultsize": 0, "status": "ERROR", "time": { "computeResult": 22982, "total":
+    22982 } }'
+- query: union-no-constraint [UNION of two large predicates, no constraint]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { { ?s schema:description ?o } UNION { ?s schema:name
+    ?o } }'
+  runtime_info:
+    client_time: 10.21747636795044
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3989891752"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: union-constraint-from-star [UNION ... cate known to have join partners]
+  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { { ?s rdf:type ?o1 } UNION { ?s schema:description
+    ?o1 } ?s wdt:P31 ?o2 }'
+  runtime_info:
+    client_time: 88.72940468788147
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3461507606"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT (COUNT(*) AS ?count)
+    WHERE { { ?s wdt:P50 ?o1 } UNION { ?s skos:prefLabel ?o1 } ?s wdt:P478 ?o2 }'
+  runtime_info:
+    client_time: 14.22160029411316
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"111906031"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
+    { ?s schema:description ?o1 } UNION { ?s schema:name ?o1 } ?s wdt:P2093 ?o2 }'
+  runtime_info:
+    client_time: 125.77092719078064
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"6396603056"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { { ?s schema:description ?o } UNION { ?s schema:name
+    ?o } FILTER (?s = ?o) }'
+  runtime_info:
+    client_time: 18.69055724143982
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: multicolumn-join-small [Multicolumn JOIN small]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P921 ?o . ?s wdt:P31 ?o }'
+  runtime_info:
+    client_time: 1.9177062511444092
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"43041"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: multicolumn-join-large [Multicolumn JOIN large]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT (COUNT(*) AS ?count)
+    WHERE { ?s skos:prefLabel ?o . ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 48.08708071708679
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"716504925"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-count-object-high-multip ... or object with high multiplicity]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT ?object (COUNT(?subject) AS ?count) { ?subject wdt:P2548 ?object } GROUP
+    BY ?object ORDER BY DESC(?count) LIMIT 10'
+  runtime_info:
+    client_time: 0.009231090545654297
+  result_size: 3
+  headers:
+  - object
+  - count
+  results:
+  - - <http://www.wikidata.org/entity/Q22809680>
+    - '"530762"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q22809711>
+    - '"527806"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q41329>
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+  sparql: 'PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    SELECT ?object (COUNT(?subject) AS ?count) { ?subject skos:prefLabel ?object }
+    GROUP BY ?object ORDER BY DESC(?count) LIMIT 10'
+  runtime_info:
+    client_time: 23.820086240768433
+  result_size: 10
+  headers:
+  - object
+  - count
+  results:
+  - - '"সংরক্ষিত উপপ্রমেয়মূলক প্রোটিন"@bn'
+    - '"38274"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"hypothetical protein, conserved"@en'
+    - '"38241"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"উপপ্রমেয়মূলক প্রোটিন"@bn'
+    - '"35530"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"hypothetical protein"@en'
+    - '"35521"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"সংশোধন"@bn'
+    - '"21874"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"conserved Plasmodium protein, unknown function"@en'
+    - '"12027"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"Untitled"@en'
+    - '"11884"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"Wohnhaus"@de'
+    - '"11815"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"Zonder titel"@nl'
+    - '"9680"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"Erratum"@en'
+    - '"9312"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT ?o1 (COUNT(?s) AS ?count) { ?s
+    wdt:P13046 ?o1 . ?s schema:description ?o2 } GROUP BY ?o1 ORDER BY DESC(?count)
+    LIMIT 10'
+  runtime_info:
+    client_time: 6.068053245544434
+  result_size: 10
+  headers:
+  - o1
+  - count
+  results:
+  - - <http://www.wikidata.org/entity/Q7318358>
+    - '"105647158"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q1504425>
+    - '"781966"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q591041>
+    - '"64613"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q121763407>
+    - '"15104"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q2782326>
+    - '"4116"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q815382>
+    - '"3946"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q131359514>
+    - '"2006"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q58901591>
+    - '"1413"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q309481>
+    - '"749"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - <http://www.wikidata.org/entity/Q131359749>
+    - '"542"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s)
+    AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample) { ?s wdt:P13046 ?o1 . ?s schema:description
+    ?o2 } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT 10'
+  runtime_info:
+    client_time: 7.9193150997161865
+  result_size: 10
+  headers:
+  - o1
+  - count
+  - min
+  - max
+  - sample
+  results:
+  - - <http://www.wikidata.org/entity/Q7318358>
+    - '"105647158"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q100295053>
+    - <http://www.wikidata.org/entity/Q99731952>
+    - <http://www.wikidata.org/entity/Q100295053>
+  - - <http://www.wikidata.org/entity/Q1504425>
+    - '"781966"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q101138924>
+    - <http://www.wikidata.org/entity/Q99349321>
+    - <http://www.wikidata.org/entity/Q101138924>
+  - - <http://www.wikidata.org/entity/Q591041>
+    - '"64613"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q100000003>
+    - <http://www.wikidata.org/entity/Q99999992>
+    - <http://www.wikidata.org/entity/Q100000003>
+  - - <http://www.wikidata.org/entity/Q121763407>
+    - '"15104"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q100895162>
+    - <http://www.wikidata.org/entity/Q99974210>
+    - <http://www.wikidata.org/entity/Q100895162>
+  - - <http://www.wikidata.org/entity/Q2782326>
+    - '"4116"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q22330678>
+    - <http://www.wikidata.org/entity/Q99409711>
+    - <http://www.wikidata.org/entity/Q22330678>
+  - - <http://www.wikidata.org/entity/Q815382>
+    - '"3946"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q101060206>
+    - <http://www.wikidata.org/entity/Q98459647>
+    - <http://www.wikidata.org/entity/Q101060206>
+  - - <http://www.wikidata.org/entity/Q131359514>
+    - '"2006"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q132291049>
+    - <http://www.wikidata.org/entity/Q38190587>
+    - <http://www.wikidata.org/entity/Q132291049>
+  - - <http://www.wikidata.org/entity/Q58901591>
+    - '"1413"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q22061852>
+    - <http://www.wikidata.org/entity/Q37947489>
+    - <http://www.wikidata.org/entity/Q22061852>
+  - - <http://www.wikidata.org/entity/Q309481>
+    - '"749"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q105020799>
+    - <http://www.wikidata.org/entity/Q61632533>
+    - <http://www.wikidata.org/entity/Q105020799>
+  - - <http://www.wikidata.org/entity/Q131359749>
+    - '"542"^^<http://www.w3.org/2001/XMLSchema#int>'
+    - <http://www.wikidata.org/entity/Q108799700>
+    - <http://www.wikidata.org/entity/Q52937709>
+    - <http://www.wikidata.org/entity/Q108799700>
+- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?o) AS ?count) { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 0.006402015686035156
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o) AS ?sum) { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 0.6448659896850586
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (MIN(?o) AS ?min) { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 0.6506507396697998
+  result_size: 1
+  headers:
+  - min
+  results:
+  - - '"984175"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (MAX(?o) AS ?max) { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 0.6309225559234619
+  result_size: 1
+  headers:
+  - max
+  results:
+  - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (AVG(?o) AS ?avg) { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 0.6340477466583252
+  result_size: 1
+  headers:
+  - avg
+  results:
+  - - '"2.00554e+09"^^<http://www.w3.org/2001/XMLSchema#decimal>'
+- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?o) AS ?count) { ?s schema:description ?o }'
+  runtime_info:
+    client_time: 0.006018400192260742
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (MIN(?o) AS ?min) { ?s schema:description ?o }'
+  runtime_info:
+    client_time: 16.57584834098816
+  result_size: 1
+  headers:
+  - min
+  results:
+  - - '"​"@th'
+- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (MAX(?o) AS ?max) { ?s schema:description ?o }'
+  runtime_info:
+    client_time: 16.599173069000244
+  result_size: 1
+  headers:
+  - max
+  results:
+  - - '"󰡔조선신보󰡕의 배일사상을 변론하는 말"@ko'
+- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
+    AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
+  runtime_info:
+    client_time: 300.8878400325775
+  headers: []
+  results: 'HTTP code: 429: { "exception": "Operation timed out.", "query": "PREFIX
+    schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT
+    (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=\" \") AS ?cat)
+    { ?s schema:description ?o } GROUP BY ?s } }", "resultsize": 0, "status": "ERROR",
+    "time": { "computeResult": 300882, "total": 300882 } }'
+- query: distinct-count-object-high-multip ... or object with high multiplicity]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject wdt:P2548 ?object }'
+  runtime_info:
+    client_time: 0.015524625778198242
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+  sparql: 'PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject skos:prefLabel ?object }'
+  runtime_info:
+    client_time: 193.02568578720093
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"669534108"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(DISTINCT ?o1) AS ?count)
+    { ?s wdt:P13046 ?o1 . ?s schema:description ?o2 }'
+  runtime_info:
+    client_time: 8.157562017440796
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"42"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: transitive-path-plus [Transitive path with plus]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) { ?s wdt:P2293+ ?o }'
+  runtime_info:
+    client_time: 1.8926022052764893
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"12972038"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { wd:Q81867
+    wdt:P2293+ ?o }'
+  runtime_info:
+    client_time: 0.04039812088012695
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3519"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) { ?s wdt:P921/wdt:P2293+ ?o }'
+  runtime_info:
+    client_time: 300.01572823524475
+  headers: []
+  results: 'HTTP code: 429: { "exception": "Operation timed out.", "query": "PREFIX
+    wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) { ?s wdt:P921/wdt:P2293+ ?o }", "resultsize": 0, "status":
+    "ERROR", "time": { "computeResult": 300012, "total": 300012 } }'
+- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) { ?s wdt:P1911/wdt:P2293+ ?o }'
+  runtime_info:
+    client_time: 1.6229679584503174
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"159948"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER CONTAINS(?o, "com")
+    }'
+  runtime_info:
+    client_time: 282.4643654823303
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"8975543"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: regex-3-fixed [REGEX filter with fixed string of length 3]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "com") }'
+  runtime_info:
+    client_time: 272.7086353302002
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"8975543"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: regex-3 [REGEX filter with expression of length 3]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "c.m") }'
+  runtime_info:
+    client_time: 270.89025926589966
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"15918582"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: regex-prefix-1 [REGEX filter with prefix of length 1]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "^C") }'
+  runtime_info:
+    client_time: 0.8443107604980469
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"52341883"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: regex-prefix-2 [REGEX filter with prefix of length 2]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?object FILTER REGEX(?object,
+    "^Co") }'
+  runtime_info:
+    client_time: 0.6645758152008057
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"9821463"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: regex-prefix-3 [REGEX filter with prefix of length 3]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?object FILTER REGEX(?object,
+    "^Com") }'
+  runtime_info:
+    client_time: 0.6632425785064697
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1878503"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: strlen [String length for large string predicate]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 247.1764578819275
+  result_size: 1
+  headers:
+  - checksum
+  results:
+  - - '"17104652934"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: strbefore [STRBEFORE string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 300.00674867630005
+  headers: []
+  results: 'HTTP code: 429: { "exception": "Operation timed out.", "query": "PREFIX
+    rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRBEFORE(?o, \"a\"))) AS ?checksum) { ?s rdfs:label ?o }",
+    "resultsize": 0, "status": "ERROR", "time": { "computeResult": 300002, "total":
+    300002 } }'
+- query: strafter [STRAFTER string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 294.1994366645813
+  result_size: 1
+  headers:
+  - checksum
+  results:
+  - - '"10922757459"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: strstarts [STRSTARTS string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o,
+    "a"))) AS ?count) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 251.28920817375183
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"589247"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: strends [STRENDS string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o,
+    "a"))) AS ?count) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 254.46951389312744
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"83145778"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: result-size-tiny [Export 10 tuples]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 10'
+  runtime_info:
+    client_time: 0.022310972213745117
+  result_size: 10
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/P10>
+    - '"aiheeseen liittyvä videotiedosto"@fi'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivo de video en Commons"@es'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivu de vidiu en Commons"@ext'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"arquivo de vídeo do Commons"@pt-br'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"elementga mos keladigan Wikimedia omboridan video"@uz'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"əlaqədar video"@az'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"Fails no Vikikrātuves. Attēliem jāizmanto "attēlu" īpašība (P18)."@lv'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro de vídeo do Commons"@pt'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro multimedia en Commons"@gl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fichier vidéo sur Commons. Pour les images, utilisez la propriété « image
+      » (P18)."@fr'
+- query: result-size-small [Export 1000 tuples]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 1000'
+  runtime_info:
+    client_time: 0.02537059783935547
+  result_size: 1000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/P10>
+    - '"aiheeseen liittyvä videotiedosto"@fi'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivo de video en Commons"@es'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivu de vidiu en Commons"@ext'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"arquivo de vídeo do Commons"@pt-br'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"elementga mos keladigan Wikimedia omboridan video"@uz'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"əlaqədar video"@az'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"Fails no Vikikrātuves. Attēliem jāizmanto "attēlu" īpašība (P18)."@lv'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro de vídeo do Commons"@pt'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro multimedia en Commons"@gl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fichier vidéo sur Commons. Pour les images, utilisez la propriété « image
+      » (P18)."@fr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fișier video relevant de la Commons; a se folosi P18 pentru imagini"@ro'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fitxer de Commons. Per a les imatges, cal fer servir la propietat "imatge""@ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ghwughwu ku shyei a̱ni. Ka̱ nghwughwu nia, a nyia̱ ta̱m ma̱ng P18. Mat ti̱rela
+      a̱yaafim, a mbeang "a̱tyu wu byia̱ kap gu ku maat a̱ni" (P3831)="ti̱rela" (Q622550)"@kcg'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ilgili video. fragmanlar için nesnedeki rolü (P3831) = (Q622550) ile nitelendirin.
+      Resimler için görsel (P18) kullanın."@tr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"kapcsolódó videofájl a Commonsból"@hu'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"mediefil frå Commons"@nn'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"plik z Commons, nie używaj do obrazów i dźwięków. Jeżeli plik jest trailerem
+      filmowym, użyj (object has role) P3831 = (trailer) Q622550"@pl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-gb'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video. For images, use the property P18. For film trailers, qualify
+      with "object has role" (P3831)="trailer" (Q622550)"@en'
+- query: result-size-medium [Export 100K tuples]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 100000'
+  runtime_info:
+    client_time: 0.24430179595947266
+  result_size: 100000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/P10>
+    - '"aiheeseen liittyvä videotiedosto"@fi'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivo de video en Commons"@es'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivu de vidiu en Commons"@ext'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"arquivo de vídeo do Commons"@pt-br'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"elementga mos keladigan Wikimedia omboridan video"@uz'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"əlaqədar video"@az'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"Fails no Vikikrātuves. Attēliem jāizmanto "attēlu" īpašība (P18)."@lv'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro de vídeo do Commons"@pt'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro multimedia en Commons"@gl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fichier vidéo sur Commons. Pour les images, utilisez la propriété « image
+      » (P18)."@fr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fișier video relevant de la Commons; a se folosi P18 pentru imagini"@ro'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fitxer de Commons. Per a les imatges, cal fer servir la propietat "imatge""@ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ghwughwu ku shyei a̱ni. Ka̱ nghwughwu nia, a nyia̱ ta̱m ma̱ng P18. Mat ti̱rela
+      a̱yaafim, a mbeang "a̱tyu wu byia̱ kap gu ku maat a̱ni" (P3831)="ti̱rela" (Q622550)"@kcg'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ilgili video. fragmanlar için nesnedeki rolü (P3831) = (Q622550) ile nitelendirin.
+      Resimler için görsel (P18) kullanın."@tr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"kapcsolódó videofájl a Commonsból"@hu'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"mediefil frå Commons"@nn'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"plik z Commons, nie używaj do obrazów i dźwięków. Jeżeli plik jest trailerem
+      filmowym, użyj (object has role) P3831 = (trailer) Q622550"@pl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-gb'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video. For images, use the property P18. For film trailers, qualify
+      with "object has role" (P3831)="trailer" (Q622550)"@en'
+- query: result-size-large [Export 1M tuples]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 1000000'
+  runtime_info:
+    client_time: 1.763575553894043
+  result_size: 1000000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/P10>
+    - '"aiheeseen liittyvä videotiedosto"@fi'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivo de video en Commons"@es'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivu de vidiu en Commons"@ext'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"arquivo de vídeo do Commons"@pt-br'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"elementga mos keladigan Wikimedia omboridan video"@uz'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"əlaqədar video"@az'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"Fails no Vikikrātuves. Attēliem jāizmanto "attēlu" īpašība (P18)."@lv'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro de vídeo do Commons"@pt'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro multimedia en Commons"@gl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fichier vidéo sur Commons. Pour les images, utilisez la propriété « image
+      » (P18)."@fr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fișier video relevant de la Commons; a se folosi P18 pentru imagini"@ro'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fitxer de Commons. Per a les imatges, cal fer servir la propietat "imatge""@ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ghwughwu ku shyei a̱ni. Ka̱ nghwughwu nia, a nyia̱ ta̱m ma̱ng P18. Mat ti̱rela
+      a̱yaafim, a mbeang "a̱tyu wu byia̱ kap gu ku maat a̱ni" (P3831)="ti̱rela" (Q622550)"@kcg'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ilgili video. fragmanlar için nesnedeki rolü (P3831) = (Q622550) ile nitelendirin.
+      Resimler için görsel (P18) kullanın."@tr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"kapcsolódó videofájl a Commonsból"@hu'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"mediefil frå Commons"@nn'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"plik z Commons, nie używaj do obrazów i dźwięków. Jeżeli plik jest trailerem
+      filmowym, użyj (object has role) P3831 = (trailer) Q622550"@pl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-gb'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video. For images, use the property P18. For film trailers, qualify
+      with "object has role" (P3831)="trailer" (Q622550)"@en'
+- query: result-size-xlarge [Export 10M tuples]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 10000000'
+  runtime_info:
+    client_time: 16.413203716278076
+  result_size: 10000000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/P10>
+    - '"aiheeseen liittyvä videotiedosto"@fi'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivo de video en Commons"@es'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"archivu de vidiu en Commons"@ext'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"arquivo de vídeo do Commons"@pt-br'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"elementga mos keladigan Wikimedia omboridan video"@uz'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"əlaqədar video"@az'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"Fails no Vikikrātuves. Attēliem jāizmanto "attēlu" īpašība (P18)."@lv'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro de vídeo do Commons"@pt'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ficheiro multimedia en Commons"@gl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fichier vidéo sur Commons. Pour les images, utilisez la propriété « image
+      » (P18)."@fr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fișier video relevant de la Commons; a se folosi P18 pentru imagini"@ro'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"fitxer de Commons. Per a les imatges, cal fer servir la propietat "imatge""@ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ghwughwu ku shyei a̱ni. Ka̱ nghwughwu nia, a nyia̱ ta̱m ma̱ng P18. Mat ti̱rela
+      a̱yaafim, a mbeang "a̱tyu wu byia̱ kap gu ku maat a̱ni" (P3831)="ti̱rela" (Q622550)"@kcg'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"ilgili video. fragmanlar için nesnedeki rolü (P3831) = (Q622550) ile nitelendirin.
+      Resimler için görsel (P18) kullanın."@tr'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"kapcsolódó videofájl a Commonsból"@hu'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"mediefil frå Commons"@nn'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"plik z Commons, nie używaj do obrazów i dźwięków. Jeżeli plik jest trailerem
+      filmowym, użyj (object has role) P3831 = (trailer) Q622550"@pl'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-ca'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video"@en-gb'
+  - - <http://www.wikidata.org/entity/P10>
+    - '"relevant video. For images, use the property P18. For film trailers, qualify
+      with "object has role" (P3831)="trailer" (Q622550)"@en'
+- query: numeric-baseline [Baseline for numeric queries]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 0.005541801452636719
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-abs [ABS function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 1.3740055561065674
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-ceil [CEIL function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 1.3517162799835205
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-floor [FLOOR function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 1.347688913345337
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-round [ROUND function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 1.359360694885254
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-add [Addition]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 2.036451578140259
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"481682233301082134"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-greater [Greater than]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 1.1186068058013916
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2147882675)
+    }'
+  runtime_info:
+    client_time: 0.187363862991333
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"60044100"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2241500354)
+    }'
+  runtime_info:
+    client_time: 0.0919795036315918
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"36026461"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2325672138)
+    }'
+  runtime_info:
+    client_time: 0.023724794387817383
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"6004411"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER (?s = ?o) }'
+  runtime_info:
+    client_time: 14.757749557495117
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER (?s != ?o) }'
+  runtime_info:
+    client_time: 26.257033586502075
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: filter-language-en [FILTER on str ... dicate for only English literals]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER(LANG(?o) = "en")
+    }'
+  runtime_info:
+    client_time: 0.007493495941162109
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"97587180"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: date-year [YEAR function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  runtime_info:
+    client_time: 1.2249867916107178
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"242979680415"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: date-month [MONTH function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  runtime_info:
+    client_time: 1.6171109676361084
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"741944503"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: date-day [DAY function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  runtime_info:
+    client_time: 1.6137030124664307
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"1845375552"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: number-of-triples [Total number of triples]
+  sparql: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
+  runtime_info:
+    client_time: 0.00936269760131836
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"7941292526"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: number-of-subjects [Total number of distinct subjects]
+  sparql: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+  runtime_info:
+    client_time: 0.009126901626586914
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"240342067"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: number-of-predicates [Total number of distinct predicates]
+  sparql: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+  runtime_info:
+    client_time: 0.008316516876220703
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"12377"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: number-of-objects [Total number of distinct objects]
+  sparql: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+  runtime_info:
+    client_time: 0.00792551040649414
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1615775679"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: number-of-literals [Total number of literals]
+  sparql: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+  runtime_info:
+    client_time: 68.15098428726196
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"6236647742"^^<http://www.w3.org/2001/XMLSchema#int>'
+- query: number-of-blank-nodes [Total number of blank nodes]
+  sparql: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
+  runtime_info:
+    client_time: 0.05012631416320801
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"37623"^^<http://www.w3.org/2001/XMLSchema#int>'

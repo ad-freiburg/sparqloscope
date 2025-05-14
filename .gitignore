@@ -8,5 +8,6 @@ benchmark-queries.*.tsv
 !benchmarks/*.benchmark.tsv
 .vscode
 *.results.yaml
+!results/**/*.results.yaml
 *.csv
 
