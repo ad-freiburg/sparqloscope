@@ -10,13 +10,17 @@ Sparqloscope is free and open-source software and easy to use. As a showcase we 
 
 ## Usage
 
-### Example for DBLP
+### Benchmark Generation Example for DBLP
 
 Assuming a SPARQL endpoint for the DBLP dataset is running on port 7015 on your machine, you can generate a benchmark for this dataset using the following command-line (for details see `--help`).
  
 ```bash
 python3 generate-benchmark.py --sparql-endpoint http://localhost:7015 --prefix-definitions "$(cat prefixes/dblp.ttl)" --kg-name dblp
 ```
+
+### Ready-to-use Benchmarks for Popular Datasets
+
+You may find ready-to-use benchmarks, which we have generated using Sparqloscope for popular datasets in the [benchmarks/](benchmarks/) folder.
 
 ### Further information
 

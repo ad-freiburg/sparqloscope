@@ -5,6 +5,7 @@ certificate.*.json
 placeholder.*.json
 benchmark-queries.*.tsv
 *.benchmark.tsv
+!benchmarks/*.benchmark.tsv
 .vscode
 *.results.yaml
 *.csv
