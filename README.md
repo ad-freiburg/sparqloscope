@@ -1,10 +1,12 @@
-# Sparqloscope: A generic benchmark for comprehensive performance evaluation of SPARQL engines
+# Sparqloscope: A generic benchmark for the comprehensive and concise performance evaluation of SPARQL engines
 
-We provide a new benchmark, called Sparqloscope for evaluating the query performance of SPARQL engines. The benchmark has three unique features that separate it from other such benchmarks:
+We provide a new benchmark, called Sparqloscope, for evaluating the query performance of SPARQL engines. The benchmark combines three unique features, which separates it from other such benchmarks:
 
-1. Sparqloscope is comprehensive in that it considers most features of the SPARQL 1.1 query language that are relevant in practice. In particular: basic graph patterns, OPTIONAL, FILTER, ORDER BY, LIMIT, DISTINCT, GROUP BY and aggregates, UNION, EXISTS, MINUS, SPARQL functions (for numerical values, strings, and dates).
-2. Sparqloscope is generic in the sense that it can be applied to any given RDF dataset and will then produce a comprehensive benchmark for that particular dataset. Existing benchmarks are either synthetic or manually constructed for a fixed dataset.
-3. Sparqloscope is specific in the sense that it aims to evaluate features in isolation (independent from other features) as much as possible. This allows pinpointing specific strengths and weaknesses of a particular engine.
+1. Sparqloscope is generic in the sense that it can be applied to any given RDF dataset and it will then produce a comprehensive benchmark for that particular dataset. Existing benchmarks are either synthetic or designed for a fixed dataset.
+
+2. Sparqloscope is comprehensive in that it considers most features of the SPARQL 1.1 query language that are relevant in practice. In particular, it also considers advanced features like EXISTS, various SPARQL functions for numerical values, strings, and dates, language filters, etc.
+
+3. Sparqloscope is specific in the sense that it aims to evaluate relevant features in isolation and as concisely as possible. In particular, the benchmark generated for a given knowledge graphs consists of only around 100 very carefully crafted queries, the results of which can and should be studied individually and not in aggregation.
 
 Sparqloscope is free and open-source software and easy to use. As a showcase we use it to evaluate the performance of three high-performing SPARQL engines (Virtuoso, MillenniumDB, QLever) on two widely used RDF datasets (DBLP and Wikidata).
 
