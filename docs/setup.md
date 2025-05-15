@@ -63,6 +63,8 @@ To ensure that the benchmark generation queries work, please set these settings:
 ```bash
 qlever settings group-by-hash-map-enabled=true
 qlever settings default-query-timeout=24h
+qlever settings service-max-value-rows=0
+qlever settings cache-service-results=true
 ```
 
 ### 3.2. Run Sparqloscope

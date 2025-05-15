@@ -268,9 +268,13 @@ def make_precomputed_queries_handler_class(
                 self.send_response(200)
                 self.send_header(
                     "Content-Type", "application/sparql-results+json")
+                self.send_header("Connection", "close")
+                self.close_connection = True
+                body = json.dumps(
+                    precomputed_queries_result[path]).encode("utf-8")
+                self.send_header("Content-length", str(len(body)))
                 self.end_headers()
-                self.wfile.write(json.dumps(
-                    precomputed_queries_result[path]).encode("utf-8"))
+                self.wfile.write(body)
             else:
                 # No cached result is available -> SERVICE returns Internal
                 # Server Error
@@ -278,10 +282,21 @@ def make_precomputed_queries_handler_class(
                 self.end_headers()
 
         def do_GET(self):
-            self.__respond()
+            try:
+                self.__respond()
+            except Exception as e:
+                log.error(e)
 
         def do_POST(self):
-            self.__respond()
+            try:
+                # Read and discard request body to prevent "Connection reset by
+                # peer"
+                content_length = self.headers.get("content-length")
+                if content_length:
+                    self.rfile.read(int(content_length))
+                self.__respond()
+            except Exception as e:
+                log.error(e)
 
     return PrecomputedQueriesHandler
 
@@ -586,7 +601,7 @@ def compute_placeholders(
                             for suffix in children.values():
                                 candidate[suffix] = \
                                     possible_values_per_child[suffix][i][0]
-                                candidates.append(candidate)
+                            candidates.append(candidate)
 
                         # Run argmax queries
                         row_number = evaluate_argmax(p_name,
@@ -993,7 +1008,7 @@ def main(args: argparse.Namespace) -> int:
     handler = make_precomputed_queries_handler_class(
         precomputed_queries_result)
     try:
-        httpd = socketserver.TCPServer(("", args.port), handler)
+        httpd = http.server.ThreadingHTTPServer(("", args.port), handler)
     except OSError as e:
         log.error(
             f"Could not start internal HTTP server on port {args.port}: {e}")
