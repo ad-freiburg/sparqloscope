@@ -635,7 +635,7 @@ def compute_placeholders(
 
             except Exception as e:
                 log.error(f'Error computing placeholder "{p_name}": {e}')
-                raise
+                continue
 
             # Write placeholder values to cache together with all information
             # required to check if the placeholder values are still up to date
