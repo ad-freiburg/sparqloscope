@@ -68,9 +68,12 @@ precomputed_queries:
     cache_result: true
   - name: TRANSITIVE_PATH_PREDICATES_QUERY
     query: |
-      SELECT ?p1 ?count_p1 ?count ((?count / ?count_p1) AS ?x) WHERE {
-        { SELECT ?p1 (COUNT(*) AS ?count) WHERE {
-          ?s ?p1 ?m . ?m ?p2 ?o . FILTER(?p1 = ?p2) } GROUP BY ?p1}
+      SELECT ?p1 ?count_p1 ?count ((?count / ?count_p1) AS ?x) {
+        { SELECT ?p1 (SUM(?cnt1 * ?cnt2) as ?count) WHERE {
+          { SELECT ?m ?p1 (COUNT(?m) as ?cnt1) { ?s ?p1 ?m } GROUP BY ?m ?p1 }
+          { SELECT ?m ?p2 (COUNT(?m) as ?cnt2) { ?m ?p2 ?o } GROUP BY ?m ?p2 }
+          FILTER(?p1 = ?p2)
+        } GROUP BY ?p1 }
         { SELECT ?p1 (COUNT(?p1) AS ?count_p1) { ?a ?p1 ?o } GROUP BY ?p1 }
       } ORDER BY DESC(?x) LIMIT 1000
     cache_result: true
@@ -86,6 +89,7 @@ precomputed_queries:
         { SELECT ?p ?dt (COUNT(*) AS ?cnt) {
           ?s ?p ?o . BIND(datatype(?o) AS ?dt) FILTER(BOUND(?dt)) }
           GROUP BY ?p ?dt } }
+      ORDER BY DESC(?p_count) LIMIT 1000
     cache_result: true
   # - name: PREDICATE_LANGUAGE_TAGS
   #   query: |
