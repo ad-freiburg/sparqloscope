@@ -74,8 +74,8 @@ regex-prefix-3 [REGEX filter with prefix of length 3]	PREFIX rdfs: <http://www.w
 strlen [String length for large string predicate]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o . }
 strbefore [STRBEFORE string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o . }
 strafter [STRAFTER string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o . }
-strstarts [STRSTARTS string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o . }
-strends [STRENDS string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o . }
+strstarts [STRSTARTS string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o . }
+strends [STRENDS string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o . }
 result-size-tiny [Export 10 tuples]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?s ?o WHERE { ?s rdfs:label ?o } LIMIT 10
 result-size-small [Export 1000 tuples]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?s ?o WHERE { ?s rdfs:label ?o } LIMIT 1000
 result-size-medium [Export 100K tuples]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?s ?o WHERE { ?s rdfs:label ?o } LIMIT 100000

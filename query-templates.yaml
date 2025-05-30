@@ -1083,13 +1083,13 @@ queries:
     description: STRSTARTS string function
     group: str-functions
     query: |
-      SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) {
+      SELECT (SUM(<http://www.w3.org/2001/XMLSchema#integer>(STRSTARTS(?o, "a"))) AS ?count) {
         ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
   - name: strends
     description: STRENDS string function
     group: str-functions
     query: |
-      SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) {
+      SELECT (SUM(<http://www.w3.org/2001/XMLSchema#integer>(STRENDS(?o, "a"))) AS ?count) {
         ?s %PREDICATE_LARGE_WITH_LITERAL% ?o . }
 
   # SIZE MATTERS queries.
