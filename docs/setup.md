@@ -1,6 +1,6 @@
 # Setup documentation for Sparqloscope
 
-To setup Sparqloscope, you need to install the benchmark generator. Since our benchmark is dataset-dependent, you also need to provide a running SPARQL engine for the dataset on which you wish to run benchmarks, at the time of benchmark generation. Using the following step-by-step guide, you can setup and run our benchmark for Wikidata Truthy and DBLP on the SPARQL engines QLever, Virtuoso and MillenniumDB.   
+To setup Sparqloscope, you need to install the benchmark generator. Since our benchmark is dataset-dependent, you also need to provide a running SPARQL engine for the dataset on which you wish to run benchmarks, at the time of benchmark generation. Using the following step-by-step guide, you can setup and run our benchmark for Wikidata Truthy and DBLP on the SPARQL engines QLever, Virtuoso, MillenniumDB, Blazegraph, GraphDB and Apache Jena.
 
 ## 1. Installation and preparation (once)
 
@@ -30,12 +30,15 @@ For details see the [qlever-control](https://github.com/ad-freiburg/qlever-contr
 
 For details on building QLever, please refer to the [QLever repository](https://github.com/ad-freiburg/qlever), especially the [Dockerfile](https://github.com/ad-freiburg/qlever/blob/master/Dockerfile) contains the commands required to build QLever on an Ubuntu system. Note that it is recommended to install QLever natively using analogous commands instead of running it through Docker to avoid distorting results with containerization overhead.
 
-In order to setup the other SPARQL engines to be evaluated in the benchmark, please review their documentation:
+In order to setup the other SPARQL engines to be evaluated in the benchmark, please review their respective website:
 
 - MillenniumDB: <https://github.com/MillenniumDB/MillenniumDB>
 - Virtuoso: <https://github.com/openlink/virtuoso-opensource>
+- Blazegraph: <https://github.com/blazegraph/database>
+- GraphDB: Please note that GraphDB is proprietary software, so you will need to request a license. We ran benchmarking using the "Free" (gratis) version of GraphDB. <https://www.ontotext.com/products/graphdb/download/>
+- Apache Jena: <https://jena.apache.org/download/index.cgi>
 
-Like with QLever, it is recommended to install the engines natively on your system instead of using containers.
+Like with QLever, it is recommended to install each of the engines natively on your system instead of using containers.
 
 In the following steps, we assume that all three engines are properly installed and available on your PATH.
 
@@ -46,11 +49,17 @@ In the following steps, we assume that all three engines are properly installed 
 Download the dataset you wish to use in Turtle or N-triples format. For the datasets we used the files can be found at:
 
 - DBLP: <https://doi.org/10.4230/dblp.rdf.ntriples.2025-04-01>
-- Wikidata Truthy: <https://dumps.wikimedia.org/wikidatawiki/entities/latest-truthy.nt.gz>
+- Wikidata Truthy: <https://dumps.wikimedia.org/wikidatawiki/entities/latest-truthy.nt.gz> (as of April 18, 2025)
 
 ### 2.2. Build indices for the data on each engine
 
-We recommend that you use a separate directory for each combination of an engine and a dataset. We indexed our datasets using the default settings of all engines. For details on how to index a given dataset, consult the documentation of the respective engine.
+We recommend that you use a separate directory for each combination of an engine and a dataset.
+
+For QLever, we ran indexing with the `--vocabulary-type in-memory-compressed` flag.
+
+For details on how to index a given dataset, please consult the documentation of the respective engine.
+
+*Note:* We were unable to generate an index for Wikidata Truthy using Apache Jena.
 
 ## 3. Generate the benchmark using Sparqloscope
 
@@ -69,18 +78,35 @@ qlever settings cache-service-results=true
 
 ### 3.2. Run Sparqloscope
 
-When the QLever instance for the dataset `DATASET` is running on port `PORT` and `PORT2` is currently unused and visible to the SPARQL engine, you can now execute Sparqloscope using:
+You may now execute Sparqloscope using the command provided below. This makes a few assumptions:
+
+- the QLever instance for the dataset `DATASET` is running on port `PORT`
+- QLever and `generate-benchmark.py` are running on the same machine
+- `FREEPORT` is currently unused and visible to the SPARQL engine
 
 ```bash
 python3 generate-benchmark.py \
   --sparql-endpoint http://localhost:PORT \
   --prefix-definitions "$(cat prefixes/DATASET.ttl)" \
   --kg-name DATASET \
-  --external-url http://localhost:PORT2 \
-  --port PORT2
+  --external-url http://localhost:FREEPORT \
+  --port FREEPORT
 ```
 
+If you would like to run the SPARQL engine on `HOST_A` and the `generate-benchmark.py` program on `HOST_B`, please set `--sparql-endpoint http://HOST_A:PORT` and `--external-url http://HOST_B:FREEPORT` and ensure that both machines can access the respective ports through their firewalls.
+
 For more readable benchmark queries, please provide the prefix declarations for your dataset under `prefixes/DATASET.ttl`, otherwise remove the option `--prefix-definitons`.
+
+#### Concrete example
+ 
+```bash
+python3 generate-benchmark.py \
+  --sparql-endpoint http://localhost:7015 \
+  --prefix-definitions "$(cat prefixes/dblp.ttl)" \
+  --kg-name dblp \
+  --external-url http://localhost:8080 \
+  --port 8080
+```
 
 ### 3.3. Stop QLever
 
@@ -96,20 +122,27 @@ Apply the configuration parameters suitable for the given dataset. For our demon
 
 - **QLever**: in the `Qleverfile`, set `SYSTEM = native`, `MEMORY_FOR_QUERIES = 26G`, `CACHE_MAX_SIZE = 6G` and `TIMEOUT = 180s` and apply `qlever settings group-by-hash-map-enabled=true` after engine start
 - **Virtuoso**: in the `virtuoso.ini` file, set `NumberOfBuffers = 2720000`, `MaxDirtyBuffers = 2000000` (the recommended values for 32 GiB of RAM) and `MaxQueryExecutionTime = 180`
-- **MillenniumDB**: start the server with these flags `mdb-server --timeout 180 --threads 2 --versioned-buffer 20GB --unversioned-buffer 2GB --private-buffer 2GB --strings-static 4GB --strings-dynamic 4GB .`
+- **MillenniumDB**: start the server with these flags `mdb server --timeout 180 --threads 2 --versioned-buffer 22GB --unversioned-buffer 2GB --strings-static 4GB --strings-dynamic 4GB .`
+- **Blazegraph**: start the server with `java -server -Xmx32g -Djetty.overrideWebXml=./web.xml -jar ../blazegraph.jar` and set `queryTimeout` to `180000` in `web.xml`.
+- **GraphDB**: At repository creation specify a 180 second timeout, start server with `graphdb -Xmx32G` and issue the query `SELECT * { ?s ?p ?o } LIMIT 1` to trigger loading the dataset
+- **Apache Jena**: `java -Xmx32g -jar fuseki-server.jar --loc data --timeout=180000 /dblp`
+
 
 #### Recommended configuration for Wikidata Truthy
 
 - **QLever**: in the `Qleverfile`, set `SYSTEM = native`, `MEMORY_FOR_QUERIES = 54G`, `CACHE_MAX_SIZE = 10G`, `CACHE_MAX_SIZE_SINGLE_ENTRY = 5G` and `TIMEOUT = 300s` and apply `qlever settings group-by-hash-map-enabled=true` after engine start
 - **Virtuoso**: in the `virtuoso.ini` file, set  `NumberOfBuffers = 5450000`, `MaxDirtyBuffers = 4000000` (the recommended values for 64 GiB or RAM) and `MaxQueryExecutionTime = 300`
-- **MillenniumDB**:  start the server with these flags `mdb-server --timeout 300 --threads 2 --versioned-buffer 52GB --unversioned-buffer 2GB --private-buffer 2GB --strings-static 5GB --strings-dynamic 3GB .`
+- **MillenniumDB**:  start the server with these flags `mdb server --timeout 300 --threads 2 --versioned-buffer 52GB --unversioned-buffer 2GB --strings-static 5GB --strings-dynamic 5GB .`
+- **Blazegraph**: start the server with `java -server -Xmx64g -Djetty.overrideWebXml=./web.xml -jar ../blazegraph.jar` and set `queryTimeout` to `300000` in `web.xml`.
+- **GraphDB**:  At repository creation specify a 300 second timeout, start server with `graphdb -Xmx64G` and issue the query `SELECT * { ?s ?p ?o } LIMIT 1` to trigger loading the dataset
+- **Apache Jena**: Unfortunately, we were not able to successfully generate an index for Wikidata Truthy using Apache Jena, therefore we do not provide instructions here.
 
 ### 4.2. Execute the benchmark
 
 To run the benchmark, you can use the `qlever` script for all engines as follows, where `DATASET` is the name of your dataset, `ENGINE` is the name of the engine you wish to benchmark and `ENDPOINT` is the URL of the SPARQL endpoint provided by this engine (`http://localhost:PORT/sparql` for MillenniumDB and Virtuoso and `http://localhost:PORT` for QLever):
 
 ```bash
-qlever example-queries --get-queries-cmd "cat DATASET.benchmark.tsv" --result-file DATASET.ENGINE --sparql-endpoint ENDPOINT
+qlever benchmark-queries --queries-tsv DATASET.benchmark.tsv --result-file DATASET.ENGINE --sparql-endpoint ENDPOINT
 ```
 
 This will result in a file `DATASET.ENGINE.results.yaml` containing all the benchmarks, the running times and results for this engine.
@@ -118,4 +151,4 @@ This will result in a file `DATASET.ENGINE.results.yaml` containing all the benc
 
 ### 4.3. View results using the evaluation web app (optional)
 
-You may use the `qlever` script to view an interactive web app of the evaluation results using `qlever serve-evaluation-app --results-dir DIR`, where `DIR` is the directory with your `*.results.yaml` files.
+You may use the `qlever` script to view an interactive web app (like <https://purl.org/ad-freiburg/sparqloscope-evaluation>) of the evaluation results using `qlever serve-evaluation-app --results-dir DIR`, where `DIR` is the directory with your `*.results.yaml` files. For this feature it is currently necessary to checkout [pull request 171](https://github.com/ad-freiburg/qlever-control/pull/171) of the `qlever-control` repository.
