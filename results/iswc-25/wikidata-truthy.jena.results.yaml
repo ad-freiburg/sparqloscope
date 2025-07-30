@@ -1,0 +1,829 @@
+queries:
+- query: join-2-small-large [JOIN of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  ?s schema:description\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-2-large-small [JOIN of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ ?s wdtn:P8024 ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-2-large-large [JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ ?s schema:name ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:name ?o1 .\n  ?s rdfs:label\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ ?s wdt:P2093 ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-2-large-large-with-small-res ... e predicates with a small result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  ?s wdt:P478\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
+    \ ?o2 .\n  ?s wdt:P31 ?o3 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
+    \ ?c .\n  ?c schema:description ?d .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o0 .\n  ?s wdt:P8024\
+    \ ?o1 .\n  ?s wdt:P10837 ?o2 .\n  ?s wdt:P5626 ?o3 .\n  ?s wdt:P3453 ?o4 .\n \
+    \ ?s wdt:P3177 ?o5 .\n  ?s wdt:P7997 ?o6 .\n  ?s wdt:P4740 ?o7 .\n  ?s wdt:P4034\
+    \ ?o8 .\n  ?s wdt:P9556 ?o9 .\n  ?s wdt:P470 ?o10 .\n  ?s wdt:P5052 ?o11 .\n \
+    \ ?s wdtn:P4466 ?o12 .\n  ?s wdt:P4466 ?o13 .\n  ?s wdt:P958 ?o14 .\n  ?s wdt:P7492\
+    \ ?o15 .\n  ?s wdt:P1385 ?o16 .\n  ?s wdt:P12123 ?o17 .\n  ?s wdt:P6141 ?o18 .\n\
+    \  ?s wdt:P10916 ?o19 .\n  ?s wdt:P10761 ?o20 .\n  ?s wdt:P6019 ?o21 .\n  ?s wdt:P3322\
+    \ ?o22 .\n  ?s wdt:P12249 ?o23 .\n  ?s wdt:P4433 ?o24 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?v0 wdtn:P8024 ?v1 .\n  ?v1 wdt:P8024\
+    \ ?v2 .\n  ?v2 wdt:P10837 ?v3 .\n  ?v3 wdt:P5626 ?v4 .\n  ?v4 wdt:P3453 ?v5 .\n\
+    \  ?v5 wdt:P3177 ?v6 .\n  ?v6 wdt:P7997 ?v7 .\n  ?v7 wdt:P4740 ?v8 .\n  ?v8 wdt:P4034\
+    \ ?v9 .\n  ?v9 wdt:P9556 ?v10 .\n  ?v10 wdt:P470 ?v11 .\n  ?v11 wdt:P5052 ?v12\
+    \ .\n  ?v12 wdtn:P4466 ?v13 .\n  ?v13 wdt:P4466 ?v14 .\n  ?v14 wdt:P958 ?v15 .\n\
+    \  ?v15 wdt:P7492 ?v16 .\n  ?v16 wdt:P1385 ?v17 .\n  ?v17 wdt:P12123 ?v18 .\n\
+    \  ?v18 wdt:P6141 ?v19 .\n  ?v19 wdt:P10916 ?v20 .\n  ?v20 wdt:P10761 ?v21 .\n\
+    \  ?v21 wdt:P6019 ?v22 .\n  ?v22 wdt:P3322 ?v23 .\n  ?v23 wdt:P12249 ?v24 .\n\
+    \  ?v24 wdt:P4433 ?v25 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  OPTIONAL\
+    \ {\n    ?s schema:description ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ OPTIONAL {\n    ?s wdtn:P8024 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ OPTIONAL {\n    ?s schema:name ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ OPTIONAL {\n    ?s wdt:P2093 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  OPTIONAL {\n\
+    \    ?s wdt:P478 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P478 ?o1 .\n  OPTIONAL {\n\
+    \    ?s wdt:P50 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
+    \ ?o2 .\n  OPTIONAL {\n    ?s wdt:P31 ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  OPTIONAL {\n\
+    \    ?s schema:description ?o2 .\n    ?s wdt:P31 ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
+    \ ?c .\n  OPTIONAL {\n    ?c schema:description ?d .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  OPTIONAL {\n\
+    \    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  MINUS {\n\
+    \    ?s schema:description ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ MINUS {\n    ?s wdtn:P8024 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-large-large [MINUS JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ MINUS {\n    ?s schema:name ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ MINUS {\n    ?s wdt:P2093 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  MINUS {\n \
+    \   ?s wdt:P478 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P478 ?o1 .\n  MINUS {\n\
+    \    ?s wdt:P50 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
+    \ ?o2 .\n  MINUS {\n    ?s wdt:P31 ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  MINUS {\n\
+    \    ?s schema:description ?o2 .\n    ?s wdt:P31 ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
+    \ ?c .\n  MINUS {\n    ?c schema:description ?d .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  MINUS {\n\
+    \    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  FILTER EXISTS\
+    \ {\n    ?s schema:description ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ FILTER EXISTS {\n    ?s wdtn:P8024 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-large-large [EXISTS JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ FILTER EXISTS {\n    ?s schema:name ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
+    \ FILTER EXISTS {\n    ?s wdt:P2093 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  FILTER EXISTS\
+    \ {\n    ?s wdt:P478 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P478 ?o1 .\n  FILTER EXISTS\
+    \ {\n    ?s wdt:P50 ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
+    \ ?o2 .\n  FILTER EXISTS {\n    ?s wdt:P31 ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  FILTER EXISTS\
+    \ {\n    ?s schema:description ?o2 .\n    ?s wdt:P31 ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
+    \ ?c .\n  FILTER EXISTS {\n    ?c schema:description ?d .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  FILTER EXISTS\
+    \ {\n    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: union-no-constraint [UNION of two large predicates, no constraint]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s schema:description ?o\
+    \ .\n  }\n  UNION\n  {\n    ?s schema:name ?o .\n  }\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: union-constraint-from-star [UNION ... cate known to have join partners]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s rdf:type ?o1 .\n  }\n\
+    \  UNION\n  {\n    ?s schema:description ?o1 .\n  }\n  ?s wdt:P31 ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s wdt:P50 ?o1 .\n  }\n\
+    \  UNION\n  {\n    ?s skos:prefLabel ?o1 .\n  }\n  ?s wdt:P478 ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s schema:description ?o1\
+    \ .\n  }\n  UNION\n  {\n    ?s schema:name ?o1 .\n  }\n  ?s wdt:P2093 ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s schema:description ?o\
+    \ .\n  }\n  UNION\n  {\n    ?s schema:name ?o .\n  }\n  FILTER (?s = ?o)\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: multicolumn-join-small [Multicolumn JOIN small]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P921 ?o .\n  ?s wdt:P31\
+    \ ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: multicolumn-join-large [Multicolumn JOIN large]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s skos:prefLabel ?o .\n  ?s rdfs:label\
+    \ ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-count-object-high-multip ... or object with high multiplicity]
+  sparql: "SELECT ?object (COUNT(?subject) AS ?count)\nWHERE {\n  ?subject wdt:P2548\
+    \ ?object .\n}\nGROUP BY ?object\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 600.0
+  result_size: 3
+  headers: []
+  results: Index build error
+- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+  sparql: "SELECT ?object (COUNT(?subject) AS ?count)\nWHERE {\n  ?subject skos:prefLabel\
+    \ ?object .\n}\nGROUP BY ?object\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 600.0
+  result_size: 10
+  headers: []
+  results: Index build error
+- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: "SELECT ?o1 (COUNT(?s) AS ?count)\nWHERE {\n  ?s wdt:P13046 ?o1 .\n  ?s\
+    \ schema:description ?o2 .\n}\nGROUP BY ?o1\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 600.0
+  result_size: 10
+  headers: []
+  results: Index build error
+- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+  sparql: "SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s)\
+    \ AS ?sample)\nWHERE {\n  ?s wdt:P13046 ?o1 .\n  ?s schema:description ?o2 .\n\
+    }\nGROUP BY ?o1\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 600.0
+  result_size: 10
+  headers: []
+  results: Index build error
+- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+  sparql: "SELECT (sum(?o) AS ?sum)\nWHERE {\n  ?s schema:version ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+  sparql: "SELECT (MIN(?o) AS ?min)\nWHERE {\n  ?s schema:version ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+  sparql: "SELECT (MAX(?o) AS ?max)\nWHERE {\n  ?s schema:version ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+  sparql: "SELECT (AVG(?o) AS ?avg)\nWHERE {\n  ?s schema:version ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+  sparql: "SELECT (MIN(?o) AS ?min)\nWHERE {\n  ?s schema:description ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+  sparql: "SELECT (MAX(?o) AS ?max)\nWHERE {\n  ?s schema:description ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
+    AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: distinct-count-object-high-multip ... or object with high multiplicity]
+  sparql: "SELECT (COUNT(DISTINCT ?object) AS ?count)\nWHERE {\n  ?subject wdt:P2548\
+    \ ?object .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+  sparql: "SELECT (COUNT(DISTINCT ?object) AS ?count)\nWHERE {\n  ?subject skos:prefLabel\
+    \ ?object .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: "SELECT (COUNT(DISTINCT ?o1) AS ?count)\nWHERE {\n  ?s wdt:P13046 ?o1 .\n\
+    \  ?s schema:description ?o2 .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: transitive-path-plus [Transitive path with plus]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P2293+ ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  wd:Q81867 wdt:P2293+ ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P921/wdt:P2293+ ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P1911/wdt:P2293+ ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER CONTAINS(?o,\
+    \ \"com\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: regex-3-fixed [REGEX filter with fixed string of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
+    \ \"com\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: regex-3 [REGEX filter with expression of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
+    \ \"c.m\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: regex-prefix-1 [REGEX filter with prefix of length 1]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
+    \ \"^C\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: regex-prefix-2 [REGEX filter with prefix of length 2]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?object .\n  FILTER\
+    \ regex(?object, \"^Co\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: regex-prefix-3 [REGEX filter with prefix of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?object .\n  FILTER\
+    \ regex(?object, \"^Com\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: strlen [String length for large string predicate]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: strbefore [STRBEFORE string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: strafter [STRAFTER string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: strstarts [STRSTARTS string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o,
+    "a"))) AS ?count) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: strends [STRENDS string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o,
+    "a"))) AS ?count) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: result-size-tiny [Export 10 tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 10"
+  runtime_info:
+    client_time: 600.0
+  result_size: 10
+  headers: []
+  results: Index build error
+- query: result-size-small [Export 1000 tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 1000"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1000
+  headers: []
+  results: Index build error
+- query: result-size-medium [Export 100K tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 100000"
+  runtime_info:
+    client_time: 600.0
+  result_size: 100000
+  headers: []
+  results: Index build error
+- query: result-size-large [Export 1M tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 1000000"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1000000
+  headers: []
+  results: Index build error
+- query: result-size-xlarge [Export 10M tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 10000000"
+  runtime_info:
+    client_time: 600.0
+  result_size: 10000000
+  headers: []
+  results: Index build error
+- query: numeric-baseline [Baseline for numeric queries]
+  sparql: "SELECT (sum(?o) AS ?sum)\nWHERE {\n  ?s schema:version ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-abs [ABS function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-ceil [CEIL function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-floor [FLOOR function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-round [ROUND function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-add [Addition]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-greater [Greater than]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n  FILTER\
+    \ (?o >= 2147882675)\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n  FILTER\
+    \ (?o >= 2241500354)\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n  FILTER\
+    \ (?o >= 2325672138)\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n \
+    \ FILTER (?s = ?o)\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n \
+    \ FILTER (?s != ?o)\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: filter-language-en [FILTER on str ... dicate for only English literals]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n \
+    \ FILTER (lang(?o) = \"en\")\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: date-year [YEAR function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: date-month [MONTH function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: date-day [DAY function]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: number-of-triples [Total number of triples]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: number-of-subjects [Total number of distinct subjects]
+  sparql: "SELECT (COUNT(DISTINCT ?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: number-of-predicates [Total number of distinct predicates]
+  sparql: "SELECT (COUNT(DISTINCT ?p) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: number-of-objects [Total number of distinct objects]
+  sparql: "SELECT (COUNT(DISTINCT ?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 600.0
+  headers: []
+  results: Index build error
+- query: number-of-literals [Total number of literals]
+  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n  FILTER isLiteral(?o)\n\
+    }"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+- query: number-of-blank-nodes [Total number of blank nodes]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n  FILTER isBlank(?s)\n\
+    }"
+  runtime_info:
+    client_time: 600.0
+  result_size: 1
+  headers: []
+  results: Index build error
+

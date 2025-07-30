@@ -1,571 +1,850 @@
 queries:
 - query: join-2-small-large [JOIN of a small and a large predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s wdtn:P8024 ?o1 . ?s schema:description ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      ?s schema:description ?o2 .
+    }
   runtime_info:
-    client_time: 0.14328360557556152
+    client_time: 0.10306382179260254
   result_size: 1
   headers:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-2-large-small [JOIN of a large and a small predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 . ?s wdtn:P8024 ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s wdtn:P8024 ?o2 .
+    }
   runtime_info:
-    client_time: 0.005438566207885742
+    client_time: 0.006545305252075195
   result_size: 1
   headers:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-2-large-large [JOIN of two large predicates]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 . ?s schema:name
-    ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s schema:name ?o2 .
+    }
   runtime_info:
-    client_time: 300.0595202445984
+    client_time: 300.2099404335022
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: join-2-largest-result [JOIN of tw ... with the largest possible result]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:name ?o1 . ?s rdfs:label ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:name ?o1 .
+      ?s rdfs:label ?o2 .
+    }
   runtime_info:
-    client_time: 301.00336050987244
+    client_time: 300.73988342285156
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: join-2-large-large-with-large-res ... s with a reasonably large result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 . ?s wdt:P2093 ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s wdt:P2093 ?o2 .
+    }
   runtime_info:
-    client_time: 81.48057413101196
+    client_time: 105.8148672580719
   result_size: 1
   headers:
   - count
   results:
-  - - '"6092272393"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"6092272179"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-2-large-large-with-small-res ... e predicates with a small result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . ?s wdt:P478 ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      ?s wdt:P478 ?o2 .
+    }
   runtime_info:
-    client_time: 4.798314332962036
+    client_time: 4.796472787857056
   result_size: 1
   headers:
   - count
   results:
   - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
-    . ?s wdt:P31 ?o3 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      ?s wdt:P31 ?o3 .
+    }
   runtime_info:
-    client_time: 201.16746473312378
+    client_time: 206.79205632209778
   result_size: 1
   headers:
   - count
   results:
-  - - '"3345167895"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3345167144"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . ?c schema:description ?d }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      ?c schema:description ?d .
+    }
   runtime_info:
-    client_time: 248.04615306854248
+    client_time: 287.28155422210693
   result_size: 1
   headers:
   - count
   results:
-  - - '"16176593629"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"16176593578"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s wdtn:P8024 ?o0 . ?s wdt:P8024 ?o1 . ?s wdt:P10837 ?o2 . ?s wdt:P5626 ?o3 .
-    ?s wdt:P3453 ?o4 . ?s wdt:P3177 ?o5 . ?s wdt:P7997 ?o6 . ?s wdt:P4740 ?o7 . ?s
-    wdt:P4034 ?o8 . ?s wdt:P9556 ?o9 . ?s wdt:P470 ?o10 . ?s wdt:P5052 ?o11 . ?s wdtn:P4466
-    ?o12 . ?s wdt:P4466 ?o13 . ?s wdt:P958 ?o14 . ?s wdt:P7492 ?o15 . ?s wdt:P1385
-    ?o16 . ?s wdt:P12123 ?o17 . ?s wdt:P6141 ?o18 . ?s wdt:P10916 ?o19 . ?s wdt:P10761
-    ?o20 . ?s wdt:P6019 ?o21 . ?s wdt:P3322 ?o22 . ?s wdt:P12249 ?o23 . ?s wdt:P4433
-    ?o24 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o0 .
+      ?s wdt:P8024 ?o1 .
+      ?s wdt:P10837 ?o2 .
+      ?s wdt:P5626 ?o3 .
+      ?s wdt:P3453 ?o4 .
+      ?s wdt:P3177 ?o5 .
+      ?s wdt:P7997 ?o6 .
+      ?s wdt:P4740 ?o7 .
+      ?s wdt:P4034 ?o8 .
+      ?s wdt:P9556 ?o9 .
+      ?s wdt:P470 ?o10 .
+      ?s wdt:P5052 ?o11 .
+      ?s wdtn:P4466 ?o12 .
+      ?s wdt:P4466 ?o13 .
+      ?s wdt:P958 ?o14 .
+      ?s wdt:P7492 ?o15 .
+      ?s wdt:P1385 ?o16 .
+      ?s wdt:P12123 ?o17 .
+      ?s wdt:P6141 ?o18 .
+      ?s wdt:P10916 ?o19 .
+      ?s wdt:P10761 ?o20 .
+      ?s wdt:P6019 ?o21 .
+      ?s wdt:P3322 ?o22 .
+      ?s wdt:P12249 ?o23 .
+      ?s wdt:P4433 ?o24 .
+    }
   runtime_info:
-    client_time: 0.020253896713256836
+    client_time: 0.009185791015625
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?v0 wdtn:P8024 ?v1 . ?v1 wdt:P8024 ?v2 . ?v2 wdt:P10837 ?v3 . ?v3 wdt:P5626 ?v4
-    . ?v4 wdt:P3453 ?v5 . ?v5 wdt:P3177 ?v6 . ?v6 wdt:P7997 ?v7 . ?v7 wdt:P4740 ?v8
-    . ?v8 wdt:P4034 ?v9 . ?v9 wdt:P9556 ?v10 . ?v10 wdt:P470 ?v11 . ?v11 wdt:P5052
-    ?v12 . ?v12 wdtn:P4466 ?v13 . ?v13 wdt:P4466 ?v14 . ?v14 wdt:P958 ?v15 . ?v15
-    wdt:P7492 ?v16 . ?v16 wdt:P1385 ?v17 . ?v17 wdt:P12123 ?v18 . ?v18 wdt:P6141 ?v19
-    . ?v19 wdt:P10916 ?v20 . ?v20 wdt:P10761 ?v21 . ?v21 wdt:P6019 ?v22 . ?v22 wdt:P3322
-    ?v23 . ?v23 wdt:P12249 ?v24 . ?v24 wdt:P4433 ?v25 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?v0 wdtn:P8024 ?v1 .
+      ?v1 wdt:P8024 ?v2 .
+      ?v2 wdt:P10837 ?v3 .
+      ?v3 wdt:P5626 ?v4 .
+      ?v4 wdt:P3453 ?v5 .
+      ?v5 wdt:P3177 ?v6 .
+      ?v6 wdt:P7997 ?v7 .
+      ?v7 wdt:P4740 ?v8 .
+      ?v8 wdt:P4034 ?v9 .
+      ?v9 wdt:P9556 ?v10 .
+      ?v10 wdt:P470 ?v11 .
+      ?v11 wdt:P5052 ?v12 .
+      ?v12 wdtn:P4466 ?v13 .
+      ?v13 wdt:P4466 ?v14 .
+      ?v14 wdt:P958 ?v15 .
+      ?v15 wdt:P7492 ?v16 .
+      ?v16 wdt:P1385 ?v17 .
+      ?v17 wdt:P12123 ?v18 .
+      ?v18 wdt:P6141 ?v19 .
+      ?v19 wdt:P10916 ?v20 .
+      ?v20 wdt:P10761 ?v21 .
+      ?v21 wdt:P6019 ?v22 .
+      ?v22 wdt:P3322 ?v23 .
+      ?v23 wdt:P12249 ?v24 .
+      ?v24 wdt:P4433 ?v25 .
+    }
   runtime_info:
-    client_time: 0.01158905029296875
+    client_time: 0.012495279312133789
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: optional-join-small-large [OPTION ... of a small and a large predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s wdtn:P8024 ?o1 OPTIONAL { ?s schema:description ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      OPTIONAL {
+        ?s schema:description ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.21002697944641113
+    client_time: 0.2135312557220459
   result_size: 1
   headers:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: optional-join-large-small [OPTION ... of a large and a small predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 OPTIONAL { ?s wdtn:P8024 ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 300.21350741386414
+    client_time: 300.42054510116577
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 OPTIONAL { ?s schema:name
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s schema:name ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 300.0051634311676
+    client_time: 300.7539772987366
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: optional-join-2-large-large-with- ... h a reasonably large join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 . OPTIONAL { ?s wdt:P2093 ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 301.0043637752533
+    client_time: 300.75665307044983
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . OPTIONAL { ?s wdt:P478 ?o2
-    } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      OPTIONAL {
+        ?s wdt:P478 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 183.31054615974426
+    client_time: 48.25647449493408
   result_size: 1
   headers:
   - count
   results:
   - - '"33959393"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . OPTIONAL { ?s wdt:P50 ?o2
-    } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      OPTIONAL {
+        ?s wdt:P50 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 99.39936971664429
+    client_time: 56.17171812057495
   result_size: 1
   headers:
   - count
   results:
   - - '"58200974"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
-    . OPTIONAL { ?s wdt:P31 ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      OPTIONAL {
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 300.28469586372375
+    client_time: 300.7833960056305
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . OPTIONAL { ?s schema:description
-    ?o2 . ?s wdt:P31 ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 137.61188435554504
+    client_time: 148.65470504760742
   result_size: 1
   headers:
   - count
   results:
-  - - '"3473069575"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3473068852"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . OPTIONAL { ?c schema:description ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      OPTIONAL {
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
-    client_time: 273.7744529247284
+    client_time: 289.7594404220581
   result_size: 1
   headers:
   - count
   results:
-  - - '"16176594551"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"16176594500"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . OPTIONAL { ?b wdt:P31 ?c . ?c schema:description ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      OPTIONAL {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
-    client_time: 300.6083810329437
+    client_time: 300.76945185661316
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s wdtn:P8024 ?o1 MINUS { ?s schema:description ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      MINUS {
+        ?s schema:description ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.09200501441955566
+    client_time: 0.06849193572998047
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 MINUS { ?s wdtn:P8024 ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 300.9020402431488
+    client_time: 300.4174220561981
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: minus-join-large-large [MINUS JOIN of two large predicates]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 MINUS { ?s schema:name
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s schema:name ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 301.0036418437958
+    client_time: 300.73871636390686
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 . MINUS { ?s wdt:P2093 ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 300.0061855316162
+    client_time: 300.7486789226532
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . MINUS { ?s wdt:P478 ?o2 }
-    }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      MINUS {
+        ?s wdt:P478 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 71.17280793190002
+    client_time: 47.98976945877075
   result_size: 1
   headers:
   - count
   results:
   - - '"4209248"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . MINUS { ?s wdt:P50 ?o2 }
-    }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      MINUS {
+        ?s wdt:P50 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 67.47090148925781
+    client_time: 56.35604929924011
   result_size: 1
   headers:
   - count
   results:
   - - '"28450829"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
-    . MINUS { ?s wdt:P31 ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      MINUS {
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 300.33991861343384
+    client_time: 300.7591128349304
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . MINUS { ?s schema:description
-    ?o2 . ?s wdt:P31 ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 101.13494610786438
+    client_time: 95.78633260726929
   result_size: 1
   headers:
   - count
   results:
-  - - '"127901680"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"127901708"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . MINUS { ?c schema:description ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      MINUS {
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
-    client_time: 66.4744963645935
+    client_time: 65.85811018943787
   result_size: 1
   headers:
   - count
   results:
   - - '"922"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . MINUS { ?b wdt:P31 ?c . ?c schema:description ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      MINUS {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
-    client_time: 239.58217787742615
+    client_time: 224.45226073265076
   result_size: 1
   headers:
   - count
   results:
   - - '"10770"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s wdtn:P8024 ?o1 FILTER EXISTS { ?s schema:description ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      FILTER EXISTS {
+        ?s schema:description ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.049170732498168945
+    client_time: 0.03368830680847168
   result_size: 1
   headers:
   - count
   results:
-  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"1000"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 FILTER EXISTS { ?s wdtn:P8024 ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 300.73062896728516
+    client_time: 300.4679729938507
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: exists-join-large-large [EXISTS JOIN of two large predicates]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 FILTER EXISTS {
-    ?s schema:name ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s schema:name ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 301.0045676231384
+    client_time: 300.7643358707428
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: exists-join-2-large-large-with-la ... h a reasonably large join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?s schema:description ?o1 . FILTER EXISTS { ?s wdt:P2093 ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 300.96562147140503
+    client_time: 300.7291970252991
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . FILTER EXISTS { ?s wdt:P478
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P478 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 50.55438756942749
+    client_time: 48.34208941459656
   result_size: 1
   headers:
   - count
   results:
-  - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"29748245"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . FILTER EXISTS { ?s wdt:P50
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P50 ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 58.77675104141235
+    client_time: 55.85979771614075
   result_size: 1
   headers:
   - count
   results:
-  - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"11561944"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
-    . FILTER EXISTS { ?s wdt:P31 ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      FILTER EXISTS {
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 300.64979219436646
+    client_time: 300.07378220558167
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . FILTER EXISTS { ?s schema:description
-    ?o2 . ?s wdt:P31 ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 143.9756474494934
+    client_time: 93.15464878082275
   result_size: 1
   headers:
   - count
   results:
-  - - '"3345167895"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"108029262"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . ?b wdt:P31 ?c . FILTER EXISTS { ?c schema:description ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      FILTER EXISTS {
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
-    client_time: 288.1678385734558
+    client_time: 69.44078636169434
   result_size: 1
   headers:
   - count
   results:
-  - - '"16176593629"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"315089523"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    ?a wdt:P2860 ?b . FILTER EXISTS { ?b wdt:P31 ?c . ?c schema:description ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      FILTER EXISTS {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
-    client_time: 300.8442850112915
-  headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+    client_time: 226.24815964698792
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"309631467"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: union-no-constraint [UNION of two large predicates, no constraint]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { { ?s schema:description ?o } UNION { ?s schema:name
-    ?o } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o .
+      }
+      UNION
+      {
+        ?s schema:name ?o .
+      }
+    }
   runtime_info:
-    client_time: 49.1909601688385
+    client_time: 58.12931418418884
   result_size: 1
   headers:
   - count
   results:
-  - - '"3989891699"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3989891752"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: union-constraint-from-star [UNION ... cate known to have join partners]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { { ?s rdf:type ?o1 } UNION { ?s schema:description
-    ?o1 } ?s wdt:P31 ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o1 .
+      }
+      UNION
+      {
+        ?s schema:description ?o1 .
+      }
+      ?s wdt:P31 ?o2 .
+    }
   runtime_info:
-    client_time: 111.01506042480469
+    client_time: 118.89039731025696
   result_size: 1
   headers:
   - count
   results:
-  - - '"3461508354"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3461507606"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: union-constraint-small-join [UNIO ... ed by a join with a small result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT (COUNT(*) AS ?count)
-    WHERE { { ?s wdt:P50 ?o1 } UNION { ?s skos:prefLabel ?o1 } ?s wdt:P478 ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s wdt:P50 ?o1 .
+      }
+      UNION
+      {
+        ?s skos:prefLabel ?o1 .
+      }
+      ?s wdt:P478 ?o2 .
+    }
   runtime_info:
-    client_time: 18.32607340812683
+    client_time: 19.031630992889404
   result_size: 1
   headers:
   - count
   results:
-  - - '"111906089"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"111906031"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: union-constraint-large-join [UNIO ... ed by a join with a large result]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
-    { ?s schema:description ?o1 } UNION { ?s schema:name ?o1 } ?s wdt:P2093 ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o1 .
+      }
+      UNION
+      {
+        ?s schema:name ?o1 .
+      }
+      ?s wdt:P2093 ?o2 .
+    }
   runtime_info:
-    client_time: 107.85509538650513
+    client_time: 123.36928725242615
   result_size: 1
   headers:
   - count
   results:
-  - - '"6396603495"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"6396603056"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { { ?s schema:description ?o } UNION { ?s schema:name
-    ?o } FILTER (?s = ?o) }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o .
+      }
+      UNION
+      {
+        ?s schema:name ?o .
+      }
+      FILTER (?s = ?o)
+    }
   runtime_info:
-    client_time: 54.692692279815674
+    client_time: 53.047292709350586
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: multicolumn-join-small [Multicolumn JOIN small]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P921 ?o . ?s wdt:P31 ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P921 ?o .
+      ?s wdt:P31 ?o .
+    }
   runtime_info:
-    client_time: 0.31382083892822266
+    client_time: 0.3101506233215332
   result_size: 1
   headers:
   - count
   results:
   - - '"43041"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: multicolumn-join-large [Multicolumn JOIN large]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s skos:prefLabel ?o . ?s rdfs:label ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s skos:prefLabel ?o .
+      ?s rdfs:label ?o .
+    }
   runtime_info:
-    client_time: 236.61921334266663
+    client_time: 229.35760354995728
   result_size: 1
   headers:
   - count
   results:
   - - '"716504925"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-count-object-high-multip ... or object with high multiplicity]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT ?object (COUNT(?subject) AS ?count) { ?subject wdt:P2548 ?object } GROUP
-    BY ?object ORDER BY DESC(?count) LIMIT 10'
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject wdt:P2548 ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 0.4682958126068115
+    client_time: 0.027251005172729492
   result_size: 3
   headers:
   - object
   - count
   results:
-  - - <http://www.wikidata.org/entity/Q41329>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q22809711>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q22809680>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - '"530762"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q22809711>
+    - '"527806"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q41329>
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-count-object-low-multipl ... for object with low multiplicity]
-  sparql: 'PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    SELECT ?object (COUNT(?subject) AS ?count) { ?subject skos:prefLabel ?object }
-    GROUP BY ?object ORDER BY DESC(?count) LIMIT 10'
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject skos:prefLabel ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 303.0797309875488
+    client_time: 303.2403447628021
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT ?o1 (COUNT(?s) AS ?count) { ?s
-    wdt:P13046 ?o1 . ?s schema:description ?o2 } GROUP BY ?o1 ORDER BY DESC(?count)
-    LIMIT 10'
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 96.10801482200623
+    client_time: 7.284898042678833
   result_size: 10
   headers:
   - o1
   - count
   results:
-  - - <http://www.wikidata.org/entity/Q2352616>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q36279>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q309481>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q7318358>
+    - '"105647158"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q1504425>
+    - '"781966"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q591041>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q193495>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q871232>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q878041>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q818574>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q27718083>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q114613919>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - '"64613"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q121763407>
+    - '"15104"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q2782326>
+    - '"4116"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q815382>
+    - '"3946"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q131359514>
+    - '"2006"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q58901591>
+    - '"1413"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q309481>
+    - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q131359749>
+    - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s)
-    AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample) { ?s wdt:P13046 ?o1 . ?s schema:description
-    ?o2 } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT 10'
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 97.5563976764679
+    client_time: 220.18793082237244
   result_size: 10
   headers:
   - o1
@@ -574,101 +853,155 @@ queries:
   - max
   - sample
   results:
-  - - <http://www.wikidata.org/entity/Q2352616>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q36279>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q309481>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q7318358>
+    - '"105647158"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q100295053>
+    - <http://www.wikidata.org/entity/Q99731952>
+    - <http://www.wikidata.org/entity/Q99413970>
+  - - <http://www.wikidata.org/entity/Q1504425>
+    - '"781966"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q101138924>
+    - <http://www.wikidata.org/entity/Q99349321>
+    - <http://www.wikidata.org/entity/Q21089955>
   - - <http://www.wikidata.org/entity/Q591041>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q193495>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q871232>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q878041>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q818574>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q27718083>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  - - <http://www.wikidata.org/entity/Q114613919>
-    - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - '"64613"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q100000003>
+    - <http://www.wikidata.org/entity/Q99999992>
+    - <http://www.wikidata.org/entity/Q21761510>
+  - - <http://www.wikidata.org/entity/Q121763407>
+    - '"15104"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q100895162>
+    - <http://www.wikidata.org/entity/Q99974210>
+    - <http://www.wikidata.org/entity/Q21090430>
+  - - <http://www.wikidata.org/entity/Q2782326>
+    - '"4116"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q22330678>
+    - <http://www.wikidata.org/entity/Q99409711>
+    - <http://www.wikidata.org/entity/Q22330678>
+  - - <http://www.wikidata.org/entity/Q815382>
+    - '"3946"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q101060206>
+    - <http://www.wikidata.org/entity/Q98459647>
+    - <http://www.wikidata.org/entity/Q35186747>
+  - - <http://www.wikidata.org/entity/Q131359514>
+    - '"2006"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q132291049>
+    - <http://www.wikidata.org/entity/Q38190587>
+    - <http://www.wikidata.org/entity/Q28757570>
+  - - <http://www.wikidata.org/entity/Q58901591>
+    - '"1413"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q22061852>
+    - <http://www.wikidata.org/entity/Q37947489>
+    - <http://www.wikidata.org/entity/Q22061852>
+  - - <http://www.wikidata.org/entity/Q309481>
+    - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q105020799>
+    - <http://www.wikidata.org/entity/Q61632533>
+    - <http://www.wikidata.org/entity/Q118640593>
+  - - <http://www.wikidata.org/entity/Q131359749>
+    - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q108799700>
+    - <http://www.wikidata.org/entity/Q52937709>
+    - <http://www.wikidata.org/entity/Q36152811>
 - query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?o) AS ?count) { ?s schema:version ?o }'
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
-    client_time: 1.5539202690124512
+    client_time: 1.7408313751220703
   result_size: 1
   headers:
   - count
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(?o) AS ?sum) { ?s schema:version ?o }'
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
-    client_time: 1.5064024925231934
+    client_time: 1.7100982666015625
   result_size: 1
   headers:
   - sum
   results:
   - []
 - query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (MIN(?o) AS ?min) { ?s schema:version ?o }'
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
-    client_time: 1.6211435794830322
+    client_time: 1.812601089477539
   result_size: 1
   headers:
   - min
   results:
   - - '"984175"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (MAX(?o) AS ?max) { ?s schema:version ?o }'
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
-    client_time: 1.6780335903167725
+    client_time: 1.814481496810913
   result_size: 1
   headers:
   - max
   results:
   - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (AVG(?o) AS ?avg) { ?s schema:version ?o }'
+  sparql: |-
+    SELECT (AVG(?o) AS ?avg)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
-    client_time: 1.6054072380065918
+    client_time: 1.7202677726745605
   result_size: 1
   headers:
   - avg
   results:
-  - - '"2005535237.0219644144887"^^<http://www.w3.org/2001/XMLSchema#decimal>'
+  - - '"2005535237.02"^^<http://www.w3.org/2001/XMLSchema#decimal>'
 - query: group-by-implicit-string-baseline ...  on string predicate as baseline]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?o) AS ?count) { ?s schema:description ?o }'
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+    }
   runtime_info:
-    client_time: 38.6574547290802
+    client_time: 42.92480230331421
   result_size: 1
   headers:
   - count
   results:
-  - - '"3273386774"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (MIN(?o) AS ?min) { ?s schema:description ?o }'
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s schema:description ?o .
+    }
   runtime_info:
-    client_time: 75.31733202934265
+    client_time: 70.49875521659851
   result_size: 1
   headers:
   - min
   results:
   - - '"!9'' o."@de'
 - query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (MAX(?o) AS ?max) { ?s schema:description ?o }'
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s schema:description ?o .
+    }
   runtime_info:
-    client_time: 44.884485483169556
+    client_time: 51.17457604408264
   result_size: 1
   headers:
   - max
@@ -676,178 +1009,217 @@ queries:
   - - '"ऋऋल या पण"@dso'
 - query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (STRLEN(GROUP_CONCAT(?o; SEPARATOR=" ")) AS ?len) { ?s schema:description
-    ?o } GROUP BY ?s LIMIT 10'
+    SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
+    AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
   runtime_info:
-    client_time: 237.08129954338074
+    client_time: 200.37587523460388
   headers: []
-  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: distinct-count-object-high-multip ... or object with high multiplicity]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject wdt:P2548 ?object }'
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject wdt:P2548 ?object .
+    }
   runtime_info:
-    client_time: 0.016286849975585938
+    client_time: 0.031778812408447266
   result_size: 1
   headers:
   - count
   results:
-  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: distinct-count-object-low-multipl ... for object with low multiplicity]
-  sparql: 'PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject skos:prefLabel ?object }'
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject skos:prefLabel ?object .
+    }
   runtime_info:
-    client_time: 302.24954867362976
+    client_time: 300.86948227882385
   headers: []
   results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
     jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
 - query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(DISTINCT ?o1) AS ?count)
-    { ?s wdt:P13046 ?o1 . ?s schema:description ?o2 }'
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o1) AS ?count)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
   runtime_info:
-    client_time: 6.351048231124878
+    client_time: 7.998469352722168
   result_size: 1
   headers:
   - count
   results:
-  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"42"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: transitive-path-plus [Transitive path with plus]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) { ?s wdt:P2293+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P2293+ ?o .
+    }
   runtime_info:
-    client_time: 6.1719629764556885
+    client_time: 6.745727300643921
   result_size: 1
   headers:
   - count
   results:
   - - '"12972038"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wd: <http://www.wikidata.org/entity/>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { wd:Q81867
-    wdt:P2293+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      wd:Q81867 wdt:P2293+ ?o .
+    }
   runtime_info:
-    client_time: 0.006228208541870117
+    client_time: 0.012025117874145508
   result_size: 1
   headers:
   - count
   results:
   - - '"3519"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: transitive-path-large-join-and-pl ...  path with a large join and plus]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) { ?s wdt:P921/wdt:P2293+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P921/wdt:P2293+ ?o .
+    }
   runtime_info:
-    client_time: 300.9039556980133
+    client_time: 300.26085209846497
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: transitive-path-small-join-and-pl ...  path with a small join and plus]
-  sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) { ?s wdt:P1911/wdt:P2293+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P1911/wdt:P2293+ ?o .
+    }
   runtime_info:
-    client_time: 0.07926726341247559
+    client_time: 0.09008336067199707
   result_size: 1
   headers:
   - count
   results:
   - - '"159948"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: regex-3-contains [CONTAINS filter with fixed string of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER CONTAINS(?o, "com")
-    }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER CONTAINS(?o, "com")
+    }
   runtime_info:
-    client_time: 300.91415786743164
+    client_time: 300.34417033195496
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: regex-3-fixed [REGEX filter with fixed string of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "com") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "com")
+    }
   runtime_info:
-    client_time: 301.0022077560425
+    client_time: 300.75252509117126
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: regex-3 [REGEX filter with expression of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "c.m") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "c.m")
+    }
   runtime_info:
-    client_time: 300.0062494277954
+    client_time: 300.67014598846436
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: regex-prefix-1 [REGEX filter with prefix of length 1]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "^C") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "^C")
+    }
   runtime_info:
-    client_time: 301.0033414363861
+    client_time: 300.6760952472687
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: regex-prefix-2 [REGEX filter with prefix of length 2]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?object FILTER REGEX(?object,
-    "^Co") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Co")
+    }
   runtime_info:
-    client_time: 300.00656723976135
+    client_time: 300.6416046619415
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: regex-prefix-3 [REGEX filter with prefix of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s rdfs:label ?object FILTER REGEX(?object,
-    "^Com") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Com")
+    }
   runtime_info:
-    client_time: 301.0001356601715
+    client_time: 300.6503403186798
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: strlen [String length for large string predicate]
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
-    client_time: 301.0044012069702
+    client_time: 300.69162487983704
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 53'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: strbefore [STRBEFORE string function]
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
-    client_time: 301.0042941570282
+    client_time: 300.60246896743774
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 53'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: strafter [STRAFTER string function]
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
-    client_time: 301.0025677680969
+    client_time: 300.6513862609863
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 53'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: strstarts [STRSTARTS string function]
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o,
     "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
-    client_time: 300.9288535118103
-  headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+    client_time: 293.743967294693
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"589247"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: strends [STRENDS string function]
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o,
     "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
-    client_time: 300.9746460914612
-  headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+    client_time: 295.1847245693207
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"83145778"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: result-size-tiny [Export 10 tuples]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 10'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 10
   runtime_info:
-    client_time: 0.011953353881835938
+    client_time: 0.004117727279663086
   result_size: 10
   headers:
   - s
@@ -874,10 +1246,14 @@ queries:
   - - <http://www.wikidata.org/entity/Q76091498>
     - '"*1708"@de'
 - query: result-size-small [Export 1000 tuples]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 1000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 1000
   runtime_info:
-    client_time: 0.015863418579101562
+    client_time: 0.005686283111572266
   result_size: 1000
   headers:
   - s
@@ -924,10 +1300,14 @@ queries:
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
 - query: result-size-medium [Export 100K tuples]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 100000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 100000
   runtime_info:
-    client_time: 0.41594767570495605
+    client_time: 0.23357248306274414
   result_size: 100000
   headers:
   - s
@@ -974,10 +1354,14 @@ queries:
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
 - query: result-size-large [Export 1M tuples]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 1000000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 1000000
   runtime_info:
-    client_time: 3.4619569778442383
+    client_time: 1.121516466140747
   result_size: 1000000
   headers:
   - s
@@ -1024,10 +1408,14 @@ queries:
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
 - query: result-size-xlarge [Export 10M tuples]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT ?s ?o WHERE { ?s schema:description ?o } LIMIT 10000000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 10000000
   runtime_info:
-    client_time: 34.6043426990509
+    client_time: 13.23496389389038
   result_size: 10000000
   headers:
   - s
@@ -1074,10 +1462,13 @@ queries:
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
 - query: numeric-baseline [Baseline for numeric queries]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(?o) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
-    client_time: 1.602614402770996
+    client_time: 1.7235350608825684
   result_size: 1
   headers:
   - sum
@@ -1087,7 +1478,7 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
-    client_time: 1.9890735149383545
+    client_time: 2.0661678314208984
   result_size: 1
   headers:
   - sum
@@ -1097,7 +1488,7 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
-    client_time: 1.9448139667510986
+    client_time: 2.089932918548584
   result_size: 1
   headers:
   - sum
@@ -1107,7 +1498,7 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
-    client_time: 2.0310497283935547
+    client_time: 2.087939500808716
   result_size: 1
   headers:
   - sum
@@ -1117,7 +1508,7 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
-    client_time: 2.022556781768799
+    client_time: 2.0918421745300293
   result_size: 1
   headers:
   - sum
@@ -1127,7 +1518,7 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
-    client_time: 2.3320560455322266
+    client_time: 2.2872860431671143
   result_size: 1
   headers:
   - sum
@@ -1137,79 +1528,98 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
-    client_time: 1.285278081893921
+    client_time: 1.447679042816162
   result_size: 1
   headers:
   - sum
   results:
   - []
 - query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2147882675)
-    }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2147882675)
+    }
   runtime_info:
-    client_time: 2.0086259841918945
+    client_time: 2.0636463165283203
   result_size: 1
   headers:
   - count
   results:
-  - - '"17678"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"60044100"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2241500354)
-    }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2241500354)
+    }
   runtime_info:
-    client_time: 1.9224004745483398
+    client_time: 1.918696403503418
   result_size: 1
   headers:
   - count
   results:
-  - - '"17003"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"36026461"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2325672138)
-    }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2325672138)
+    }
   runtime_info:
-    client_time: 1.8175280094146729
+    client_time: 1.748333215713501
   result_size: 1
   headers:
   - count
   results:
-  - - '"6954"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"6004411"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: filter-few-results [FILTER that f ... ut most rows and has few results]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER (?s = ?o) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (?s = ?o)
+    }
   runtime_info:
-    client_time: 45.70129179954529
+    client_time: 42.49531626701355
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: filter-many-results [FILTER that  ... ut few rows and has many results]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER (?s != ?o) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (?s != ?o)
+    }
   runtime_info:
-    client_time: 61.927907943725586
+    client_time: 67.23228573799133
   result_size: 1
   headers:
   - count
   results:
-  - - '"587706"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: filter-language-en [FILTER on str ... dicate for only English literals]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER(LANG(?o) = "en")
-    }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (lang(?o) = "en")
+    }
   runtime_info:
-    client_time: 300.5958249568939
+    client_time: 300.540048122406
   headers: []
-  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
-    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
+  results: 'Empty result: curl returned with code 200, but the result is empty'
 - query: date-year [YEAR function]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
-    client_time: 2.086630344390869
+    client_time: 2.156567096710205
   result_size: 1
   headers:
   - sum
@@ -1219,7 +1629,7 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
-    client_time: 1.8439152240753174
+    client_time: 1.9274377822875977
   result_size: 1
   headers:
   - sum
@@ -1229,59 +1639,83 @@ queries:
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
-    client_time: 1.8326523303985596
+    client_time: 1.9275519847869873
   result_size: 1
   headers:
   - sum
   results:
   - - '"1845375552"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: number-of-triples [Total number of triples]
-  sparql: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 130.5227015018463
+    client_time: 141.1254689693451
   result_size: 1
   headers:
   - count
   results:
-  - - '"6262570"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"7941293818"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: number-of-subjects [Total number of distinct subjects]
-  sparql: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 125.33307552337646
-  result_size: 1
-  headers:
-  - count
-  results:
-  - - '"161520"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    client_time: 300.6971468925476
+  headers: []
+  results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
+    jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
 - query: number-of-predicates [Total number of distinct predicates]
-  sparql: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?p) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 256.93267154693604
+    client_time: 241.80667996406555
   result_size: 1
   headers:
   - count
   results:
-  - - '"9308"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"12377"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: number-of-objects [Total number of distinct objects]
-  sparql: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 300.9749393463135
+    client_time: 301.3109173774719
   headers: []
   results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
     jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
 - query: number-of-literals [Total number of literals]
-  sparql: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isLiteral(?o)
+    }
   runtime_info:
-    client_time: 157.0351846218109
+    client_time: 174.99578952789307
   result_size: 1
   headers:
   - count
   results:
-  - - '"6627010815"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"6627010868"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: number-of-blank-nodes [Total number of blank nodes]
-  sparql: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isBlank(?s)
+    }
   runtime_info:
-    client_time: 131.77295017242432
+    client_time: 130.56925749778748
   result_size: 1
   headers:
   - count
