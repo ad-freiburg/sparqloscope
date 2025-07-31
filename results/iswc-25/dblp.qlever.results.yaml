@@ -7,7 +7,7 @@ queries:
       ?s rdf:type ?o2 .
     }
   runtime_info:
-    client_time: 0.031093835830688477
+    client_time: 0.008907794952392578
   result_size: 1
   headers:
   - count
@@ -21,7 +21,7 @@ queries:
       ?s dblp:formerStreamTitle ?o2 .
     }
   runtime_info:
-    client_time: 0.006725788116455078
+    client_time: 0.00538945198059082
   result_size: 1
   headers:
   - count
@@ -35,7 +35,7 @@ queries:
       ?s dblp:hasSignature ?o2 .
     }
   runtime_info:
-    client_time: 0.1929018497467041
+    client_time: 0.18114352226257324
   result_size: 1
   headers:
   - count
@@ -49,7 +49,7 @@ queries:
       ?s dblp:createdBy ?o2 .
     }
   runtime_info:
-    client_time: 0.2165851593017578
+    client_time: 0.004835367202758789
   result_size: 1
   headers:
   - count
@@ -63,7 +63,7 @@ queries:
       ?s dblp:createdBy ?o2 .
     }
   runtime_info:
-    client_time: 0.005762815475463867
+    client_time: 0.005129575729370117
   result_size: 1
   headers:
   - count
@@ -77,7 +77,7 @@ queries:
       ?s dblp:publishedInJournalVolume ?o2 .
     }
   runtime_info:
-    client_time: 0.022591352462768555
+    client_time: 0.005730628967285156
   result_size: 1
   headers:
   - count
@@ -92,7 +92,7 @@ queries:
       ?s dblp:signatureDblpName ?o3 .
     }
   runtime_info:
-    client_time: 1.1562154293060303
+    client_time: 1.125767707824707
   result_size: 1
   headers:
   - count
@@ -107,7 +107,7 @@ queries:
       ?c rdfs:subClassOf ?d .
     }
   runtime_info:
-    client_time: 1.5437593460083008
+    client_time: 0.5026135444641113
   result_size: 1
   headers:
   - count
@@ -142,7 +142,7 @@ queries:
       ?s terms:description ?o22 .
     }
   runtime_info:
-    client_time: 0.04449105262756348
+    client_time: 0.03812217712402344
   result_size: 1
   headers:
   - count
@@ -177,7 +177,7 @@ queries:
       ?v22 terms:description ?v23 .
     }
   runtime_info:
-    client_time: 0.37106990814208984
+    client_time: 0.4922962188720703
   result_size: 1
   headers:
   - count
@@ -193,7 +193,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.03464150428771973
+    client_time: 0.033670902252197266
   result_size: 1
   headers:
   - count
@@ -209,7 +209,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.23169445991516113
+    client_time: 0.23119568824768066
   result_size: 1
   headers:
   - count
@@ -225,7 +225,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.38434648513793945
+    client_time: 0.3684511184692383
   result_size: 1
   headers:
   - count
@@ -241,7 +241,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.2538008689880371
+    client_time: 0.24901199340820312
   result_size: 1
   headers:
   - count
@@ -257,7 +257,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.031247854232788086
+    client_time: 0.7635664939880371
   result_size: 1
   headers:
   - count
@@ -273,7 +273,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.032636404037475586
+    client_time: 0.04061102867126465
   result_size: 1
   headers:
   - count
@@ -290,7 +290,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 1.0171332359313965
+    client_time: 0.9754049777984619
   result_size: 1
   headers:
   - count
@@ -307,7 +307,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.9505643844604492
+    client_time: 0.9135563373565674
   result_size: 1
   headers:
   - count
@@ -324,7 +324,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.9783682823181152
+    client_time: 0.891716480255127
   result_size: 1
   headers:
   - count
@@ -341,7 +341,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 3.3823370933532715
+    client_time: 3.458993434906006
   result_size: 1
   headers:
   - count
@@ -357,7 +357,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.03443336486816406
+    client_time: 0.035649776458740234
   result_size: 1
   headers:
   - count
@@ -373,7 +373,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.2700037956237793
+    client_time: 0.28751325607299805
   result_size: 1
   headers:
   - count
@@ -389,7 +389,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.3928375244140625
+    client_time: 0.39656829833984375
   result_size: 1
   headers:
   - count
@@ -405,7 +405,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.23205900192260742
+    client_time: 0.23846125602722168
   result_size: 1
   headers:
   - count
@@ -421,7 +421,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.03719925880432129
+    client_time: 0.032917022705078125
   result_size: 1
   headers:
   - count
@@ -437,7 +437,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.03470301628112793
+    client_time: 0.03486180305480957
   result_size: 1
   headers:
   - count
@@ -454,7 +454,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.9726049900054932
+    client_time: 0.9460461139678955
   result_size: 1
   headers:
   - count
@@ -471,7 +471,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.9238824844360352
+    client_time: 0.8807177543640137
   result_size: 1
   headers:
   - count
@@ -488,7 +488,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.8768668174743652
+    client_time: 0.8763439655303955
   result_size: 1
   headers:
   - count
@@ -505,7 +505,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 3.486713409423828
+    client_time: 3.3418853282928467
   result_size: 1
   headers:
   - count
@@ -521,7 +521,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.08610820770263672
+    client_time: 0.1944422721862793
   result_size: 1
   headers:
   - count
@@ -537,7 +537,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.26395368576049805
+    client_time: 0.2546980381011963
   result_size: 1
   headers:
   - count
@@ -553,7 +553,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.5561814308166504
+    client_time: 0.5633015632629395
   result_size: 1
   headers:
   - count
@@ -569,7 +569,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.5199966430664062
+    client_time: 0.5019972324371338
   result_size: 1
   headers:
   - count
@@ -585,7 +585,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.04308509826660156
+    client_time: 0.03796887397766113
   result_size: 1
   headers:
   - count
@@ -601,7 +601,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.04147481918334961
+    client_time: 0.04003548622131348
   result_size: 1
   headers:
   - count
@@ -618,7 +618,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 1.9082443714141846
+    client_time: 1.8330600261688232
   result_size: 1
   headers:
   - count
@@ -635,7 +635,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 1.3074281215667725
+    client_time: 1.231520652770996
   result_size: 1
   headers:
   - count
@@ -652,7 +652,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 5.317826747894287
+    client_time: 4.3799073696136475
   result_size: 1
   headers:
   - count
@@ -669,7 +669,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 4.547151327133179
+    client_time: 4.573803424835205
   result_size: 1
   headers:
   - count
@@ -688,7 +688,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.120758056640625
+    client_time: 0.1276540756225586
   result_size: 1
   headers:
   - count
@@ -708,7 +708,7 @@ queries:
       ?s dblp:signatureDblpName ?o2 .
     }
   runtime_info:
-    client_time: 0.718935489654541
+    client_time: 0.7129733562469482
   result_size: 1
   headers:
   - count
@@ -728,7 +728,7 @@ queries:
       ?s dblp:publishedInJournalVolume ?o2 .
     }
   runtime_info:
-    client_time: 0.3034489154815674
+    client_time: 0.27892160415649414
   result_size: 1
   headers:
   - count
@@ -748,7 +748,7 @@ queries:
       ?s dblp:createdBy ?o2 .
     }
   runtime_info:
-    client_time: 1.3946304321289062
+    client_time: 1.3235421180725098
   result_size: 1
   headers:
   - count
@@ -768,7 +768,7 @@ queries:
       FILTER (?s = ?o)
     }
   runtime_info:
-    client_time: 0.49309563636779785
+    client_time: 0.47862792015075684
   result_size: 1
   headers:
   - count
@@ -782,7 +782,7 @@ queries:
       ?s dblp:relatedStream ?o .
     }
   runtime_info:
-    client_time: 0.009411811828613281
+    client_time: 0.0074121952056884766
   result_size: 1
   headers:
   - count
@@ -796,7 +796,7 @@ queries:
       ?s dblp:authoredBy ?o .
     }
   runtime_info:
-    client_time: 2.0221879482269287
+    client_time: 2.011503219604492
   result_size: 1
   headers:
   - count
@@ -812,7 +812,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 0.015599250793457031
+    client_time: 0.009924173355102539
   result_size: 10
   headers:
   - object
@@ -848,7 +848,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 0.9149961471557617
+    client_time: 0.817197322845459
   result_size: 10
   headers:
   - object
@@ -885,7 +885,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 0.8567585945129395
+    client_time: 0.330033540725708
   result_size: 8
   headers:
   - o1
@@ -918,7 +918,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 0.2507483959197998
+    client_time: 0.6592257022857666
   result_size: 8
   headers:
   - o1
@@ -931,17 +931,17 @@ queries:
     - '"12983449"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/conf/mobiquitous/AlamPR15>
     - <https://dblp.org/rec/tr/unicamp/IC-12-08>
-    - <https://dblp.org/rec/journals/access/DeoWSC24>
+    - <https://dblp.org/rec/conf/mobiquitous/AlamPR15>
   - - <http://purl.org/net/nknouf/ns/bibtex#Inproceedings>
     - '"12437024"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/books/daglib/p/0001MWK11>
     - <https://dblp.org/rec/www/org/mitre/future>
-    - <https://dblp.org/rec/conf/globecom/LiuLLJG16>
+    - <https://dblp.org/rec/books/daglib/p/0001MWK11>
   - - <http://purl.org/net/nknouf/ns/bibtex#Proceedings>
     - '"150245"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/books/daglib/0028528>
     - <https://dblp.org/rec/tr/trier/MI99-17>
-    - <https://dblp.org/rec/conf/acl-spnlp/2019>
+    - <https://dblp.org/rec/books/daglib/0028528>
   - - <http://purl.org/net/nknouf/ns/bibtex#Phdthesis>
     - '"142547"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/books/daglib/0000492>
@@ -951,17 +951,17 @@ queries:
     - '"141870"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/books/acm/17/CohenO17>
     - <https://dblp.org/rec/series/xmedia/WieserS09>
-    - <https://dblp.org/rec/books/sp/16/AlbersBDHIKKRW16>
+    - <https://dblp.org/rec/books/acm/17/CohenO17>
   - - <http://purl.org/net/nknouf/ns/bibtex#Misc>
     - '"52923"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/data/10/90623>
     - <https://dblp.org/rec/www/org/w3/TR/xquery>
-    - <https://dblp.org/rec/data/10/GorgolewskiEZEMNJBMJHYS18>
+    - <https://dblp.org/rec/data/10/90623>
   - - <http://purl.org/net/nknouf/ns/bibtex#Book>
     - '"37541"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/books/acm/0082477>
     - <https://dblp.org/rec/tr/tum/TUM-I-9326>
-    - <https://dblp.org/rec/books/daglib/0097003>
+    - <https://dblp.org/rec/books/acm/0082477>
   - - <http://purl.org/net/nknouf/ns/bibtex#Mastersthesis>
     - '"27"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <https://dblp.org/rec/books/daglib/0070109>
@@ -974,7 +974,7 @@ queries:
       ?s dblp:numberOfCreators ?o .
     }
   runtime_info:
-    client_time: 0.023736953735351562
+    client_time: 0.005613803863525391
   result_size: 1
   headers:
   - count
@@ -987,7 +987,7 @@ queries:
       ?s dblp:numberOfCreators ?o .
     }
   runtime_info:
-    client_time: 0.04855704307556152
+    client_time: 0.04750394821166992
   result_size: 1
   headers:
   - sum
@@ -1000,7 +1000,7 @@ queries:
       ?s dblp:numberOfCreators ?o .
     }
   runtime_info:
-    client_time: 0.0475618839263916
+    client_time: 0.0465092658996582
   result_size: 1
   headers:
   - min
@@ -1013,7 +1013,7 @@ queries:
       ?s dblp:numberOfCreators ?o .
     }
   runtime_info:
-    client_time: 0.048552751541137695
+    client_time: 0.0456385612487793
   result_size: 1
   headers:
   - max
@@ -1026,7 +1026,7 @@ queries:
       ?s dblp:numberOfCreators ?o .
     }
   runtime_info:
-    client_time: 0.05026602745056152
+    client_time: 0.048004865646362305
   result_size: 1
   headers:
   - avg
@@ -1039,7 +1039,7 @@ queries:
       ?s dblp:signatureDblpName ?o .
     }
   runtime_info:
-    client_time: 0.06786632537841797
+    client_time: 0.0055408477783203125
   result_size: 1
   headers:
   - count
@@ -1052,12 +1052,12 @@ queries:
       ?s dblp:signatureDblpName ?o .
     }
   runtime_info:
-    client_time: 0.14341950416564941
+    client_time: 0.1529078483581543
   result_size: 1
   headers:
   - min
   results:
-  - - '"''Anau Mesui"'
+  - - "\"'Anau Mesui\""
 - query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
   sparql: |-
     SELECT (MAX(?o) AS ?max)
@@ -1065,18 +1065,17 @@ queries:
       ?s dblp:signatureDblpName ?o .
     }
   runtime_info:
-    client_time: 0.14764165878295898
+    client_time: 0.13952398300170898
   result_size: 1
   headers:
   - max
   results:
   - - '"Þröstur Pétursson"'
 - query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS
-    ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName
-    ?o } GROUP BY ?s } }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName ?o } GROUP BY ?s } }
   runtime_info:
-    client_time: 20.19607400894165
+    client_time: 18.01838707923889
   result_size: 1
   headers:
   - sum
@@ -1089,7 +1088,7 @@ queries:
       ?subject rdf:type ?object .
     }
   runtime_info:
-    client_time: 1.032212495803833
+    client_time: 0.834059476852417
   result_size: 1
   headers:
   - count
@@ -1102,7 +1101,7 @@ queries:
       ?subject dblp:hasSignature ?object .
     }
   runtime_info:
-    client_time: 5.552336692810059
+    client_time: 5.070512056350708
   result_size: 1
   headers:
   - count
@@ -1116,7 +1115,7 @@ queries:
       ?s dblp:hasSignature ?o2 .
     }
   runtime_info:
-    client_time: 0.4417901039123535
+    client_time: 0.39321255683898926
   result_size: 1
   headers:
   - count
@@ -1129,7 +1128,7 @@ queries:
       ?s dblp:relatedStream+ ?o .
     }
   runtime_info:
-    client_time: 0.09961247444152832
+    client_time: 0.06956100463867188
   result_size: 1
   headers:
   - count
@@ -1142,7 +1141,7 @@ queries:
       <https://dblp.org/streams/conf/damp> dblp:relatedStream+ ?o .
     }
   runtime_info:
-    client_time: 0.006645679473876953
+    client_time: 0.005843162536621094
   result_size: 1
   headers:
   - count
@@ -1155,7 +1154,7 @@ queries:
       ?s dblp:publishedInStream/dblp:relatedStream+ ?o .
     }
   runtime_info:
-    client_time: 13.208900451660156
+    client_time: 13.474424123764038
   result_size: 1
   headers:
   - count
@@ -1168,7 +1167,7 @@ queries:
       ?s dblp:subStream/dblp:relatedStream+ ?o .
     }
   runtime_info:
-    client_time: 0.044373512268066406
+    client_time: 0.04286766052246094
   result_size: 1
   headers:
   - count
@@ -1182,7 +1181,7 @@ queries:
       FILTER CONTAINS(?o, "com")
     }
   runtime_info:
-    client_time: 7.368441343307495
+    client_time: 6.159368276596069
   result_size: 1
   headers:
   - count
@@ -1196,7 +1195,7 @@ queries:
       FILTER regex(?o, "com")
     }
   runtime_info:
-    client_time: 7.708299398422241
+    client_time: 6.565537452697754
   result_size: 1
   headers:
   - count
@@ -1210,7 +1209,7 @@ queries:
       FILTER regex(?o, "c.m")
     }
   runtime_info:
-    client_time: 8.388786554336548
+    client_time: 6.815717697143555
   result_size: 1
   headers:
   - count
@@ -1224,7 +1223,7 @@ queries:
       FILTER regex(?o, "^C")
     }
   runtime_info:
-    client_time: 0.02086329460144043
+    client_time: 0.010299444198608398
   result_size: 1
   headers:
   - count
@@ -1238,7 +1237,7 @@ queries:
       FILTER regex(?object, "^Co")
     }
   runtime_info:
-    client_time: 0.008222818374633789
+    client_time: 0.007262706756591797
   result_size: 1
   headers:
   - count
@@ -1252,57 +1251,57 @@ queries:
       FILTER regex(?object, "^Com")
     }
   runtime_info:
-    client_time: 0.006931304931640625
+    client_time: 0.005892038345336914
   result_size: 1
   headers:
   - count
   results:
   - - '"1061"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strlen [String length for large string predicate]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o))
-    AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 4.205310106277466
+    client_time: 3.85756254196167
   result_size: 1
   headers:
   - checksum
   results:
   - - '"914706385"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strbefore [STRBEFORE string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o,
-    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 5.913027763366699
+    client_time: 5.028956174850464
   result_size: 1
   headers:
   - checksum
   results:
   - - '"68444965"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strafter [STRAFTER string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o,
-    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 6.359788179397583
+    client_time: 5.392590522766113
   result_size: 1
   headers:
   - checksum
   results:
   - - '"825474569"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strstarts [STRSTARTS string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 4.117651462554932
+    client_time: 3.810912609100342
   result_size: 1
   headers:
   - count
   results:
   - - '"40"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strends [STRENDS string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 4.130922794342041
+    client_time: 3.763065814971924
   result_size: 1
   headers:
   - count
@@ -1316,7 +1315,7 @@ queries:
     }
     LIMIT 10
   runtime_info:
-    client_time: 0.009753704071044922
+    client_time: 0.005515336990356445
   result_size: 10
   headers:
   - s
@@ -1350,7 +1349,7 @@ queries:
     }
     LIMIT 1000
   runtime_info:
-    client_time: 0.0075914859771728516
+    client_time: 0.04746699333190918
   result_size: 1000
   headers:
   - s
@@ -1404,7 +1403,7 @@ queries:
     }
     LIMIT 100000
   runtime_info:
-    client_time: 0.11268067359924316
+    client_time: 0.10297918319702148
   result_size: 100000
   headers:
   - s
@@ -1458,7 +1457,7 @@ queries:
     }
     LIMIT 1000000
   runtime_info:
-    client_time: 1.003122329711914
+    client_time: 0.9289135932922363
   result_size: 1000000
   headers:
   - s
@@ -1512,7 +1511,7 @@ queries:
     }
     LIMIT 10000000
   runtime_info:
-    client_time: 10.004405975341797
+    client_time: 9.26150131225586
   result_size: 10000000
   headers:
   - s
@@ -1565,67 +1564,67 @@ queries:
       ?s dblp:numberOfCreators ?o .
     }
   runtime_info:
-    client_time: 0.03978610038757324
+    client_time: 0.005822181701660156
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-abs [ABS function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.097808837890625
+    client_time: 0.09482693672180176
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-ceil [CEIL function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.0972285270690918
+    client_time: 0.09226536750793457
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-floor [FLOOR function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.09635806083679199
+    client_time: 0.09242844581604004
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-round [ROUND function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.0942227840423584
+    client_time: 0.09252548217773438
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-add [Addition]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.13671231269836426
+    client_time: 0.13670825958251953
   result_size: 1
   headers:
   - sum
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-greater [Greater than]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.07921504974365234
+    client_time: 0.07718610763549805
   result_size: 1
   headers:
   - sum
@@ -1639,7 +1638,7 @@ queries:
       FILTER (?o >= 2)
     }
   runtime_info:
-    client_time: 0.031464576721191406
+    client_time: 0.028526782989501953
   result_size: 1
   headers:
   - count
@@ -1653,7 +1652,7 @@ queries:
       FILTER (?o >= 3)
     }
   runtime_info:
-    client_time: 0.023964643478393555
+    client_time: 0.022079944610595703
   result_size: 1
   headers:
   - count
@@ -1667,7 +1666,7 @@ queries:
       FILTER (?o >= 7)
     }
   runtime_info:
-    client_time: 0.00881648063659668
+    client_time: 0.008514404296875
   result_size: 1
   headers:
   - count
@@ -1681,7 +1680,7 @@ queries:
       FILTER (?s = ?o)
     }
   runtime_info:
-    client_time: 0.38211727142333984
+    client_time: 0.3993511199951172
   result_size: 1
   headers:
   - count
@@ -1695,7 +1694,7 @@ queries:
       FILTER (?s != ?o)
     }
   runtime_info:
-    client_time: 0.6493227481842041
+    client_time: 0.6517837047576904
   result_size: 1
   headers:
   - count
@@ -1709,37 +1708,37 @@ queries:
       FILTER (lang(?o) = "en")
     }
   runtime_info:
-    client_time: 0.0055468082427978516
+    client_time: 0.005022287368774414
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-year [YEAR function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum)
-    WHERE { ?s dblp:yearOfPublication ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
   runtime_info:
-    client_time: 0.08929133415222168
+    client_time: 0.08547472953796387
   result_size: 1
   headers:
   - sum
   results:
   - - '"15637633984"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-month [MONTH function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum)
-    WHERE { ?s dblp:yearOfPublication ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
   runtime_info:
-    client_time: 0.10634064674377441
+    client_time: 0.10374903678894043
   result_size: 1
   headers:
   - sum
   results:
   - []
 - query: date-day [DAY function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum)
-    WHERE { ?s dblp:yearOfPublication ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
   runtime_info:
-    client_time: 0.10689520835876465
+    client_time: 0.10439085960388184
   result_size: 1
   headers:
   - sum
@@ -1752,7 +1751,7 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 0.9519124031066895
+    client_time: 0.0064716339111328125
   result_size: 1
   headers:
   - count
@@ -1765,7 +1764,7 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 35.948710918426514
+    client_time: 0.006191730499267578
   result_size: 1
   headers:
   - count
@@ -1778,7 +1777,7 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 5.903093338012695
+    client_time: 0.005936145782470703
   result_size: 1
   headers:
   - count
@@ -1791,7 +1790,7 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 23.553560256958008
+    client_time: 0.005782127380371094
   result_size: 1
   headers:
   - count
@@ -1805,7 +1804,7 @@ queries:
       FILTER isLiteral(?o)
     }
   runtime_info:
-    client_time: 2.1303653717041016
+    client_time: 2.070690393447876
   result_size: 1
   headers:
   - count
@@ -1819,7 +1818,7 @@ queries:
       FILTER isBlank(?s)
     }
   runtime_info:
-    client_time: 4.076919317245483
+    client_time: 3.9729838371276855
   result_size: 1
   headers:
   - count

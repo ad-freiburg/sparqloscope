@@ -7,7 +7,7 @@ queries:
       ?s schema:description ?o2 .
     }
   runtime_info:
-    client_time: 0.224168062210083
+    client_time: 0.04936528205871582
   result_size: 1
   headers:
   - count
@@ -21,7 +21,7 @@ queries:
       ?s wdtn:P8024 ?o2 .
     }
   runtime_info:
-    client_time: 0.029556751251220703
+    client_time: 0.023166418075561523
   result_size: 1
   headers:
   - count
@@ -35,7 +35,7 @@ queries:
       ?s schema:name ?o2 .
     }
   runtime_info:
-    client_time: 13.005093812942505
+    client_time: 11.707032918930054
   result_size: 1
   headers:
   - count
@@ -49,7 +49,7 @@ queries:
       ?s rdfs:label ?o2 .
     }
   runtime_info:
-    client_time: 7.214210033416748
+    client_time: 6.6937243938446045
   result_size: 1
   headers:
   - count
@@ -63,7 +63,7 @@ queries:
       ?s wdt:P2093 ?o2 .
     }
   runtime_info:
-    client_time: 6.9842565059661865
+    client_time: 6.153759717941284
   result_size: 1
   headers:
   - count
@@ -77,7 +77,7 @@ queries:
       ?s wdt:P478 ?o2 .
     }
   runtime_info:
-    client_time: 0.3821239471435547
+    client_time: 0.3517730236053467
   result_size: 1
   headers:
   - count
@@ -92,7 +92,7 @@ queries:
       ?s wdt:P31 ?o3 .
     }
   runtime_info:
-    client_time: 11.969239234924316
+    client_time: 10.500323057174683
   result_size: 1
   headers:
   - count
@@ -107,7 +107,7 @@ queries:
       ?c schema:description ?d .
     }
   runtime_info:
-    client_time: 8.311982154846191
+    client_time: 6.952762603759766
   result_size: 1
   headers:
   - count
@@ -144,7 +144,7 @@ queries:
       ?s wdt:P4433 ?o24 .
     }
   runtime_info:
-    client_time: 0.5650396347045898
+    client_time: 0.29691505432128906
   result_size: 1
   headers:
   - count
@@ -181,7 +181,7 @@ queries:
       ?v24 wdt:P4433 ?v25 .
     }
   runtime_info:
-    client_time: 2.7640841007232666
+    client_time: 2.0505475997924805
   result_size: 1
   headers:
   - count
@@ -197,7 +197,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.9765439033508301
+    client_time: 0.8975081443786621
   result_size: 1
   headers:
   - count
@@ -213,7 +213,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 14.396607875823975
+    client_time: 13.47049593925476
   result_size: 1
   headers:
   - count
@@ -229,7 +229,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 17.21398901939392
+    client_time: 16.22289538383484
   result_size: 1
   headers:
   - count
@@ -245,7 +245,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 15.72505521774292
+    client_time: 14.683743715286255
   result_size: 1
   headers:
   - count
@@ -261,7 +261,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.4301464557647705
+    client_time: 0.417705774307251
   result_size: 1
   headers:
   - count
@@ -277,7 +277,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.5014553070068359
+    client_time: 0.4718029499053955
   result_size: 1
   headers:
   - count
@@ -294,7 +294,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 34.29968047142029
+    client_time: 31.057287216186523
   result_size: 1
   headers:
   - count
@@ -311,7 +311,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 28.218576908111572
+    client_time: 25.453652143478394
   result_size: 1
   headers:
   - count
@@ -328,7 +328,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 2.7790169715881348
+    client_time: 2.651071310043335
   result_size: 1
   headers:
   - count
@@ -345,53 +345,12 @@ queries:
       }
     }
   runtime_info:
-    client_time: 19.45585060119629
-  headers: []
-  results: 'HTTP code: 500: { "exception": "Tried to allocate 51.8 GB, but only 28.1
-    GB were available", "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?a wdt:P2860 ?b . OPTIONAL { ?b wdt:P31 ?c
-    . ?c schema:description ?d } }", "resultsize": 0, "runtimeInformation": { "cache_status":
-    "computed", "children": [ { "cache_status": "computed", "children": [ { "cache_status":
-    "computed", "children": [], "column_names": [ "?b" ], "description": "IndexScan
-    ?a <http://www.wikidata.org/prop/direct/P2860> ?b", "details": null, "estimated_column_multiplicities":
-    [ 14.611566543579102 ], "estimated_operation_cost": 309642237, "estimated_size":
-    309642237, "estimated_total_cost": 309642237, "operation_time": 0, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 1, "result_rows": 0, "status": "lazily
-    materialized", "total_time": 0 }, { "cache_status": "computed", "children": [
-    { "cache_status": "computed", "children": [ { "cache_status": "computed", "children":
-    [], "column_names": [ "?c", "?b" ], "description": "IndexScan ?b <http://www.wikidata.org/prop/direct/P31>
-    ?c", "details": null, "estimated_column_multiplicities": [ 1113.5531005859375,
-    1.0420888662338257 ], "estimated_operation_cost": 117843982, "estimated_size":
-    117843982, "estimated_total_cost": 117843982, "operation_time": 0, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 2, "result_rows": 0, "status": "not
-    started", "total_time": 0 }, { "cache_status": "computed", "children": [], "column_names":
-    [ "?c" ], "description": "IndexScan ?c <http://schema.org/description> ?d", "details":
-    null, "estimated_column_multiplicities": [ 30.14183807373047 ], "estimated_operation_cost":
-    3273386827, "estimated_size": 3273386827, "estimated_total_cost": 3273386827,
-    "operation_time": 0, "original_operation_time": 0, "original_total_time": 0, "result_cols":
-    1, "result_rows": 0, "status": "not started", "total_time": 0 } ], "column_names":
-    [ "?b" ], "description": "Join on ?c", "details": { "time-for-filtering-blocks":
-    371 }, "estimated_column_multiplicities": [ 23495.17578125 ], "estimated_operation_cost":
-    5877654941, "estimated_size": 2486424132, "estimated_total_cost": 9268885750,
-    "operation_time": 19424, "original_operation_time": 0, "original_total_time":
-    0, "result_cols": 1, "result_rows": 0, "status": "failed", "total_time": 19424
-    } ], "column_names": [ "?b" ], "description": "Sort (internal order) on ?b", "details":
-    null, "estimated_column_multiplicities": [ 23495.17578125 ], "estimated_operation_cost":
-    77079148092, "estimated_size": 2486424132, "estimated_total_cost": 86348033842,
-    "operation_time": 0, "original_operation_time": 0, "original_total_time": 0, "result_cols":
-    1, "result_rows": 0, "status": "failed because child failed", "total_time": 19424
-    } ], "column_names": [], "description": "OptionalJoin on ?b ", "details": null,
-    "estimated_column_multiplicities": [], "estimated_operation_cost": 425213550549256,
-    "estimated_size": 106300591570945, "estimated_total_cost": 425300208225335, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 0, "result_rows":
-    0, "status": "failed because child failed", "total_time": 19424 } ], "column_names":
-    [ "?count (U)" ], "description": "GroupBy (implicit)", "details": null, "estimated_column_multiplicities":
-    [ 1.0 ], "estimated_operation_cost": 0, "estimated_size": 1, "estimated_total_cost":
-    425300208225335, "operation_time": 1, "original_operation_time": 0, "original_total_time":
-    0, "result_cols": 1, "result_rows": 0, "status": "failed because child failed",
-    "total_time": 19425 }, "status": "ERROR", "time": { "computeResult": 19449, "total":
-    19449 } }'
+    client_time: 148.1403980255127
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"16176604348"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
@@ -402,7 +361,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.9849700927734375
+    client_time: 0.9075183868408203
   result_size: 1
   headers:
   - count
@@ -418,7 +377,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 15.734179019927979
+    client_time: 14.194275379180908
   result_size: 1
   headers:
   - count
@@ -434,7 +393,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 16.328596830368042
+    client_time: 15.505438327789307
   result_size: 1
   headers:
   - count
@@ -450,7 +409,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 17.010106325149536
+    client_time: 15.265718698501587
   result_size: 1
   headers:
   - count
@@ -466,7 +425,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.41585469245910645
+    client_time: 0.40753769874572754
   result_size: 1
   headers:
   - count
@@ -482,7 +441,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.49522924423217773
+    client_time: 0.46999359130859375
   result_size: 1
   headers:
   - count
@@ -499,7 +458,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 34.292927265167236
+    client_time: 30.712124586105347
   result_size: 1
   headers:
   - count
@@ -516,7 +475,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 27.740464210510254
+    client_time: 25.176645755767822
   result_size: 1
   headers:
   - count
@@ -533,7 +492,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 8.709588289260864
+    client_time: 2.035198450088501
   result_size: 1
   headers:
   - count
@@ -550,53 +509,12 @@ queries:
       }
     }
   runtime_info:
-    client_time: 16.477830410003662
-  headers: []
-  results: 'HTTP code: 500: { "exception": "Tried to allocate 51.8 GB, but only 28.1
-    GB were available", "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?a wdt:P2860 ?b . MINUS { ?b wdt:P31 ?c .
-    ?c schema:description ?d } }", "resultsize": 0, "runtimeInformation": { "cache_status":
-    "computed", "children": [ { "cache_status": "computed", "children": [ { "cache_status":
-    "computed", "children": [], "column_names": [ "?b" ], "description": "IndexScan
-    ?a <http://www.wikidata.org/prop/direct/P2860> ?b", "details": null, "estimated_column_multiplicities":
-    [ 14.611566543579102 ], "estimated_operation_cost": 309642237, "estimated_size":
-    309642237, "estimated_total_cost": 309642237, "operation_time": 0, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 1, "result_rows": 0, "status": "lazily
-    materialized", "total_time": 0 }, { "cache_status": "computed", "children": [
-    { "cache_status": "computed", "children": [ { "cache_status": "computed", "children":
-    [], "column_names": [ "?c", "?b" ], "description": "IndexScan ?b <http://www.wikidata.org/prop/direct/P31>
-    ?c", "details": null, "estimated_column_multiplicities": [ 1113.5531005859375,
-    1.0420888662338257 ], "estimated_operation_cost": 117843982, "estimated_size":
-    117843982, "estimated_total_cost": 117843982, "operation_time": 0, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 2, "result_rows": 0, "status": "not
-    started", "total_time": 0 }, { "cache_status": "computed", "children": [], "column_names":
-    [ "?c" ], "description": "IndexScan ?c <http://schema.org/description> ?d", "details":
-    null, "estimated_column_multiplicities": [ 30.14183807373047 ], "estimated_operation_cost":
-    3273386827, "estimated_size": 3273386827, "estimated_total_cost": 3273386827,
-    "operation_time": 0, "original_operation_time": 0, "original_total_time": 0, "result_cols":
-    1, "result_rows": 0, "status": "not started", "total_time": 0 } ], "column_names":
-    [ "?b" ], "description": "Join on ?c", "details": { "time-for-filtering-blocks":
-    403 }, "estimated_column_multiplicities": [ 23495.17578125 ], "estimated_operation_cost":
-    5877654941, "estimated_size": 2486424132, "estimated_total_cost": 9268885750,
-    "operation_time": 16449, "original_operation_time": 0, "original_total_time":
-    0, "result_cols": 1, "result_rows": 0, "status": "failed", "total_time": 16449
-    } ], "column_names": [ "?b" ], "description": "Sort (internal order) on ?b", "details":
-    null, "estimated_column_multiplicities": [ 23495.17578125 ], "estimated_operation_cost":
-    77079148092, "estimated_size": 2486424132, "estimated_total_cost": 86348033842,
-    "operation_time": 0, "original_operation_time": 0, "original_total_time": 0, "result_cols":
-    1, "result_rows": 0, "status": "failed because child failed", "total_time": 16449
-    } ], "column_names": [ "?b" ], "description": "Minus", "details": null, "estimated_column_multiplicities":
-    [ 14.611566543579102 ], "estimated_operation_cost": 2796066369, "estimated_size":
-    309642237, "estimated_total_cost": 89453742448, "operation_time": 0, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 1, "result_rows": 0, "status": "failed
-    because child failed", "total_time": 16449 } ], "column_names": [ "?count (U)"
-    ], "description": "GroupBy (implicit)", "details": null, "estimated_column_multiplicities":
-    [ 1.0 ], "estimated_operation_cost": 0, "estimated_size": 1, "estimated_total_cost":
-    89453742448, "operation_time": 1, "original_operation_time": 0, "original_total_time":
-    0, "result_cols": 1, "result_rows": 0, "status": "failed because child failed",
-    "total_time": 16450 }, "status": "ERROR", "time": { "computeResult": 16472, "total":
-    16472 } }'
+    client_time: 141.06115174293518
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"10770"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
@@ -607,7 +525,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 9.984801769256592
+    client_time: 9.336304426193237
   result_size: 1
   headers:
   - count
@@ -623,7 +541,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 16.01175618171692
+    client_time: 15.075330257415771
   result_size: 1
   headers:
   - count
@@ -639,7 +557,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 47.319660902023315
+    client_time: 45.6629433631897
   result_size: 1
   headers:
   - count
@@ -655,7 +573,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 34.776633977890015
+    client_time: 33.378772020339966
   result_size: 1
   headers:
   - count
@@ -671,7 +589,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.8016417026519775
+    client_time: 0.788764238357544
   result_size: 1
   headers:
   - count
@@ -687,7 +605,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 0.7789885997772217
+    client_time: 0.719506025314331
   result_size: 1
   headers:
   - count
@@ -704,7 +622,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 14.238621473312378
+    client_time: 12.46844744682312
   result_size: 1
   headers:
   - count
@@ -721,7 +639,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 42.04082727432251
+    client_time: 36.9937002658844
   result_size: 1
   headers:
   - count
@@ -738,7 +656,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 17.39939546585083
+    client_time: 16.85538625717163
   result_size: 1
   headers:
   - count
@@ -755,66 +673,12 @@ queries:
       }
     }
   runtime_info:
-    client_time: 23.547202587127686
-  headers: []
-  results: 'HTTP code: 500: { "exception": "Tried to allocate 25.9 GB, but only 15.2
-    GB were available", "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (COUNT(*) AS ?count) WHERE { ?a wdt:P2860 ?b . FILTER EXISTS { ?b wdt:P31
-    ?c . ?c schema:description ?d } }", "resultsize": 0, "runtimeInformation": { "cache_status":
-    "computed", "children": [ { "cache_status": "computed", "children": [ { "cache_status":
-    "computed", "children": [ { "cache_status": "computed", "children": [ { "cache_status":
-    "computed", "children": [], "column_names": [ "?b", "?a" ], "description": "IndexScan
-    ?a <http://www.wikidata.org/prop/direct/P2860> ?b", "details": null, "estimated_column_multiplicities":
-    [ 14.611566543579102, 23.815813064575195 ], "estimated_operation_cost": 309642237,
-    "estimated_size": 309642237, "estimated_total_cost": 309642237, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 2, "result_rows":
-    0, "status": "lazily materialized", "total_time": 0 }, { "cache_status": "computed",
-    "children": [ { "cache_status": "computed", "children": [ { "cache_status": "computed",
-    "children": [], "column_names": [ "?c", "?b" ], "description": "IndexScan ?b <http://www.wikidata.org/prop/direct/P31>
-    ?c", "details": null, "estimated_column_multiplicities": [ 1113.5531005859375,
-    1.0420888662338257 ], "estimated_operation_cost": 117843982, "estimated_size":
-    117843982, "estimated_total_cost": 117843982, "operation_time": 0, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 2, "result_rows": 0, "status": "not
-    started", "total_time": 0 }, { "cache_status": "computed", "children": [], "column_names":
-    [ "?c", "?d" ], "description": "IndexScan ?c <http://schema.org/description> ?d",
-    "details": null, "estimated_column_multiplicities": [ 30.14183807373047, 65.3223876953125
-    ], "estimated_operation_cost": 3273386827, "estimated_size": 3273386827, "estimated_total_cost":
-    3273386827, "operation_time": 0, "original_operation_time": 0, "original_total_time":
-    0, "result_cols": 2, "result_rows": 0, "status": "not started", "total_time":
-    0 } ], "column_names": [ "?c", "?b", "?d" ], "description": "Join on ?c", "details":
-    { "time-for-filtering-blocks": 365 }, "estimated_column_multiplicities": [ 23495.17578125,
-    21.98733139038086, 1113.5531005859375 ], "estimated_operation_cost": 5877654941,
-    "estimated_size": 2486424132, "estimated_total_cost": 9268885750, "operation_time":
-    23504, "original_operation_time": 0, "original_total_time": 0, "result_cols":
-    3, "result_rows": 0, "status": "failed", "total_time": 23504 } ], "column_names":
-    [ "?c", "?b", "?d" ], "description": "Sort (internal order) on ?b", "details":
-    null, "estimated_column_multiplicities": [ 23495.17578125, 21.98733139038086,
-    1113.5531005859375 ], "estimated_operation_cost": 77079148092, "estimated_size":
-    2486424132, "estimated_total_cost": 86348033842, "operation_time": 2, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 3, "result_rows": 0, "status": "failed
-    because child failed", "total_time": 23506 } ], "column_names": [ "?b", "?a",
-    "?ql_internal_exists_10" ], "description": "Exists Join", "details": null, "estimated_column_multiplicities":
-    [ 14.611566543579102, 23.815813064575195, 1.0 ], "estimated_operation_cost": 2796066369,
-    "estimated_size": 309642237, "estimated_total_cost": 89453742448, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 3, "result_rows":
-    0, "status": "failed because child failed", "total_time": 23506 } ], "column_names":
-    [ "?b", "?a", "?ql_internal_exists_10" ], "description": "Filter EXISTS { ?b wdt:P31
-    ?c . ?c schema:description ?d }", "details": null, "estimated_column_multiplicities":
-    [ 14.611566543579102, 23.815813064575195, 1.0 ], "estimated_operation_cost": 309642237,
-    "estimated_size": 309642237, "estimated_total_cost": 89763384685, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 3, "result_rows":
-    0, "status": "failed because child failed", "total_time": 23506 } ], "column_names":
-    [], "description": "Strip Columns", "details": null, "estimated_column_multiplicities":
-    [], "estimated_operation_cost": 0, "estimated_size": 309642237, "estimated_total_cost":
-    89763384685, "operation_time": 0, "original_operation_time": 0, "original_total_time":
-    0, "result_cols": 0, "result_rows": 0, "status": "failed because child failed",
-    "total_time": 23506 } ], "column_names": [ "?count (U)" ], "description": "GroupBy
-    (implicit)", "details": null, "estimated_column_multiplicities": [ 1.0 ], "estimated_operation_cost":
-    0, "estimated_size": 1, "estimated_total_cost": 89763384685, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
-    0, "status": "failed because child failed", "total_time": 23506 }, "status": "ERROR",
-    "time": { "computeResult": 23542, "total": 23542 } }'
+    client_time: 164.97272515296936
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"309631467"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-no-constraint [UNION of two large predicates, no constraint]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
@@ -828,7 +692,7 @@ queries:
       }
     }
   runtime_info:
-    client_time: 1.6682825088500977
+    client_time: 1.6129565238952637
   result_size: 1
   headers:
   - count
@@ -848,7 +712,7 @@ queries:
       ?s wdt:P31 ?o2 .
     }
   runtime_info:
-    client_time: 77.4957046508789
+    client_time: 66.49062871932983
   result_size: 1
   headers:
   - count
@@ -868,7 +732,7 @@ queries:
       ?s wdt:P478 ?o2 .
     }
   runtime_info:
-    client_time: 2.022493600845337
+    client_time: 1.764543056488037
   result_size: 1
   headers:
   - count
@@ -888,7 +752,7 @@ queries:
       ?s wdt:P2093 ?o2 .
     }
   runtime_info:
-    client_time: 92.46142554283142
+    client_time: 79.78156399726868
   result_size: 1
   headers:
   - count
@@ -908,7 +772,7 @@ queries:
       FILTER (?s = ?o)
     }
   runtime_info:
-    client_time: 17.301721334457397
+    client_time: 17.026853322982788
   result_size: 1
   headers:
   - count
@@ -922,7 +786,7 @@ queries:
       ?s wdt:P31 ?o .
     }
   runtime_info:
-    client_time: 2.008087396621704
+    client_time: 2.1635756492614746
   result_size: 1
   headers:
   - count
@@ -936,7 +800,7 @@ queries:
       ?s rdfs:label ?o .
     }
   runtime_info:
-    client_time: 57.95040774345398
+    client_time: 51.20690155029297
   result_size: 1
   headers:
   - count
@@ -952,7 +816,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 0.014158248901367188
+    client_time: 0.012226581573486328
   result_size: 3
   headers:
   - object
@@ -974,7 +838,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 27.859065771102905
+    client_time: 24.134093046188354
   result_size: 10
   headers:
   - object
@@ -1011,7 +875,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 6.254989147186279
+    client_time: 2.7254652976989746
   result_size: 10
   headers:
   - o1
@@ -1048,7 +912,7 @@ queries:
     ORDER BY DESC(?count)
     LIMIT 10
   runtime_info:
-    client_time: 1.002392292022705
+    client_time: 3.8400485515594482
   result_size: 10
   headers:
   - o1
@@ -1061,52 +925,52 @@ queries:
     - '"105647158"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q100295053>
     - <http://www.wikidata.org/entity/Q99731952>
-    - <http://www.wikidata.org/entity/Q34118642>
+    - <http://www.wikidata.org/entity/Q100295053>
   - - <http://www.wikidata.org/entity/Q1504425>
     - '"781966"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q101138924>
     - <http://www.wikidata.org/entity/Q99349321>
-    - <http://www.wikidata.org/entity/Q28257784>
+    - <http://www.wikidata.org/entity/Q101138924>
   - - <http://www.wikidata.org/entity/Q591041>
     - '"64613"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q100000003>
     - <http://www.wikidata.org/entity/Q99999992>
-    - <http://www.wikidata.org/entity/Q26377852>
+    - <http://www.wikidata.org/entity/Q100000003>
   - - <http://www.wikidata.org/entity/Q121763407>
     - '"15104"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q100895162>
     - <http://www.wikidata.org/entity/Q99974210>
-    - <http://www.wikidata.org/entity/Q110445508>
+    - <http://www.wikidata.org/entity/Q100895162>
   - - <http://www.wikidata.org/entity/Q2782326>
     - '"4116"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q22330678>
     - <http://www.wikidata.org/entity/Q99409711>
-    - <http://www.wikidata.org/entity/Q33436014>
+    - <http://www.wikidata.org/entity/Q22330678>
   - - <http://www.wikidata.org/entity/Q815382>
     - '"3946"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q101060206>
     - <http://www.wikidata.org/entity/Q98459647>
-    - <http://www.wikidata.org/entity/Q34054354>
+    - <http://www.wikidata.org/entity/Q101060206>
   - - <http://www.wikidata.org/entity/Q131359514>
     - '"2006"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q132291049>
     - <http://www.wikidata.org/entity/Q38190587>
-    - <http://www.wikidata.org/entity/Q30807624>
+    - <http://www.wikidata.org/entity/Q132291049>
   - - <http://www.wikidata.org/entity/Q58901591>
     - '"1413"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q22061852>
     - <http://www.wikidata.org/entity/Q37947489>
-    - <http://www.wikidata.org/entity/Q33520199>
+    - <http://www.wikidata.org/entity/Q22061852>
   - - <http://www.wikidata.org/entity/Q309481>
     - '"749"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q105020799>
     - <http://www.wikidata.org/entity/Q61632533>
-    - <http://www.wikidata.org/entity/Q131838592>
+    - <http://www.wikidata.org/entity/Q105020799>
   - - <http://www.wikidata.org/entity/Q131359749>
     - '"542"^^<http://www.w3.org/2001/XMLSchema#int>'
     - <http://www.wikidata.org/entity/Q108799700>
     - <http://www.wikidata.org/entity/Q52937709>
-    - <http://www.wikidata.org/entity/Q30156623>
+    - <http://www.wikidata.org/entity/Q108799700>
 - query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
@@ -1114,7 +978,7 @@ queries:
       ?s schema:version ?o .
     }
   runtime_info:
-    client_time: 0.3005974292755127
+    client_time: 0.011251688003540039
   result_size: 1
   headers:
   - count
@@ -1127,7 +991,7 @@ queries:
       ?s schema:version ?o .
     }
   runtime_info:
-    client_time: 0.683866024017334
+    client_time: 0.6443877220153809
   result_size: 1
   headers:
   - sum
@@ -1140,7 +1004,7 @@ queries:
       ?s schema:version ?o .
     }
   runtime_info:
-    client_time: 0.7037994861602783
+    client_time: 0.6537349224090576
   result_size: 1
   headers:
   - min
@@ -1153,7 +1017,7 @@ queries:
       ?s schema:version ?o .
     }
   runtime_info:
-    client_time: 0.7139697074890137
+    client_time: 0.6339137554168701
   result_size: 1
   headers:
   - max
@@ -1166,7 +1030,7 @@ queries:
       ?s schema:version ?o .
     }
   runtime_info:
-    client_time: 0.6906304359436035
+    client_time: 0.64884352684021
   result_size: 1
   headers:
   - avg
@@ -1179,7 +1043,7 @@ queries:
       ?s schema:description ?o .
     }
   runtime_info:
-    client_time: 5.632864952087402
+    client_time: 0.012596845626831055
   result_size: 1
   headers:
   - count
@@ -1192,7 +1056,7 @@ queries:
       ?s schema:description ?o .
     }
   runtime_info:
-    client_time: 17.531646013259888
+    client_time: 16.685445308685303
   result_size: 1
   headers:
   - min
@@ -1205,18 +1069,17 @@ queries:
       ?s schema:description ?o .
     }
   runtime_info:
-    client_time: 17.796435117721558
+    client_time: 16.679287910461426
   result_size: 1
   headers:
   - max
   results:
   - - '"󰡔조선신보󰡕의 배일사상을 변론하는 말"@ko'
 - query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
-    AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }
   runtime_info:
-    client_time: 302.3687665462494
+    client_time: 302.2687494754791
   headers: []
   results: 'HTTP code: 429: { "exception": "Operation timed out.", "query": "PREFIX
     schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT
@@ -1228,30 +1091,30 @@ queries:
     "description": "IndexScan ?s <http://schema.org/description> ?o", "details": null,
     "estimated_column_multiplicities": [ 30.14183807373047, 65.3223876953125 ], "estimated_operation_cost":
     3273386827, "estimated_size": 3273386827, "estimated_total_cost": 3273386827,
-    "operation_time": 241, "original_operation_time": 241, "original_total_time":
-    241, "result_cols": 2, "result_rows": 2247125000, "status": "failed", "total_time":
-    241 } ], "column_names": [ "?s", "?cat (U)" ], "description": "GroupBy on ?s",
-    "details": { "non-empty-local-vocabs": "71908 / 71908, Ø = 414.399, max = 10380"
+    "operation_time": 99, "original_operation_time": 99, "original_total_time": 99,
+    "result_cols": 2, "result_rows": 2511812500, "status": "failed", "total_time":
+    99 } ], "column_names": [ "?s", "?cat (U)" ], "description": "GroupBy on ?s",
+    "details": { "non-empty-local-vocabs": "80378 / 80378, Ø = 452.96, max = 10380"
     }, "estimated_column_multiplicities": [ 1.0, 1.0 ], "estimated_operation_cost":
     0, "estimated_size": 108599440, "estimated_total_cost": 3273386827, "operation_time":
-    282572, "original_operation_time": 282572, "original_total_time": 282813, "result_cols":
-    2, "result_rows": 65761908, "status": "failed", "total_time": 282813 } ], "column_names":
+    282492, "original_operation_time": 282492, "original_total_time": 282591, "result_cols":
+    2, "result_rows": 77684248, "status": "failed", "total_time": 282591 } ], "column_names":
     [ "?cat (U)" ], "description": "Strip Columns", "details": { "non-empty-local-vocabs":
-    "71908 / 71908, Ø = 414.399, max = 10380" }, "estimated_column_multiplicities":
+    "80378 / 80378, Ø = 452.96, max = 10380" }, "estimated_column_multiplicities":
     [ 1.0 ], "estimated_operation_cost": 0, "estimated_size": 108599440, "estimated_total_cost":
-    3273386827, "operation_time": 370, "original_operation_time": 370, "original_total_time":
-    283183, "result_cols": 1, "result_rows": 65761908, "status": "failed", "total_time":
-    283183 } ], "column_names": [ "?cat (U)" ], "description": "Strip Columns", "details":
-    { "non-empty-local-vocabs": "71908 / 71908, Ø = 414.399, max = 10380" }, "estimated_column_multiplicities":
+    3273386827, "operation_time": 227, "original_operation_time": 227, "original_total_time":
+    282819, "result_cols": 1, "result_rows": 77684248, "status": "failed", "total_time":
+    282819 } ], "column_names": [ "?cat (U)" ], "description": "Strip Columns", "details":
+    { "non-empty-local-vocabs": "80378 / 80378, Ø = 452.96, max = 10380" }, "estimated_column_multiplicities":
     [ 1.0 ], "estimated_operation_cost": 0, "estimated_size": 108599440, "estimated_total_cost":
-    3273386827, "operation_time": 219, "original_operation_time": 219, "original_total_time":
-    283403, "result_cols": 1, "result_rows": 65761908, "status": "failed", "total_time":
-    283403 } ], "column_names": [ "?sum (U)" ], "description": "GroupBy (implicit)",
+    3273386827, "operation_time": 159, "original_operation_time": 159, "original_total_time":
+    282978, "result_cols": 1, "result_rows": 77684248, "status": "failed", "total_time":
+    282978 } ], "column_names": [ "?sum (U)" ], "description": "GroupBy (implicit)",
     "details": null, "estimated_column_multiplicities": [ 1.0 ], "estimated_operation_cost":
     0, "estimated_size": 1, "estimated_total_cost": 3273386827, "operation_time":
     0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
     0, "status": "failed", "total_time": 0 }, "status": "ERROR", "time": { "computeResult":
-    302363, "total": 302363 } }'
+    302264, "total": 302264 } }'
 - query: distinct-count-object-high-multip ... or object with high multiplicity]
   sparql: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
@@ -1259,7 +1122,7 @@ queries:
       ?subject wdt:P2548 ?object .
     }
   runtime_info:
-    client_time: 0.09547042846679688
+    client_time: 0.02353644371032715
   result_size: 1
   headers:
   - count
@@ -1272,7 +1135,7 @@ queries:
       ?subject skos:prefLabel ?object .
     }
   runtime_info:
-    client_time: 249.59821367263794
+    client_time: 189.08451223373413
   result_size: 1
   headers:
   - count
@@ -1286,7 +1149,7 @@ queries:
       ?s schema:description ?o2 .
     }
   runtime_info:
-    client_time: 4.768132925033569
+    client_time: 3.6594433784484863
   result_size: 1
   headers:
   - count
@@ -1299,7 +1162,7 @@ queries:
       ?s wdt:P2293+ ?o .
     }
   runtime_info:
-    client_time: 2.0045740604400635
+    client_time: 1.8815014362335205
   result_size: 1
   headers:
   - count
@@ -1312,7 +1175,7 @@ queries:
       wd:Q81867 wdt:P2293+ ?o .
     }
   runtime_info:
-    client_time: 0.013558149337768555
+    client_time: 0.012686491012573242
   result_size: 1
   headers:
   - count
@@ -1325,21 +1188,21 @@ queries:
       ?s wdt:P921/wdt:P2293+ ?o .
     }
   runtime_info:
-    client_time: 300.00599193573
+    client_time: 300.0048861503601
   headers: []
   results: 'HTTP code: 429: { "exception": "Operation timed out. Last operation: GroupBy
     (implicit)", "query": "PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX
     p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { ?s wdt:P921/wdt:P2293+
     ?o }", "resultsize": 0, "runtimeInformation": { "cache_status": "computed", "children":
     [ { "cache_status": "computed", "children": [ { "cache_status": "computed", "children":
-    [ { "cache_status": "cached_not_pinned", "children": [], "column_names": [ "?_QLever_internal_variable_qp_0",
+    [ { "cache_status": "computed", "children": [], "column_names": [ "?_QLever_internal_variable_qp_0",
     "?s" ], "description": "IndexScan ?s <http://www.wikidata.org/prop/direct/P921>
     ?_QLever_internal_variable_qp_0", "details": null, "estimated_column_multiplicities":
     [ 27.227313995361328, 1.6089510917663574 ], "estimated_operation_cost": 32450219,
     "estimated_size": 32450219, "estimated_total_cost": 32450219, "operation_time":
-    0, "original_operation_time": 144, "original_total_time": 144, "result_cols":
-    2, "result_rows": 32450219, "status": "fully materialized", "total_time": 0 },
-    { "cache_status": "cached_not_pinned", "children": [], "column_names": [ "?_QLever_internal_variable_qp_2",
+    2, "original_operation_time": 2, "original_total_time": 2, "result_cols": 2, "result_rows":
+    5437500, "status": "lazily materialized", "total_time": 2 }, { "cache_status":
+    "cached_not_pinned", "children": [], "column_names": [ "?_QLever_internal_variable_qp_2",
     "?_QLever_internal_variable_qp_3" ], "description": "IndexScan ?_QLever_internal_variable_qp_2
     <http://www.wikidata.org/prop/direct/P2293> ?_QLever_internal_variable_qp_3",
     "details": null, "estimated_column_multiplicities": [ 1.70641028881073, 1.7918246984481812
@@ -1348,20 +1211,20 @@ queries:
     1, "result_cols": 2, "result_rows": 14641, "status": "fully materialized", "total_time":
     0 } ], "column_names": [ "?_QLever_internal_variable_qp_0", "?o", "?s" ], "description":
     "TransitivePath ?_QLever_internal_variable_qp_0 <http://www.wikidata.org/prop/direct/P2293>
-    ?o", "details": { "Hull time": 265183, "IdTable fill time": 17481, "Initialization
+    ?o", "details": { "Hull time": 265588, "IdTable fill time": 17325, "Initialization
     time": 0 }, "estimated_column_multiplicities": [ 1.0, 1.0, 1.0 ], "estimated_operation_cost":
     32450219, "estimated_size": 32450219, "estimated_total_cost": 64908930, "operation_time":
-    298771, "original_operation_time": 298771, "original_total_time": 298771, "result_cols":
-    3, "result_rows": 2020696530, "status": "failed", "total_time": 298771 } ], "column_names":
+    299083, "original_operation_time": 299083, "original_total_time": 299086, "result_cols":
+    3, "result_rows": 2147624437, "status": "failed", "total_time": 299086 } ], "column_names":
     [], "description": "Strip Columns", "details": null, "estimated_column_multiplicities":
     [], "estimated_operation_cost": 0, "estimated_size": 32450219, "estimated_total_cost":
-    64908930, "operation_time": 554, "original_operation_time": 554, "original_total_time":
-    299326, "result_cols": 0, "result_rows": 2020696530, "status": "failed", "total_time":
-    299326 } ], "column_names": [ "?count (U)" ], "description": "GroupBy (implicit)",
+    64908930, "operation_time": 380, "original_operation_time": 380, "original_total_time":
+    299467, "result_cols": 0, "result_rows": 2147624437, "status": "failed", "total_time":
+    299467 } ], "column_names": [ "?count (U)" ], "description": "GroupBy (implicit)",
     "details": null, "estimated_column_multiplicities": [ 1.0 ], "estimated_operation_cost":
-    0, "estimated_size": 1, "estimated_total_cost": 64908930, "operation_time": 659,
+    0, "estimated_size": 1, "estimated_total_cost": 64908930, "operation_time": 524,
     "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
-    0, "status": "cancelled", "total_time": 299986 }, "status": "ERROR", "time": {
+    0, "status": "cancelled", "total_time": 299992 }, "status": "ERROR", "time": {
     "computeResult": 300000, "total": 300000 } }'
 - query: transitive-path-small-join-and-pl ...  path with a small join and plus]
   sparql: |-
@@ -1370,7 +1233,7 @@ queries:
       ?s wdt:P1911/wdt:P2293+ ?o .
     }
   runtime_info:
-    client_time: 0.05771589279174805
+    client_time: 0.04762768745422363
   result_size: 1
   headers:
   - count
@@ -1384,7 +1247,7 @@ queries:
       FILTER CONTAINS(?o, "com")
     }
   runtime_info:
-    client_time: 250.59255409240723
+    client_time: 189.74408531188965
   result_size: 1
   headers:
   - count
@@ -1398,7 +1261,7 @@ queries:
       FILTER regex(?o, "com")
     }
   runtime_info:
-    client_time: 273.4645094871521
+    client_time: 214.62116026878357
   result_size: 1
   headers:
   - count
@@ -1412,7 +1275,7 @@ queries:
       FILTER regex(?o, "c.m")
     }
   runtime_info:
-    client_time: 280.37781715393066
+    client_time: 214.8454954624176
   result_size: 1
   headers:
   - count
@@ -1426,7 +1289,7 @@ queries:
       FILTER regex(?o, "^C")
     }
   runtime_info:
-    client_time: 0.16394495964050293
+    client_time: 0.12421202659606934
   result_size: 1
   headers:
   - count
@@ -1440,7 +1303,7 @@ queries:
       FILTER regex(?object, "^Co")
     }
   runtime_info:
-    client_time: 0.08337593078613281
+    client_time: 0.035379648208618164
   result_size: 1
   headers:
   - count
@@ -1454,59 +1317,57 @@ queries:
       FILTER regex(?object, "^Com")
     }
   runtime_info:
-    client_time: 0.02339792251586914
+    client_time: 0.020099639892578125
   result_size: 1
   headers:
   - count
   results:
   - - '"1878503"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strlen [String length for large string predicate]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 141.00544667243958
+    client_time: 114.07735538482666
   result_size: 1
   headers:
   - checksum
   results:
   - - '"17104652934"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strbefore [STRBEFORE string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 203.2401728630066
+    client_time: 150.0299391746521
   result_size: 1
   headers:
   - checksum
   results:
   - - '"2938346204"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strafter [STRAFTER string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 211.8732225894928
+    client_time: 154.86471819877625
   result_size: 1
   headers:
   - checksum
   results:
   - - '"10922757459"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strstarts [STRSTARTS string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o,
-    "a"))) AS ?count) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 147.11884140968323
+    client_time: 117.91078591346741
   result_size: 1
   headers:
   - count
   results:
   - - '"589247"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strends [STRENDS string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o,
-    "a"))) AS ?count) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 147.49507784843445
+    client_time: 118.14481043815613
   result_size: 1
   headers:
   - count
@@ -1520,7 +1381,7 @@ queries:
     }
     LIMIT 10
   runtime_info:
-    client_time: 0.02434253692626953
+    client_time: 0.01951766014099121
   result_size: 10
   headers:
   - s
@@ -1555,7 +1416,7 @@ queries:
     }
     LIMIT 1000
   runtime_info:
-    client_time: 0.029626846313476562
+    client_time: 0.021260499954223633
   result_size: 1000
   headers:
   - s
@@ -1614,7 +1475,7 @@ queries:
     }
     LIMIT 100000
   runtime_info:
-    client_time: 0.22542667388916016
+    client_time: 0.17823410034179688
   result_size: 100000
   headers:
   - s
@@ -1673,7 +1534,7 @@ queries:
     }
     LIMIT 1000000
   runtime_info:
-    client_time: 1.3886926174163818
+    client_time: 1.201216459274292
   result_size: 1000000
   headers:
   - s
@@ -1732,7 +1593,7 @@ queries:
     }
     LIMIT 10000000
   runtime_info:
-    client_time: 13.328558444976807
+    client_time: 11.492560863494873
   result_size: 10000000
   headers:
   - s
@@ -1790,67 +1651,67 @@ queries:
       ?s schema:version ?o .
     }
   runtime_info:
-    client_time: 0.011455059051513672
+    client_time: 0.010362863540649414
   result_size: 1
   headers:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-abs [ABS function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }
   runtime_info:
-    client_time: 1.4487769603729248
+    client_time: 1.3556349277496338
   result_size: 1
   headers:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-ceil [CEIL function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }
   runtime_info:
-    client_time: 1.4153454303741455
+    client_time: 1.338902235031128
   result_size: 1
   headers:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-floor [FLOOR function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }
   runtime_info:
-    client_time: 1.3985893726348877
+    client_time: 1.3323092460632324
   result_size: 1
   headers:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-round [ROUND function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }
   runtime_info:
-    client_time: 1.3940839767456055
+    client_time: 1.3638916015625
   result_size: 1
   headers:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-add [Addition]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }
   runtime_info:
-    client_time: 2.0672669410705566
+    client_time: 1.9761238098144531
   result_size: 1
   headers:
   - sum
   results:
   - - '"481682233301082134"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-greater [Greater than]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }
   runtime_info:
-    client_time: 1.2213952541351318
+    client_time: 1.1115148067474365
   result_size: 1
   headers:
   - sum
@@ -1864,7 +1725,7 @@ queries:
       FILTER (?o >= 2147882675)
     }
   runtime_info:
-    client_time: 0.22246479988098145
+    client_time: 0.18859624862670898
   result_size: 1
   headers:
   - count
@@ -1878,7 +1739,7 @@ queries:
       FILTER (?o >= 2241500354)
     }
   runtime_info:
-    client_time: 0.12173628807067871
+    client_time: 0.10985493659973145
   result_size: 1
   headers:
   - count
@@ -1892,7 +1753,7 @@ queries:
       FILTER (?o >= 2325672138)
     }
   runtime_info:
-    client_time: 0.042096614837646484
+    client_time: 0.035178422927856445
   result_size: 1
   headers:
   - count
@@ -1906,7 +1767,7 @@ queries:
       FILTER (?s = ?o)
     }
   runtime_info:
-    client_time: 13.936564683914185
+    client_time: 13.911641359329224
   result_size: 1
   headers:
   - count
@@ -1920,7 +1781,7 @@ queries:
       FILTER (?s != ?o)
     }
   runtime_info:
-    client_time: 52.19352340698242
+    client_time: 48.322649002075195
   result_size: 1
   headers:
   - count
@@ -1934,37 +1795,37 @@ queries:
       FILTER (lang(?o) = "en")
     }
   runtime_info:
-    client_time: 0.21335196495056152
+    client_time: 0.012310266494750977
   result_size: 1
   headers:
   - count
   results:
   - - '"97587180"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-year [YEAR function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
   runtime_info:
-    client_time: 1.3236439228057861
+    client_time: 1.2399694919586182
   result_size: 1
   headers:
   - sum
   results:
   - - '"242979680415"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-month [MONTH function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
   runtime_info:
-    client_time: 1.6682181358337402
+    client_time: 1.614170789718628
   result_size: 1
   headers:
   - sum
   results:
   - - '"741944503"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-day [DAY function]
-  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
-    SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
   runtime_info:
-    client_time: 1.6563284397125244
+    client_time: 1.6252353191375732
   result_size: 1
   headers:
   - sum
@@ -1977,7 +1838,7 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 16.69320821762085
+    client_time: 0.029162883758544922
   result_size: 1
   headers:
   - count
@@ -1990,22 +1851,12 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 0.438143253326416
-  headers: []
-  results: 'HTTP code: 500: { "exception": "Tried to allocate 63.5 GB, but only 54
-    GB were available", "query": "SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s
-    ?p ?o }", "resultsize": 0, "runtimeInformation": { "cache_status": "computed",
-    "children": [ { "cache_status": "computed", "children": [], "column_names": [
-    "?s" ], "description": "IndexScan ?s ?p ?o", "details": null, "estimated_column_multiplicities":
-    [ 4.914848804473877 ], "estimated_operation_cost": 7941292526, "estimated_size":
-    7941292526, "estimated_total_cost": 7941292526, "operation_time": 395, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 1, "result_rows": 0, "status": "failed",
-    "total_time": 395 } ], "column_names": [ "?count (U)" ], "description": "GroupBy
-    (implicit)", "details": null, "estimated_column_multiplicities": [ 1.0 ], "estimated_operation_cost":
-    0, "estimated_size": 1, "estimated_total_cost": 7941292526, "operation_time":
-    1, "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
-    0, "status": "failed because child failed", "total_time": 396 }, "status": "ERROR",
-    "time": { "computeResult": 433, "total": 433 } }'
+    client_time: 0.029210567474365234
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"240342067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-predicates [Total number of distinct predicates]
   sparql: |-
     SELECT (COUNT(DISTINCT ?p) AS ?count)
@@ -2013,22 +1864,12 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 0.0591120719909668
-  headers: []
-  results: 'HTTP code: 500: { "exception": "Tried to allocate 63.5 GB, but only 54
-    GB were available", "query": "SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s
-    ?p ?o }", "resultsize": 0, "runtimeInformation": { "cache_status": "computed",
-    "children": [ { "cache_status": "computed", "children": [], "column_names": [
-    "?p" ], "description": "IndexScan ?s ?p ?o", "details": null, "estimated_column_multiplicities":
-    [ 4.914848804473877 ], "estimated_operation_cost": 7941292526, "estimated_size":
-    7941292526, "estimated_total_cost": 7941292526, "operation_time": 1, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 1, "result_rows": 0, "status": "failed",
-    "total_time": 1 } ], "column_names": [ "?count (U)" ], "description": "GroupBy
-    (implicit)", "details": null, "estimated_column_multiplicities": [ 1.0 ], "estimated_operation_cost":
-    0, "estimated_size": 1, "estimated_total_cost": 7941292526, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
-    0, "status": "failed because child failed", "total_time": 1 }, "status": "ERROR",
-    "time": { "computeResult": 53, "total": 53 } }'
+    client_time: 0.029323816299438477
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"12377"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-objects [Total number of distinct objects]
   sparql: |-
     SELECT (COUNT(DISTINCT ?o) AS ?count)
@@ -2036,22 +1877,12 @@ queries:
       ?s ?p ?o .
     }
   runtime_info:
-    client_time: 0.052371978759765625
-  headers: []
-  results: 'HTTP code: 500: { "exception": "Tried to allocate 63.5 GB, but only 54
-    GB were available", "query": "SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s
-    ?p ?o }", "resultsize": 0, "runtimeInformation": { "cache_status": "computed",
-    "children": [ { "cache_status": "computed", "children": [], "column_names": [
-    "?o" ], "description": "IndexScan ?s ?p ?o", "details": null, "estimated_column_multiplicities":
-    [ 4.914848804473877 ], "estimated_operation_cost": 7941292526, "estimated_size":
-    7941292526, "estimated_total_cost": 7941292526, "operation_time": 1, "original_operation_time":
-    0, "original_total_time": 0, "result_cols": 1, "result_rows": 0, "status": "failed",
-    "total_time": 1 } ], "column_names": [ "?count (U)" ], "description": "GroupBy
-    (implicit)", "details": null, "estimated_column_multiplicities": [ 1.0 ], "estimated_operation_cost":
-    0, "estimated_size": 1, "estimated_total_cost": 7941292526, "operation_time":
-    0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
-    0, "status": "failed because child failed", "total_time": 1 }, "status": "ERROR",
-    "time": { "computeResult": 46, "total": 46 } }'
+    client_time: 0.030776500701904297
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1615775679"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-literals [Total number of literals]
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
@@ -2060,7 +1891,7 @@ queries:
       FILTER isLiteral(?o)
     }
   runtime_info:
-    client_time: 141.18991017341614
+    client_time: 123.7138888835907
   result_size: 1
   headers:
   - count
@@ -2074,7 +1905,7 @@ queries:
       FILTER isBlank(?s)
     }
   runtime_info:
-    client_time: 0.05282163619995117
+    client_time: 0.040406227111816406
   result_size: 1
   headers:
   - count

@@ -169,6 +169,7 @@ queries:
     \    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
   runtime_info:
     client_time: 600.0
+  result_size: 1
   headers: []
   results: Index build error
 - query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
@@ -248,6 +249,7 @@ queries:
     \    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
   runtime_info:
     client_time: 600.0
+  result_size: 1
   headers: []
   results: Index build error
 - query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
@@ -327,6 +329,7 @@ queries:
     \ {\n    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
   runtime_info:
     client_time: 600.0
+  result_size: 1
   headers: []
   results: Index build error
 - query: union-no-constraint [UNION of two large predicates, no constraint]
@@ -796,18 +799,21 @@ queries:
   sparql: "SELECT (COUNT(DISTINCT ?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
   runtime_info:
     client_time: 600.0
+  result_size: 1
   headers: []
   results: Index build error
 - query: number-of-predicates [Total number of distinct predicates]
   sparql: "SELECT (COUNT(DISTINCT ?p) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
   runtime_info:
     client_time: 600.0
+  result_size: 1
   headers: []
   results: Index build error
 - query: number-of-objects [Total number of distinct objects]
   sparql: "SELECT (COUNT(DISTINCT ?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
   runtime_info:
     client_time: 600.0
+  result_size: 1
   headers: []
   results: Index build error
 - query: number-of-literals [Total number of literals]
