@@ -1,4 +1,4 @@
-# Evaluation results for ISWC'25 submission
+# Evaluation results for ISWC'25 paper
 
 The evaluation results for QLever, Virtuoso, MillenniumDB, GraphDB, Blazegraph and Apache Jena on DBLP and Wikidata Truthy for our paper *Sparqloscope: A generic benchmark for the comprehensive and concise performance evaluation of SPARQL engines* at the International Semantic Web Conference 2025.
 
