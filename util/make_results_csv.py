@@ -109,7 +109,8 @@ def make_column_name(dataset: str, engine: str) -> str:
 
 
 def make_aggregated(inp: AllResultsDict, timeouts: dict[str, int],
-                    penalty: float) -> dict[str, dict[tuple[str, str], str]]:
+                    penalties: list[float]) \
+        -> dict[str, dict[tuple[str, str], str]]:
     # Key: dataset, engine -> Value: Times for each query (None=failure)
     per_ds_engine: dict[tuple[str, str], list[Optional[float]]] = {}
     # Key: dataset, query -> Value: fastest engine name, time
@@ -138,20 +139,28 @@ def make_aggregated(inp: AllResultsDict, timeouts: dict[str, int],
         fastest_ds_engine[(dataset, engine)] += 1
         total[dataset] += 1
 
-    return {
+    agg_res = {
         "percentage failed": {
-            k: f"{(sum(1 for i in v if i is None) / len(v))*100:.2f}\\%"
-            for k, v in per_ds_engine.items()},
-        "percentage fastest": {
-            k: f"{(fastest_ds_engine[k] / total[k[0]])*100:.2f}\\%"
-            for k in per_ds_engine},
-        "geometric mean": {
-            k: f"{statistics.geometric_mean(i if i is not None else penalty * timeouts[k[0]] for i in v):.2f}"
-            for k, v in per_ds_engine.items()},
-        "median": {
-            k: f"{statistics.median(i if i is not None else penalty * timeouts[k[0]] for i in v):.2f}"
-            for k, v in per_ds_engine.items()},
+            k: f"{(sum(1 for i in v if i is None) / len(v))*100:.1f}\\%"
+            for k, v in per_ds_engine.items()}
+        # "percentage fastest": {
+        #     k: f"{(fastest_ds_engine[k] / total[k[0]])*100:.2f}\\%"
+        #     for k in per_ds_engine},
     }
+    for penalty in penalties:
+        agg_res |= {
+            f"geometric mean (penalty {penalty})": {
+                k: f"{statistics.geometric_mean(i if i is not None else penalty * timeouts[k[0]] for i in v):.2f}"
+                for k, v in per_ds_engine.items()
+            }
+        }
+    agg_res |= {
+        "median": {
+            k: f"{statistics.median(i if i is not None else penalties[0] * timeouts[k[0]] for i in v):.2f}"
+            for k, v in per_ds_engine.items()
+        }
+    }
+    return agg_res
 
 
 def make_csv_head(inp: AllResultsDict, rownamecol: str = "queryname",
@@ -198,7 +207,7 @@ def write_csv(inp: AllResultsDict, filename: str):
 
 
 def write_agg_csv(inp: AllResultsDict, filename: str, timeouts: dict[str, int],
-                  penalty: float):
+                  penalty: list[float]):
     """
     Write the aggregated results to a csv file with the given name.
     """
@@ -245,10 +254,10 @@ def command_line_args() -> argparse.Namespace:
         default=json.dumps({"dblp": 180, "wikidata-truthy": 300})
     )
     arg_parser.add_argument(
-        "--error-penalty", "-ep", nargs=1, type=float,
+        "--error-penalty", "-ep", nargs='*', type=float,
         help="In aggregated time statistics, timeout * penalty will be used for"
         "failed queries.",
-        default=2
+        default=[2, 10]
     )
 
     argcomplete.autocomplete(arg_parser, always_complete_options="long")
