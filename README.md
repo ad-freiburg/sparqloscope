@@ -8,7 +8,7 @@ We provide a new benchmark, called Sparqloscope, for evaluating the query perfor
 
 3. Sparqloscope is specific in the sense that it aims to evaluate relevant features in isolation and as concisely as possible. In particular, the benchmark generated for a given knowledge graphs consists of only around 100 very carefully crafted queries, the results of which can and should be studied individually and not in aggregation.
 
-Sparqloscope is free and open-source software and easy to use. As a showcase we use it to evaluate the performance of three high-performing SPARQL engines (Virtuoso, MillenniumDB, QLever) on two widely used RDF datasets (DBLP and Wikidata).
+Sparqloscope is free and open-source software and easy to use. As a showcase, we use it to evaluate the performance of six SPARQL engines (QLever, Virtuoso, MillenniumDB, GraphDB, Blazegraph, Jena) on two widely used RDF datasets (DBLP and Wikidata).
 
 ## Usage
 
