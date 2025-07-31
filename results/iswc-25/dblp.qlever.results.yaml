@@ -1,540 +1,818 @@
 queries:
 - query: join-2-small-large [JOIN of a small and a large predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:formerStreamTitle
-    ?o1 . ?s rdf:type ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      ?s rdf:type ?o2 .
+    }
   runtime_info:
-    client_time: 0.047345876693725586
+    client_time: 0.008907794952392578
   result_size: 1
   headers:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-2-large-small [JOIN of a large and a small predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 . ?s dblp:formerStreamTitle ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s dblp:formerStreamTitle ?o2 .
+    }
   runtime_info:
-    client_time: 0.003931522369384766
+    client_time: 0.00538945198059082
   result_size: 1
   headers:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-2-large-large [JOIN of two large predicates]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 . ?s dblp:hasSignature ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
   runtime_info:
-    client_time: 0.6466279029846191
+    client_time: 0.18114352226257324
   result_size: 1
   headers:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-2-largest-result [JOIN of tw ... with the largest possible result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:hasSignature ?o1 . ?s dblp:createdBy ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      ?s dblp:createdBy ?o2 .
+    }
   runtime_info:
-    client_time: 1.2616841793060303
+    client_time: 0.004835367202758789
   result_size: 1
   headers:
   - count
   results:
   - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-2-large-large-with-large-res ... s with a reasonably large result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:hasSignature ?o1 . ?s dblp:createdBy ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      ?s dblp:createdBy ?o2 .
+    }
   runtime_info:
-    client_time: 0.0038399696350097656
+    client_time: 0.005129575729370117
   result_size: 1
   headers:
   - count
   results:
   - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-2-large-large-with-small-res ... e predicates with a small result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedAsPartOf ?o1 . ?s dblp:publishedInJournalVolume ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      ?s dblp:publishedInJournalVolume ?o2 .
+    }
   runtime_info:
-    client_time: 0.022537708282470703
+    client_time: 0.005730628967285156
   result_size: 1
   headers:
   - count
   results:
   - - '"2143"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . ?s rdf:type ?o2 . ?s dblp:signatureDblpName ?o3 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      ?s dblp:signatureDblpName ?o3 .
+    }
   runtime_info:
-    client_time: 1.7848551273345947
+    client_time: 1.125767707824707
   result_size: 1
   headers:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . ?b rdf:type ?c . ?c rdfs:subClassOf ?d }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      ?c rdfs:subClassOf ?d .
+    }
   runtime_info:
-    client_time: 8.629260063171387
+    client_time: 0.5026135444641113
   result_size: 1
   headers:
   - count
   results:
   - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
-  sparql: 'PREFIX terms: <http://purl.org/dc/terms/> PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX dblp: <https://dblp.org/rdf/schema#>
-    SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:formerStreamTitle ?o0 . ?s dblp:awardWebpage
-    ?o1 . ?s dblp:successorStream ?o2 . ?s dblp:predeccessorStream ?o3 . ?s rdfs:comment
-    ?o4 . ?s rdfs:domain ?o5 . ?s rdfs:range ?o6 . ?s rdfs:subPropertyOf ?o7 . ?s
-    owl:equivalentProperty ?o8 . ?s rdfs:subClassOf ?o9 . ?s owl:equivalentClass ?o10
-    . ?s owl:inverseOf ?o11 . ?s dblp:publishersAddress ?o12 . ?s dblp:publishedInBookChapter
-    ?o13 . ?s terms:creator ?o14 . ?s terms:abstract ?o15 . ?s terms:title ?o16 .
-    ?s owl:priorVersion ?o17 . ?s owl:versionInfo ?o18 . ?s owl:versionIRI ?o19 .
-    ?s terms:modified ?o20 . ?s terms:license ?o21 . ?s terms:description ?o22 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o0 .
+      ?s dblp:awardWebpage ?o1 .
+      ?s dblp:successorStream ?o2 .
+      ?s dblp:predeccessorStream ?o3 .
+      ?s rdfs:comment ?o4 .
+      ?s rdfs:domain ?o5 .
+      ?s rdfs:range ?o6 .
+      ?s rdfs:subPropertyOf ?o7 .
+      ?s owl:equivalentProperty ?o8 .
+      ?s rdfs:subClassOf ?o9 .
+      ?s owl:equivalentClass ?o10 .
+      ?s owl:inverseOf ?o11 .
+      ?s dblp:publishersAddress ?o12 .
+      ?s dblp:publishedInBookChapter ?o13 .
+      ?s terms:creator ?o14 .
+      ?s terms:abstract ?o15 .
+      ?s terms:title ?o16 .
+      ?s owl:priorVersion ?o17 .
+      ?s owl:versionInfo ?o18 .
+      ?s owl:versionIRI ?o19 .
+      ?s terms:modified ?o20 .
+      ?s terms:license ?o21 .
+      ?s terms:description ?o22 .
+    }
   runtime_info:
-    client_time: 0.14064407348632812
+    client_time: 0.03812217712402344
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
-  sparql: 'PREFIX terms: <http://purl.org/dc/terms/> PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX dblp: <https://dblp.org/rdf/schema#>
-    SELECT (COUNT(*) AS ?count) WHERE { ?v0 dblp:formerStreamTitle ?v1 . ?v1 dblp:awardWebpage
-    ?v2 . ?v2 dblp:successorStream ?v3 . ?v3 dblp:predeccessorStream ?v4 . ?v4 rdfs:comment
-    ?v5 . ?v5 rdfs:domain ?v6 . ?v6 rdfs:range ?v7 . ?v7 rdfs:subPropertyOf ?v8 .
-    ?v8 owl:equivalentProperty ?v9 . ?v9 rdfs:subClassOf ?v10 . ?v10 owl:equivalentClass
-    ?v11 . ?v11 owl:inverseOf ?v12 . ?v12 dblp:publishersAddress ?v13 . ?v13 dblp:publishedInBookChapter
-    ?v14 . ?v14 terms:creator ?v15 . ?v15 terms:abstract ?v16 . ?v16 terms:title ?v17
-    . ?v17 owl:priorVersion ?v18 . ?v18 owl:versionInfo ?v19 . ?v19 owl:versionIRI
-    ?v20 . ?v20 terms:modified ?v21 . ?v21 terms:license ?v22 . ?v22 terms:description
-    ?v23 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?v0 dblp:formerStreamTitle ?v1 .
+      ?v1 dblp:awardWebpage ?v2 .
+      ?v2 dblp:successorStream ?v3 .
+      ?v3 dblp:predeccessorStream ?v4 .
+      ?v4 rdfs:comment ?v5 .
+      ?v5 rdfs:domain ?v6 .
+      ?v6 rdfs:range ?v7 .
+      ?v7 rdfs:subPropertyOf ?v8 .
+      ?v8 owl:equivalentProperty ?v9 .
+      ?v9 rdfs:subClassOf ?v10 .
+      ?v10 owl:equivalentClass ?v11 .
+      ?v11 owl:inverseOf ?v12 .
+      ?v12 dblp:publishersAddress ?v13 .
+      ?v13 dblp:publishedInBookChapter ?v14 .
+      ?v14 terms:creator ?v15 .
+      ?v15 terms:abstract ?v16 .
+      ?v16 terms:title ?v17 .
+      ?v17 owl:priorVersion ?v18 .
+      ?v18 owl:versionInfo ?v19 .
+      ?v19 owl:versionIRI ?v20 .
+      ?v20 terms:modified ?v21 .
+      ?v21 terms:license ?v22 .
+      ?v22 terms:description ?v23 .
+    }
   runtime_info:
-    client_time: 0.2968783378601074
+    client_time: 0.4922962188720703
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-small-large [OPTION ... of a small and a large predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:formerStreamTitle
-    ?o1 OPTIONAL { ?s rdf:type ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      OPTIONAL {
+        ?s rdf:type ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.04874110221862793
+    client_time: 0.033670902252197266
   result_size: 1
   headers:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-large-small [OPTION ... of a large and a small predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 OPTIONAL { ?s dblp:formerStreamTitle ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s dblp:formerStreamTitle ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.82818603515625
+    client_time: 0.23119568824768066
   result_size: 1
   headers:
   - count
   results:
   - - '"113787960"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 OPTIONAL { ?s dblp:hasSignature ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s dblp:hasSignature ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 1.3244130611419678
+    client_time: 0.3684511184692383
   result_size: 1
   headers:
   - count
   results:
   - - '"150254678"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-2-large-large-with- ... h a reasonably large join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:hasSignature ?o1 . OPTIONAL { ?s dblp:createdBy ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      OPTIONAL {
+        ?s dblp:createdBy ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 1.3603122234344482
+    client_time: 0.24901199340820312
   result_size: 1
   headers:
   - count
   results:
   - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedAsPartOf ?o1 . OPTIONAL { ?s dblp:publishedInJournalVolume
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      OPTIONAL {
+        ?s dblp:publishedInJournalVolume ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.061701059341430664
+    client_time: 0.7635664939880371
   result_size: 1
   headers:
   - count
   results:
   - - '"3725467"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedInJournalVolume ?o1 . OPTIONAL { ?s dblp:publishedAsPartOf
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInJournalVolume ?o1 .
+      OPTIONAL {
+        ?s dblp:publishedAsPartOf ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.05749678611755371
+    client_time: 0.04061102867126465
   result_size: 1
   headers:
   - count
   results:
   - - '"3803982"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . ?s rdf:type ?o2 . OPTIONAL { ?s dblp:signatureDblpName ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      OPTIONAL {
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 1.9594390392303467
+    client_time: 0.9754049777984619
   result_size: 1
   headers:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . OPTIONAL { ?s rdf:type ?o2 . ?s dblp:signatureDblpName ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      OPTIONAL {
+        ?s rdf:type ?o2 .
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 1.8036565780639648
+    client_time: 0.9135563373565674
   result_size: 1
   headers:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . ?b rdf:type ?c . OPTIONAL { ?c rdfs:subClassOf
-    ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      OPTIONAL {
+        ?c rdfs:subClassOf ?d .
+      }
+    }
   runtime_info:
-    client_time: 8.681537628173828
+    client_time: 0.891716480255127
   result_size: 1
   headers:
   - count
   results:
   - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . OPTIONAL { ?b rdf:type ?c . ?c rdfs:subClassOf
-    ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      OPTIONAL {
+        ?b rdf:type ?c .
+        ?c rdfs:subClassOf ?d .
+      }
+    }
   runtime_info:
-    client_time: 9.009602785110474
+    client_time: 3.458993434906006
   result_size: 1
   headers:
   - count
   results:
   - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:formerStreamTitle
-    ?o1 MINUS { ?s rdf:type ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      MINUS {
+        ?s rdf:type ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.04485058784484863
+    client_time: 0.035649776458740234
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 MINUS { ?s dblp:formerStreamTitle ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s dblp:formerStreamTitle ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.5177512168884277
+    client_time: 0.28751325607299805
   result_size: 1
   headers:
   - count
   results:
   - - '"113785964"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-large-large [MINUS JOIN of two large predicates]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 MINUS { ?s dblp:hasSignature ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s dblp:hasSignature ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.7440674304962158
+    client_time: 0.39656829833984375
   result_size: 1
   headers:
   - count
   results:
   - - '"98363426"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:hasSignature ?o1 . MINUS { ?s dblp:createdBy ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      MINUS {
+        ?s dblp:createdBy ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.565638542175293
+    client_time: 0.23846125602722168
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedAsPartOf ?o1 . MINUS { ?s dblp:publishedInJournalVolume
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      MINUS {
+        ?s dblp:publishedInJournalVolume ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.04366874694824219
+    client_time: 0.032917022705078125
   result_size: 1
   headers:
   - count
   results:
   - - '"3723324"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedInJournalVolume ?o1 . MINUS { ?s dblp:publishedAsPartOf
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInJournalVolume ?o1 .
+      MINUS {
+        ?s dblp:publishedAsPartOf ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.0450437068939209
+    client_time: 0.03486180305480957
   result_size: 1
   headers:
   - count
   results:
   - - '"3801839"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . ?s rdf:type ?o2 . MINUS { ?s dblp:signatureDblpName ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      MINUS {
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 1.429396152496338
+    client_time: 0.9460461139678955
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . MINUS { ?s rdf:type ?o2 . ?s dblp:signatureDblpName ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      MINUS {
+        ?s rdf:type ?o2 .
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 1.3692166805267334
+    client_time: 0.8807177543640137
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . ?b rdf:type ?c . MINUS { ?c rdfs:subClassOf
-    ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      MINUS {
+        ?c rdfs:subClassOf ?d .
+      }
+    }
   runtime_info:
-    client_time: 2.176771640777588
+    client_time: 0.8763439655303955
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . MINUS { ?b rdf:type ?c . ?c rdfs:subClassOf
-    ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      MINUS {
+        ?b rdf:type ?c .
+        ?c rdfs:subClassOf ?d .
+      }
+    }
   runtime_info:
-    client_time: 6.804942607879639
+    client_time: 3.3418853282928467
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:formerStreamTitle
-    ?o1 FILTER EXISTS { ?s rdf:type ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      FILTER EXISTS {
+        ?s rdf:type ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.04448246955871582
+    client_time: 0.1944422721862793
   result_size: 1
   headers:
   - count
   results:
   - - '"998"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 FILTER EXISTS { ?s dblp:formerStreamTitle ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s dblp:formerStreamTitle ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.2480015754699707
+    client_time: 0.2546980381011963
   result_size: 1
   headers:
   - count
   results:
   - - '"1630"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-large-large [EXISTS JOIN of two large predicates]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type
-    ?o1 FILTER EXISTS { ?s dblp:hasSignature ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s dblp:hasSignature ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.45606493949890137
+    client_time: 0.5633015632629395
   result_size: 1
   headers:
   - count
   results:
   - - '"15424168"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-2-large-large-with-la ... h a reasonably large join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:hasSignature ?o1 . FILTER EXISTS { ?s dblp:createdBy ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      FILTER EXISTS {
+        ?s dblp:createdBy ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.36368346214294434
+    client_time: 0.5019972324371338
   result_size: 1
   headers:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedAsPartOf ?o1 . FILTER EXISTS { ?s dblp:publishedInJournalVolume
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      FILTER EXISTS {
+        ?s dblp:publishedInJournalVolume ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.0284883975982666
+    client_time: 0.03796887397766113
   result_size: 1
   headers:
   - count
   results:
   - - '"2143"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:publishedInJournalVolume ?o1 . FILTER EXISTS { ?s dblp:publishedAsPartOf
-    ?o2 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInJournalVolume ?o1 .
+      FILTER EXISTS {
+        ?s dblp:publishedAsPartOf ?o2 .
+      }
+    }
   runtime_info:
-    client_time: 0.029753684997558594
+    client_time: 0.04003548622131348
   result_size: 1
   headers:
   - count
   results:
   - - '"2143"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . ?s rdf:type ?o2 . FILTER EXISTS { ?s dblp:signatureDblpName ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      FILTER EXISTS {
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 2.465350389480591
+    client_time: 1.8330600261688232
   result_size: 1
   headers:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { ?s dblp:signatureOrdinal
-    ?o1 . FILTER EXISTS { ?s rdf:type ?o2 . ?s dblp:signatureDblpName ?o3 } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      FILTER EXISTS {
+        ?s rdf:type ?o2 .
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
   runtime_info:
-    client_time: 1.1364226341247559
+    client_time: 1.231520652770996
   result_size: 1
   headers:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . ?b rdf:type ?c . FILTER EXISTS { ?c rdfs:subClassOf
-    ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      FILTER EXISTS {
+        ?c rdfs:subClassOf ?d .
+      }
+    }
   runtime_info:
-    client_time: 4.09784197807312
+    client_time: 4.3799073696136475
   result_size: 1
   headers:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE
-    { ?a dblp:signaturePublication ?b . FILTER EXISTS { ?b rdf:type ?c . ?c rdfs:subClassOf
-    ?d } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      FILTER EXISTS {
+        ?b rdf:type ?c .
+        ?c rdfs:subClassOf ?d .
+      }
+    }
   runtime_info:
-    client_time: 6.170467376708984
+    client_time: 4.573803424835205
   result_size: 1
   headers:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-no-constraint [UNION of two large predicates, no constraint]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { { ?s rdf:type
-    ?o } UNION { ?s dblp:hasSignature ?o } }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o .
+      }
+      UNION
+      {
+        ?s dblp:hasSignature ?o .
+      }
+    }
   runtime_info:
-    client_time: 0.37979626655578613
+    client_time: 0.1276540756225586
   result_size: 1
   headers:
   - count
   results:
   - - '"139733220"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-from-star [UNION ... cate known to have join partners]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { { ?s dblp:signatureOrdinal
-    ?o1 } UNION { ?s rdf:type ?o1 } ?s dblp:signatureDblpName ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s dblp:signatureOrdinal ?o1 .
+      }
+      UNION
+      {
+        ?s rdf:type ?o1 .
+      }
+      ?s dblp:signatureDblpName ?o2 .
+    }
   runtime_info:
-    client_time: 3.3890676498413086
+    client_time: 0.7129733562469482
   result_size: 1
   headers:
   - count
   results:
   - - '"77836878"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-small-join [UNIO ... ed by a join with a small result]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { { ?s dblp:publishedAsPartOf ?o1 } UNION { ?s dblp:publishedInStream ?o1
-    } ?s dblp:publishedInJournalVolume ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s dblp:publishedAsPartOf ?o1 .
+      }
+      UNION
+      {
+        ?s dblp:publishedInStream ?o1 .
+      }
+      ?s dblp:publishedInJournalVolume ?o2 .
+    }
   runtime_info:
-    client_time: 0.35954713821411133
+    client_time: 0.27892160415649414
   result_size: 1
   headers:
   - count
   results:
-  - - '"3833938"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"3833713"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-large-join [UNIO ... ed by a join with a large result]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { { ?s dblp:hasSignature
-    ?o1 } UNION { ?s rdf:type ?o1 } ?s dblp:createdBy ?o2 }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s dblp:hasSignature ?o1 .
+      }
+      UNION
+      {
+        ?s rdf:type ?o1 .
+      }
+      ?s dblp:createdBy ?o2 .
+    }
   runtime_info:
-    client_time: 2.992323160171509
+    client_time: 1.3235421180725098
   result_size: 1
   headers:
   - count
   results:
   - - '"178610994"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX dblp:
-    <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count) WHERE { { ?s rdf:type
-    ?o } UNION { ?s dblp:hasSignature ?o } FILTER (?s = ?o) }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o .
+      }
+      UNION
+      {
+        ?s dblp:hasSignature ?o .
+      }
+      FILTER (?s = ?o)
+    }
   runtime_info:
-    client_time: 0.5270302295684814
+    client_time: 0.47862792015075684
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: multicolumn-join-small [Multicolumn JOIN small]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:subStream ?o . ?s dblp:relatedStream ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:subStream ?o .
+      ?s dblp:relatedStream ?o .
+    }
   runtime_info:
-    client_time: 0.005303859710693359
+    client_time: 0.0074121952056884766
   result_size: 1
   headers:
   - count
   results:
   - - '"1198"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: multicolumn-join-large [Multicolumn JOIN large]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    WHERE { ?s dblp:createdBy ?o . ?s dblp:authoredBy ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:createdBy ?o .
+      ?s dblp:authoredBy ?o .
+    }
   runtime_info:
-    client_time: 2.0374557971954346
+    client_time: 2.011503219604492
   result_size: 1
   headers:
   - count
   results:
   - - '"25788228"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-count-object-high-multip ... or object with high multiplicity]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?object
-    (COUNT(?subject) AS ?count) { ?subject rdf:type ?object } GROUP BY ?object ORDER
-    BY DESC(?count) LIMIT 10'
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject rdf:type ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 0.01033926010131836
+    client_time: 0.009924173355102539
   result_size: 10
   headers:
   - object
@@ -561,11 +839,16 @@ queries:
   - - <https://dblp.org/rdf/schema#Article>
     - '"3039856"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-count-object-low-multipl ... for object with low multiplicity]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT ?object (COUNT(?subject)
-    AS ?count) { ?subject dblp:hasSignature ?object } GROUP BY ?object ORDER BY DESC(?count)
-    LIMIT 10'
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject dblp:hasSignature ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 0.7879509925842285
+    client_time: 0.817197322845459
   result_size: 10
   headers:
   - object
@@ -592,11 +875,17 @@ queries:
   - - '"bn10970376"'
     - '"1"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT ?o1 (COUNT(?s) AS ?count)
-    { ?s dblp:bibtexType ?o1 . ?s dblp:hasSignature ?o2 } GROUP BY ?o1 ORDER BY DESC(?count)
-    LIMIT 10'
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:bibtexType ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 0.4707043170928955
+    client_time: 0.330033540725708
   result_size: 8
   headers:
   - o1
@@ -619,11 +908,17 @@ queries:
   - - <http://purl.org/net/nknouf/ns/bibtex#Mastersthesis>
     - '"27"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT ?o1 (COUNT(?s) AS ?count)
-    (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample) { ?s dblp:bibtexType
-    ?o1 . ?s dblp:hasSignature ?o2 } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT 10'
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
+    WHERE {
+      ?s dblp:bibtexType ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
-    client_time: 0.9049501419067383
+    client_time: 0.6592257022857666
   result_size: 8
   headers:
   - o1
@@ -673,281 +968,354 @@ queries:
     - <https://dblp.org/rec/phd/Ylonen94>
     - <https://dblp.org/rec/books/daglib/0070109>
 - query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(?o) AS ?count)
-    { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
   runtime_info:
-    client_time: 0.0051004886627197266
+    client_time: 0.005613803863525391
   result_size: 1
   headers:
   - count
   results:
   - - '"7770097"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o) AS ?sum) {
-    ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
   runtime_info:
-    client_time: 0.04540753364562988
+    client_time: 0.04750394821166992
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (MIN(?o) AS ?min) {
-    ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
   runtime_info:
-    client_time: 0.048293113708496094
+    client_time: 0.0465092658996582
   result_size: 1
   headers:
   - min
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (MAX(?o) AS ?max) {
-    ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
   runtime_info:
-    client_time: 0.0453791618347168
+    client_time: 0.0456385612487793
   result_size: 1
   headers:
   - max
   results:
   - - '"450"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (AVG(?o) AS ?avg) {
-    ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    SELECT (AVG(?o) AS ?avg)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
   runtime_info:
-    client_time: 0.04509305953979492
+    client_time: 0.048004865646362305
   result_size: 1
   headers:
   - avg
   results:
   - - '"3.33916"^^<http://www.w3.org/2001/XMLSchema#decimal>'
 - query: group-by-implicit-string-baseline ...  on string predicate as baseline]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(?o) AS ?count)
-    { ?s dblp:signatureDblpName ?o }'
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+    }
   runtime_info:
-    client_time: 0.004190683364868164
+    client_time: 0.0055408477783203125
   result_size: 1
   headers:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (MIN(?o) AS ?min) {
-    ?s dblp:signatureDblpName ?o }'
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+    }
   runtime_info:
-    client_time: 0.1328287124633789
+    client_time: 0.1529078483581543
   result_size: 1
   headers:
   - min
   results:
-  - - '"''Anau Mesui"'
+  - - "\"'Anau Mesui\""
 - query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (MAX(?o) AS ?max) {
-    ?s dblp:signatureDblpName ?o }'
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+    }
   runtime_info:
-    client_time: 0.13592839241027832
+    client_time: 0.13952398300170898
   result_size: 1
   headers:
   - max
   results:
   - - '"Þröstur Pétursson"'
 - query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS
-    ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName
-    ?o } GROUP BY ?s } }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName ?o } GROUP BY ?s } }
   runtime_info:
-    client_time: 29.890384197235107
+    client_time: 18.01838707923889
   result_size: 1
   headers:
   - sum
   results:
   - - '"368125377"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: distinct-count-object-high-multip ... or object with high multiplicity]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT (COUNT(DISTINCT
-    ?object) AS ?count) { ?subject rdf:type ?object }'
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject rdf:type ?object .
+    }
   runtime_info:
-    client_time: 0.9443967342376709
+    client_time: 0.834059476852417
   result_size: 1
   headers:
   - count
   results:
   - - '"32"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: distinct-count-object-low-multipl ... for object with low multiplicity]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(DISTINCT ?object)
-    AS ?count) { ?subject dblp:hasSignature ?object }'
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject dblp:hasSignature ?object .
+    }
   runtime_info:
-    client_time: 5.140455484390259
+    client_time: 5.070512056350708
   result_size: 1
   headers:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(DISTINCT ?o1)
-    AS ?count) { ?s dblp:bibtexType ?o1 . ?s dblp:hasSignature ?o2 }'
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o1) AS ?count)
+    WHERE {
+      ?s dblp:bibtexType ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
   runtime_info:
-    client_time: 0.673426628112793
+    client_time: 0.39321255683898926
   result_size: 1
   headers:
   - count
   results:
   - - '"8"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: transitive-path-plus [Transitive path with plus]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    { ?s dblp:relatedStream+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:relatedStream+ ?o .
+    }
   runtime_info:
-    client_time: 0.07971429824829102
+    client_time: 0.06956100463867188
   result_size: 1
   headers:
   - count
   results:
   - - '"300322"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    { <https://dblp.org/streams/conf/damp> dblp:relatedStream+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      <https://dblp.org/streams/conf/damp> dblp:relatedStream+ ?o .
+    }
   runtime_info:
-    client_time: 0.005731821060180664
+    client_time: 0.005843162536621094
   result_size: 1
   headers:
   - count
   results:
   - - '"582"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: transitive-path-large-join-and-pl ...  path with a large join and plus]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    { ?s dblp:publishedInStream/dblp:relatedStream+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInStream/dblp:relatedStream+ ?o .
+    }
   runtime_info:
-    client_time: 14.0891695022583
+    client_time: 13.474424123764038
   result_size: 1
   headers:
   - count
   results:
   - - '"135729769"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: transitive-path-small-join-and-pl ...  path with a small join and plus]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(*) AS ?count)
-    { ?s dblp:subStream/dblp:relatedStream+ ?o }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:subStream/dblp:relatedStream+ ?o .
+    }
   runtime_info:
-    client_time: 0.04055166244506836
+    client_time: 0.04286766052246094
   result_size: 1
   headers:
   - count
   results:
   - - '"302786"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: regex-3-contains [CONTAINS filter with fixed string of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (COUNT(*) AS
-    ?count) WHERE { ?s rdfs:label ?o FILTER CONTAINS(?o, "com") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER CONTAINS(?o, "com")
+    }
   runtime_info:
-    client_time: 6.630633354187012
+    client_time: 6.159368276596069
   result_size: 1
   headers:
   - count
   results:
   - - '"465862"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: regex-3-fixed [REGEX filter with fixed string of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (COUNT(*) AS
-    ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "com") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "com")
+    }
   runtime_info:
-    client_time: 6.705021858215332
+    client_time: 6.565537452697754
   result_size: 1
   headers:
   - count
   results:
   - - '"465862"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: regex-3 [REGEX filter with expression of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (COUNT(*) AS
-    ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "c.m") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "c.m")
+    }
   runtime_info:
-    client_time: 7.000093698501587
+    client_time: 6.815717697143555
   result_size: 1
   headers:
   - count
   results:
   - - '"727657"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: regex-prefix-1 [REGEX filter with prefix of length 1]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (COUNT(*) AS
-    ?count) WHERE { ?s rdfs:label ?o FILTER REGEX(?o, "^C") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "^C")
+    }
   runtime_info:
-    client_time: 0.07326173782348633
+    client_time: 0.010299444198608398
   result_size: 1
   headers:
   - count
   results:
   - - '"560854"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: regex-prefix-2 [REGEX filter with prefix of length 2]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (COUNT(*) AS
-    ?count) WHERE { ?s rdfs:label ?object FILTER REGEX(?object, "^Co") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Co")
+    }
   runtime_info:
-    client_time: 0.024300813674926758
+    client_time: 0.007262706756591797
   result_size: 1
   headers:
   - count
   results:
   - - '"36592"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: regex-prefix-3 [REGEX filter with prefix of length 3]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (COUNT(*) AS
-    ?count) WHERE { ?s rdfs:label ?object FILTER REGEX(?object, "^Com") }'
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Com")
+    }
   runtime_info:
-    client_time: 0.021364927291870117
+    client_time: 0.005892038345336914
   result_size: 1
   headers:
   - count
   results:
   - - '"1061"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strlen [String length for large string predicate]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o))
-    AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 6.1776227951049805
+    client_time: 3.85756254196167
   result_size: 1
   headers:
   - checksum
   results:
   - - '"914706385"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strbefore [STRBEFORE string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o,
-    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 7.129504203796387
+    client_time: 5.028956174850464
   result_size: 1
   headers:
   - checksum
   results:
   - - '"68444965"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strafter [STRAFTER string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o,
-    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 7.279389381408691
+    client_time: 5.392590522766113
   result_size: 1
   headers:
   - checksum
   results:
   - - '"825474569"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strstarts [STRSTARTS string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 6.050400257110596
+    client_time: 3.810912609100342
   result_size: 1
   headers:
   - count
   results:
   - - '"40"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strends [STRENDS string function]
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
   runtime_info:
-    client_time: 6.06760835647583
+    client_time: 3.763065814971924
   result_size: 1
   headers:
   - count
   results:
   - - '"379856"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: result-size-tiny [Export 10 tuples]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?s ?o
-    WHERE { ?s rdf:type ?o } LIMIT 10'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 10
   runtime_info:
-    client_time: 0.007506132125854492
+    client_time: 0.005515336990356445
   result_size: 10
   headers:
   - s
@@ -974,10 +1342,14 @@ queries:
   - - <https://dblp.org/pid/00/10001>
     - <https://dblp.org/rdf/schema#Person>
 - query: result-size-small [Export 1000 tuples]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?s ?o
-    WHERE { ?s rdf:type ?o } LIMIT 1000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 1000
   runtime_info:
-    client_time: 0.047301292419433594
+    client_time: 0.04746699333190918
   result_size: 1000
   headers:
   - s
@@ -1024,10 +1396,14 @@ queries:
   - - <https://dblp.org/pid/00/10006>
     - <https://dblp.org/rdf/schema#Person>
 - query: result-size-medium [Export 100K tuples]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?s ?o
-    WHERE { ?s rdf:type ?o } LIMIT 100000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 100000
   runtime_info:
-    client_time: 0.1499788761138916
+    client_time: 0.10297918319702148
   result_size: 100000
   headers:
   - s
@@ -1074,10 +1450,14 @@ queries:
   - - <https://dblp.org/pid/00/10006>
     - <https://dblp.org/rdf/schema#Person>
 - query: result-size-large [Export 1M tuples]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?s ?o
-    WHERE { ?s rdf:type ?o } LIMIT 1000000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 1000000
   runtime_info:
-    client_time: 1.463080644607544
+    client_time: 0.9289135932922363
   result_size: 1000000
   headers:
   - s
@@ -1124,10 +1504,14 @@ queries:
   - - <https://dblp.org/pid/00/10006>
     - <https://dblp.org/rdf/schema#Person>
 - query: result-size-xlarge [Export 10M tuples]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?s ?o
-    WHERE { ?s rdf:type ?o } LIMIT 10000000'
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 10000000
   runtime_info:
-    client_time: 14.775927305221558
+    client_time: 9.26150131225586
   result_size: 10000000
   headers:
   - s
@@ -1174,214 +1558,267 @@ queries:
   - - <https://dblp.org/pid/00/10006>
     - <https://dblp.org/rdf/schema#Person>
 - query: numeric-baseline [Baseline for numeric queries]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o) AS ?sum) WHERE
-    { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
   runtime_info:
-    client_time: 0.005731821060180664
+    client_time: 0.005822181701660156
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-abs [ABS function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.09131693840026855
+    client_time: 0.09482693672180176
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-ceil [CEIL function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.08976006507873535
+    client_time: 0.09226536750793457
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-floor [FLOOR function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.09544491767883301
+    client_time: 0.09242844581604004
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-round [ROUND function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.08970093727111816
+    client_time: 0.09252548217773438
   result_size: 1
   headers:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-add [Addition]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.1319289207458496
+    client_time: 0.13670825958251953
   result_size: 1
   headers:
   - sum
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-greater [Greater than]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum)
-    WHERE { ?s dblp:numberOfCreators ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
   runtime_info:
-    client_time: 0.07464194297790527
+    client_time: 0.07718610763549805
   result_size: 1
   headers:
   - sum
   results:
   - - '"7712084"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(?s) AS ?count)
-    { ?s dblp:numberOfCreators ?o . FILTER (?o >= 2) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+      FILTER (?o >= 2)
+    }
   runtime_info:
-    client_time: 0.16338706016540527
+    client_time: 0.028526782989501953
   result_size: 1
   headers:
   - count
   results:
   - - '"6607384"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(?s) AS ?count)
-    { ?s dblp:numberOfCreators ?o . FILTER (?o >= 3) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+      FILTER (?o >= 3)
+    }
   runtime_info:
-    client_time: 0.02097606658935547
+    client_time: 0.022079944610595703
   result_size: 1
   headers:
   - count
   results:
   - - '"4784144"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(?s) AS ?count)
-    { ?s dblp:numberOfCreators ?o . FILTER (?o >= 7) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+      FILTER (?o >= 7)
+    }
   runtime_info:
-    client_time: 0.010601043701171875
+    client_time: 0.008514404296875
   result_size: 1
   headers:
   - count
   results:
   - - '"468421"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: filter-few-results [FILTER that f ... ut most rows and has few results]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT (COUNT(?s)
-    AS ?count) { ?s rdf:type ?o . FILTER (?s = ?o) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s rdf:type ?o .
+      FILTER (?s = ?o)
+    }
   runtime_info:
-    client_time: 0.4331381320953369
+    client_time: 0.3993511199951172
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: filter-many-results [FILTER that  ... ut few rows and has many results]
-  sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT (COUNT(?s)
-    AS ?count) { ?s rdf:type ?o . FILTER (?s != ?o) }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s rdf:type ?o .
+      FILTER (?s != ?o)
+    }
   runtime_info:
-    client_time: 0.518010139465332
+    client_time: 0.6517837047576904
   result_size: 1
   headers:
   - count
   results:
   - - '"23043826"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: filter-language-en [FILTER on str ... dicate for only English literals]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (COUNT(?s) AS ?count)
-    { ?s dblp:signatureDblpName ?o . FILTER(LANG(?o) = "en") }'
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+      FILTER (lang(?o) = "en")
+    }
   runtime_info:
-    client_time: 0.004223823547363281
+    client_time: 0.005022287368774414
   result_size: 1
   headers:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-year [YEAR function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum)
-    WHERE { ?s dblp:yearOfPublication ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
   runtime_info:
-    client_time: 0.08724856376647949
+    client_time: 0.08547472953796387
   result_size: 1
   headers:
   - sum
   results:
   - - '"15637633984"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-month [MONTH function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum)
-    WHERE { ?s dblp:yearOfPublication ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
   runtime_info:
-    client_time: 0.10027456283569336
+    client_time: 0.10374903678894043
   result_size: 1
   headers:
   - sum
   results:
   - []
 - query: date-day [DAY function]
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum)
-    WHERE { ?s dblp:yearOfPublication ?o }'
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
   runtime_info:
-    client_time: 0.1008157730102539
+    client_time: 0.10439085960388184
   result_size: 1
   headers:
   - sum
   results:
   - []
 - query: number-of-triples [Total number of triples]
-  sparql: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 0.003961086273193359
+    client_time: 0.0064716339111328125
   result_size: 1
   headers:
   - count
   results:
   - - '"502361507"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-subjects [Total number of distinct subjects]
-  sparql: SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 0.0035774707794189453
+    client_time: 0.006191730499267578
   result_size: 1
   headers:
   - count
   results:
   - - '"57397952"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-predicates [Total number of distinct predicates]
-  sparql: SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?p) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 0.0033159255981445312
+    client_time: 0.005936145782470703
   result_size: 1
   headers:
   - count
   results:
   - - '"90"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-objects [Total number of distinct objects]
-  sparql: SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
-    client_time: 0.0030434131622314453
+    client_time: 0.005782127380371094
   result_size: 1
   headers:
   - count
   results:
   - - '"115203457"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-literals [Total number of literals]
-  sparql: SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isLiteral(?o)
+    }
   runtime_info:
-    client_time: 1.1376047134399414
+    client_time: 2.070690393447876
   result_size: 1
   headers:
   - count
   results:
-  - - '"101706081"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"101728877"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: number-of-blank-nodes [Total number of blank nodes]
-  sparql: SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isBlank(?s)
+    }
   runtime_info:
-    client_time: 2.180372953414917
+    client_time: 3.9729838371276855
   result_size: 1
   headers:
   - count
