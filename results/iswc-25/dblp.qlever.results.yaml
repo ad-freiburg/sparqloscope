@@ -728,12 +728,12 @@ queries:
       ?s dblp:publishedInJournalVolume ?o2 .
     }
   runtime_info:
-    client_time: 0.27892160415649414
+    client_time: 0.053119659423828125
   result_size: 1
   headers:
   - count
   results:
-  - - '"3833713"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"3833938"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-large-join [UNIO ... ed by a join with a large result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)

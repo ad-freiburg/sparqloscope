@@ -712,12 +712,12 @@ queries:
       ?s wdt:P31 ?o2 .
     }
   runtime_info:
-    client_time: 66.49062871932983
+    client_time: 9.515671014785767
   result_size: 1
   headers:
   - count
   results:
-  - - '"2720712801"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"3461507606"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-small-join [UNIO ... ed by a join with a small result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
@@ -752,12 +752,12 @@ queries:
       ?s wdt:P2093 ?o2 .
     }
   runtime_info:
-    client_time: 79.78156399726868
+    client_time: 8.602699041366577
   result_size: 1
   headers:
   - count
   results:
-  - - '"6122935984"^^<http://www.w3.org/2001/XMLSchema#int>'
+  - - '"6396603056"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
