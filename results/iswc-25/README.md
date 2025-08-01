@@ -8,7 +8,7 @@ The evaluation results for QLever, Virtuoso, MillenniumDB, GraphDB, Blazegraph a
 
 Versions:
 
-- QLever: commit [TODO](https://github.com/ad-freiburg/qlever/tree/TODO)
+- QLever: commit [bb1bb54](https://github.com/ad-freiburg/qlever/tree/bb1bb545dc099b30bf4d400ea55398fa4d3b5e1d)
 - Virtuoso: version 7.2.15
 - MillenniumDB: commit [ecbf6dd](https://github.com/MillenniumDB/MillenniumDB/tree/ecbf6dde5a5864f088eee3b0836ad6adba1d623b)
 - GraphDB: version 11.0.0
