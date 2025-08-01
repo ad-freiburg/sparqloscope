@@ -17,6 +17,7 @@
   "group-by-implicit-numeric-min": "Group by: numeric min",
   "strbefore": "String: strbefore function",
   "strstarts": "String: strstarts function",
+  "filter-language-en": "Filter: English literals",
   "numeric-round": "Numeric: round function",
   "numeric-filter-bin-search-fifty": "Numeric: filter $\\ge$ median",
   "regex-3-contains": "Regex: contains",
