@@ -803,9 +803,14 @@ def generate_queries(
                     res += re.sub(r'%#i(?P<modifier>[+-]?\d+)?%',
                                   replace_foreach_loop_var, body)
                 return res
-            query = re.sub(
-                r'%begin-foreach:[A-Z0-9_]+%(?P<body>(.|\n|\r)*)' +
-                r'%end-foreach:[A-Z0-9_]+%', replace_foreach, query)
+            try:
+                query = re.sub(
+                    r'%begin-foreach:[A-Z0-9_]+%(?P<body>(.|\n|\r)*)' +
+                    r'%end-foreach:[A-Z0-9_]+%', replace_foreach, query)
+            except AssertionError as e:
+                log.error(e)
+                num_queries_error += 1
+                continue
 
         # Helper function for replacing a placeholder. Throws an exception
         # if the placeholder is not defined.
