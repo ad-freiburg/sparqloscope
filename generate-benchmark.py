@@ -315,7 +315,7 @@ def compute_placeholders(
 
     result = {}
 
-    def add_interal_services(query: str) -> str:
+    def add_internal_services(query: str) -> str:
         """
         Replace placeholders for precomputed queries with the appropriate
         SPARQL SERVICE statement to retrieve the result of the precomputed
@@ -553,17 +553,17 @@ def compute_placeholders(
                 f"{', '.join(res_pl)}...", "blue"))
             log.debug(f"Placeholder Children: {repr(children)}")
 
-            # Get the result of the main placeholder query. This may contain
-            # multiple rows and cols of interest.
-            sparql_query = add_interal_services(query["query"])
-            result_json = compute_sparql(p_name, sparql_query, args)
-
             argmax_raw = query.get("argmax")
 
             result_vars: list[str] = []
             result_bindings: list[Binding] = []
 
             try:
+                # Get the result of the main placeholder query. This may contain
+                # multiple rows and cols of interest.
+                sparql_query = add_internal_services(query["query"])
+                result_json = compute_sparql(p_name, sparql_query, args)
+
                 # For ASK queries, we want the value of the field `boolean`. For
                 # SELECT queries, we want values depending on user config.
                 if "boolean" in result_json:
@@ -803,9 +803,14 @@ def generate_queries(
                     res += re.sub(r'%#i(?P<modifier>[+-]?\d+)?%',
                                   replace_foreach_loop_var, body)
                 return res
-            query = re.sub(
-                r'%begin-foreach:[A-Z0-9_]+%(?P<body>(.|\n|\r)*)' +
-                r'%end-foreach:[A-Z0-9_]+%', replace_foreach, query)
+            try:
+                query = re.sub(
+                    r'%begin-foreach:[A-Z0-9_]+%(?P<body>(.|\n|\r)*)' +
+                    r'%end-foreach:[A-Z0-9_]+%', replace_foreach, query)
+            except AssertionError as e:
+                log.error(e)
+                num_queries_error += 1
+                continue
 
         # Helper function for replacing a placeholder. Throws an exception
         # if the placeholder is not defined.

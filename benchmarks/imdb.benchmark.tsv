@@ -1,0 +1,73 @@
+join-2-large-large [JOIN of two large predicates]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:id ?o1 . ?s imdb:title ?o2 }
+join-2-largest-result [JOIN of two predicates with the largest possible result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:title ?o1 . ?s imdb:type ?o2 }
+join-2-large-large-with-large-result [JOIN of two large predicates with a reasonably large result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:title ?o1 . ?s imdb:type ?o2 }
+join-2-large-large-with-small-result [JOIN of two large predicates with a small result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:averageRating ?o1 . ?s imdb:type ?o2 }
+join-3-star-largest-sum-of-join-sizes [JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . ?s imdb:id ?o2 . ?s imdb:title ?o3 . }
+optional-join-large-large [OPTIONAL JOIN of two large predicates]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:id ?o1 OPTIONAL { ?s imdb:title ?o2 } }
+optional-join-2-large-large-with-large-result [OPTIONAL JOIN of two large predicates with a reasonably large join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:title ?o1 . OPTIONAL { ?s imdb:type ?o2 } }
+optional-join-2-large-large-with-small-join-result-1 [OPTIONAL JOIN of two large predicates with a small join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:averageRating ?o1 . OPTIONAL { ?s imdb:type ?o2 } }
+optional-join-2-large-large-with-small-join-result-2 [OPTIONAL JOIN of two large predicates with a small join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . OPTIONAL { ?s imdb:averageRating ?o2 } }
+optional-join-3-star-1 [OPTIONAL JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . ?s imdb:id ?o2 . OPTIONAL { ?s imdb:title ?o3 . } }
+optional-join-3-star-2 [OPTIONAL JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . OPTIONAL { ?s imdb:id ?o2 . ?s imdb:title ?o3 . } }
+minus-join-large-large [MINUS JOIN of two large predicates]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:id ?o1 MINUS { ?s imdb:title ?o2 } }
+minus-join-2-large-large-with-large-result [MINUS JOIN of two large predicates with a reasonably large join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:title ?o1 . MINUS { ?s imdb:type ?o2 } }
+minus-join-2-large-large-with-small-join-result-1 [MINUS JOIN of two large predicates with a small join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:averageRating ?o1 . MINUS { ?s imdb:type ?o2 } }
+minus-join-2-large-large-with-small-join-result-2 [MINUS JOIN of two large predicates with a small join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . MINUS { ?s imdb:averageRating ?o2 } }
+minus-join-3-star-1 [MINUS JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . ?s imdb:id ?o2 . MINUS { ?s imdb:title ?o3 . } }
+minus-join-3-star-2 [MINUS JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . MINUS { ?s imdb:id ?o2 . ?s imdb:title ?o3 . } }
+exists-join-large-large [EXISTS JOIN of two large predicates]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:id ?o1 FILTER EXISTS { ?s imdb:title ?o2 } }
+exists-join-2-large-large-with-large-result [EXISTS JOIN of two large predicates with a reasonably large join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:title ?o1 . FILTER EXISTS { ?s imdb:type ?o2 } }
+exists-join-2-large-large-with-small-join-result-1 [EXISTS JOIN of two large predicates with a small join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:averageRating ?o1 . FILTER EXISTS { ?s imdb:type ?o2 } }
+exists-join-2-large-large-with-small-join-result-2 [EXISTS JOIN of two large predicates with a small join result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . FILTER EXISTS { ?s imdb:averageRating ?o2 } }
+exists-join-3-star-1 [EXISTS JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . ?s imdb:id ?o2 . FILTER EXISTS { ?s imdb:title ?o3 . } }
+exists-join-3-star-2 [EXISTS JOIN star of three large predicates with the largest sum of join sizes]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { ?s imdb:type ?o1 . FILTER EXISTS { ?s imdb:id ?o2 . ?s imdb:title ?o3 . } }
+union-no-constraint [UNION of two large predicates, no constraint]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { { ?s imdb:id ?o } UNION { ?s imdb:title ?o } }
+union-constraint-from-star [UNION of two large predicates, constrained by a large predicate known to have join partners]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { { ?s imdb:type ?o1 } UNION { ?s imdb:id ?o1 } ?s imdb:title ?o2 }
+union-constraint-small-join [UNION of two large predicates, constrained by a join with a small result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { { ?s imdb:numVotes ?o1 } UNION { ?s imdb:type ?o1 } ?s imdb:title ?o2 }
+union-constraint-large-join [UNION of two large predicates, constrained by a join with a large result]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { { ?s imdb:type ?o1 } UNION { ?s imdb:id ?o1 } ?s imdb:averageRating ?o2 }
+union-constraint-filter-restrictive [UNION of two large predicates, constraint by restrictive FILTER]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(*) AS ?count) WHERE { { ?s imdb:id ?o } UNION { ?s imdb:title ?o } FILTER (?s = ?o) }
+group-by-count-object-high-multiplicity [GROUP BY with COUNT, for object with high multiplicity]	PREFIX imdb: <https://www.imdb.com/> SELECT ?object (COUNT(?subject) AS ?count) { ?subject imdb:type ?object . } GROUP BY ?object ORDER BY DESC(?count) LIMIT 10
+group-by-count-object-low-multiplicity [GROUP BY with COUNT, for object with low multiplicity]	PREFIX imdb: <https://www.imdb.com/> SELECT ?object (COUNT(?subject) AS ?count) { ?subject imdb:id ?object . } GROUP BY ?object ORDER BY DESC(?count) LIMIT 10
+group-by-count-object-wrong-sort-order [GROUP BY with COUNT, for object but not sorted by object]	PREFIX imdb: <https://www.imdb.com/> SELECT ?o1 (COUNT(?s) AS ?count) { ?s imdb:type ?o1 . ?s imdb:id ?o2 . } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT 10
+group-by-complex-aggregate [GROUP BY with COUNT and MIN and MAX and SAMPLE]	PREFIX imdb: <https://www.imdb.com/> SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample) { ?s imdb:type ?o1 . ?s imdb:id ?o2 . } GROUP BY ?o1 ORDER BY DESC(?count) LIMIT 10
+group-by-implicit-numeric-baseline [Implicit GROUP BY with COUNT on numeric predicate as baseline]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?o) AS ?count) { ?s imdb:averageRating ?o. }
+group-by-implicit-numeric-sum [Implicit GROUP BY with SUM on numeric predicate]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(?o) AS ?sum) { ?s imdb:averageRating ?o. }
+group-by-implicit-numeric-min [Implicit GROUP BY with MIN on numeric predicate]	PREFIX imdb: <https://www.imdb.com/> SELECT (MIN(?o) AS ?min) { ?s imdb:averageRating ?o. }
+group-by-implicit-numeric-max [Implicit GROUP BY with MAX on numeric predicate]	PREFIX imdb: <https://www.imdb.com/> SELECT (MAX(?o) AS ?max) { ?s imdb:averageRating ?o. }
+group-by-implicit-numeric-avg [Implicit GROUP BY with AVG on numeric predicate]	PREFIX imdb: <https://www.imdb.com/> SELECT (AVG(?o) AS ?avg) { ?s imdb:averageRating ?o. }
+group-by-implicit-string-baseline [Implicit GROUP BY with COUNT on string predicate as baseline]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?o) AS ?count) { ?s imdb:id ?o. }
+group-by-implicit-string-min [Implicit GROUP BY with MIN on string predicate]	PREFIX imdb: <https://www.imdb.com/> SELECT (MIN(?o) AS ?min) { ?s imdb:id ?o. }
+group-by-implicit-string-max [Implicit GROUP BY with MAX on string predicate]	PREFIX imdb: <https://www.imdb.com/> SELECT (MAX(?o) AS ?max) { ?s imdb:id ?o. }
+group-by-string-groupconcat [GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s imdb:id ?o. } GROUP BY ?s } }
+distinct-count-object-high-multiplicity [COUNT DISTINCT, for object with high multiplicity]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject imdb:type ?object . }
+distinct-count-object-low-multiplicity [COUNT DISTINCT, for object with low multiplicity]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject imdb:id ?object . }
+distinct-count-object-wrong-sort-order [COUNT DISTINCT, for object but not sorted by object]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(DISTINCT ?o1) AS ?count) { ?s imdb:type ?o1 . ?s imdb:id ?o2 . }
+strlen [String length for large string predicate]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o . }
+strbefore [STRBEFORE string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o . }
+strafter [STRAFTER string function]	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o . }
+strstarts [STRSTARTS string function]	PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o . }
+strends [STRENDS string function]	PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o . }
+result-size-tiny [Export 10 tuples]	PREFIX imdb: <https://www.imdb.com/> SELECT ?s ?o WHERE { ?s imdb:id ?o } LIMIT 10
+result-size-small [Export 1000 tuples]	PREFIX imdb: <https://www.imdb.com/> SELECT ?s ?o WHERE { ?s imdb:id ?o } LIMIT 1000
+result-size-medium [Export 100K tuples]	PREFIX imdb: <https://www.imdb.com/> SELECT ?s ?o WHERE { ?s imdb:id ?o } LIMIT 100000
+result-size-large [Export 1M tuples]	PREFIX imdb: <https://www.imdb.com/> SELECT ?s ?o WHERE { ?s imdb:id ?o } LIMIT 1000000
+result-size-xlarge [Export 10M tuples]	PREFIX imdb: <https://www.imdb.com/> SELECT ?s ?o WHERE { ?s imdb:id ?o } LIMIT 10000000
+numeric-baseline [Baseline for numeric queries]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(?o) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-abs [ABS function]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-ceil [CEIL function]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-floor [FLOOR function]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-round [ROUND function]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-add [Addition]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-greater [Greater than]	PREFIX imdb: <https://www.imdb.com/> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s imdb:averageRating ?o }
+numeric-filter-bin-search-fifty-fifty [Numeric FILTER that filters out 50 percent of the values]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?s) AS ?count) { ?s imdb:averageRating ?o . FILTER (?o >= 7.1) }
+numeric-filter-bin-search-seventy-thirty [Numeric FILTER that filters out 70 percent of the values]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?s) AS ?count) { ?s imdb:averageRating ?o . FILTER (?o >= 7.7) }
+numeric-filter-bin-search-ninetyfive-five [Numeric FILTER that filters out 95 percent of the values]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?s) AS ?count) { ?s imdb:averageRating ?o . FILTER (?o >= 8.9) }
+filter-few-results [FILTER that filters out most rows and has few results]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?s) AS ?count) { ?s imdb:id ?o . FILTER (?s = ?o) }
+filter-many-results [FILTER that filters out few rows and has many results]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?s) AS ?count) { ?s imdb:id ?o . FILTER (?s != ?o) }
+filter-language-en [FILTER on string predicate for only English literals]	PREFIX imdb: <https://www.imdb.com/> SELECT (COUNT(?s) AS ?count) { ?s imdb:id ?o . FILTER(LANG(?o) = "en") }
+number-of-triples [Total number of triples]	SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o }
+number-of-subjects [Total number of distinct subjects]	SELECT (COUNT(DISTINCT ?s) AS ?count) WHERE { ?s ?p ?o }
+number-of-predicates [Total number of distinct predicates]	SELECT (COUNT(DISTINCT ?p) AS ?count) WHERE { ?s ?p ?o }
+number-of-objects [Total number of distinct objects]	SELECT (COUNT(DISTINCT ?o) AS ?count) WHERE { ?s ?p ?o }
+number-of-literals [Total number of literals]	SELECT (COUNT(?o) AS ?count) WHERE { ?s ?p ?o FILTER ISLITERAL(?o) }
+number-of-blank-nodes [Total number of blank nodes]	SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o FILTER ISBLANK(?s) }
