@@ -315,7 +315,7 @@ def compute_placeholders(
 
     result = {}
 
-    def add_interal_services(query: str) -> str:
+    def add_internal_services(query: str) -> str:
         """
         Replace placeholders for precomputed queries with the appropriate
         SPARQL SERVICE statement to retrieve the result of the precomputed
@@ -555,7 +555,7 @@ def compute_placeholders(
 
             # Get the result of the main placeholder query. This may contain
             # multiple rows and cols of interest.
-            sparql_query = add_interal_services(query["query"])
+            sparql_query = add_internal_services(query["query"])
             result_json = compute_sparql(p_name, sparql_query, args)
 
             argmax_raw = query.get("argmax")
