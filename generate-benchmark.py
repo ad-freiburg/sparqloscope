@@ -553,17 +553,17 @@ def compute_placeholders(
                 f"{', '.join(res_pl)}...", "blue"))
             log.debug(f"Placeholder Children: {repr(children)}")
 
-            # Get the result of the main placeholder query. This may contain
-            # multiple rows and cols of interest.
-            sparql_query = add_internal_services(query["query"])
-            result_json = compute_sparql(p_name, sparql_query, args)
-
             argmax_raw = query.get("argmax")
 
             result_vars: list[str] = []
             result_bindings: list[Binding] = []
 
             try:
+                # Get the result of the main placeholder query. This may contain
+                # multiple rows and cols of interest.
+                sparql_query = add_internal_services(query["query"])
+                result_json = compute_sparql(p_name, sparql_query, args)
+
                 # For ASK queries, we want the value of the field `boolean`. For
                 # SELECT queries, we want values depending on user config.
                 if "boolean" in result_json:
