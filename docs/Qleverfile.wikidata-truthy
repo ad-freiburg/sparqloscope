@@ -1,0 +1,33 @@
+# Qleverfile for Wikidata Truthy, use with https://github.com/ad-freiburg/qlever-control
+
+[DEFAULT]
+NAME = wikidata-truthy
+
+[data]
+GET_DATA_URL = https://dumps.wikimedia.org/wikidatawiki/entities
+GET_DATA_CMD = curl -LRC - -O wikidata-truthy.nt.gz ${GET_DATA_URL}/latest-truthy.nt.gz
+DATE         = $$(date -r wikidata-truthy.nt.gz +%d.%m.%Y || echo "NO_DATE")
+DESCRIPTION  = Wikidata "Truthy" dump from ${GET_DATA_URL} (version ${DATE})
+
+[index]
+INPUT_FILES      = wikidata-truthy.nt.gz
+MULTI_INPUT_JSON = { "cmd": "zcat wikidata-truthy.nt.gz", "format": "ttl", "parallel": "true" }
+SETTINGS_JSON    = { "num-triples-per-batch": 5000000 }
+STXXL_MEMORY     = 10G
+VOCABULARY_TYPE  = in-memory-compressed
+
+[server]
+PORT                        = 7018
+ACCESS_TOKEN                = ${data:NAME}_RANDOM
+MEMORY_FOR_QUERIES          = 54G
+CACHE_MAX_SIZE              = 10G
+CACHE_MAX_SIZE_SINGLE_ENTRY = 5G
+TIMEOUT                     = 300s
+
+[runtime]
+SYSTEM = native
+
+[ui]
+UI_CONFIG = wikidata
+
+

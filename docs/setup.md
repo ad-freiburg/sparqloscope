@@ -55,9 +55,49 @@ Download the dataset you wish to use in Turtle or N-triples format. For the data
 
 We recommend that you use a separate directory for each combination of an engine and a dataset.
 
-For QLever, we ran indexing with the `--vocabulary-type in-memory-compressed` flag.
+Below, we provide brief instructions for indexing the datasets with each of the engines. For more details on how to index a given dataset, please consult the documentation of the respective engine.
 
-For details on how to index a given dataset, please consult the documentation of the respective engine.
+#### Disk space requirements
+
+| | DBLP (GiB) | Wikidata Truthy (GiB) |
+|-|-|-|
+| Dataset gzip-compressed | 2 | 63 |
+| Dataset N-Triples | 61 | 955 |
+| QLever index | 9 | 173 |
+| Virtuoso index | 20 | 347 |
+| MillenniumDB index | 19 | 316 |
+| Blazegraph index | 82 | 1144 |
+| GraphDB index | 32 | 451 |
+| Jena index | 51 | 1040 |
+
+#### Indexing instructions
+
+- **QLever**: Run indexing using `qlever index` with the Qleverfiles provided:
+  - [Qleverfile for DBLP](Qleverfile.dblp)
+  - [Qleverfile for Wikidata Truthy](Qleverfile.wikidata-truthy)
+- **Virtuoso**: Set the recommended configuration values for 32 GB (DBLP) or 64 GB (Wikidata Truthy) of memory in your `virtuoso.ini`. Then launch `virtuoso-t` and run the following commands on the `isql` terminal:
+  - `ld_dir('/path/to/your/virtuoso/index', 'DATASET.ttl.gz', '');`
+  - `DB.DBA.rdf_loader_run();`
+  - `checkpoint;`
+- **MillenniumDB**: Run the index builder using `zcat DATASET.ttl.gz | mdb import index --format ttl --buffer-strings 40GB --buffer-tensors 40GB` (`60GB` for Wikidata Truthy)
+- **Blazegraph**:
+  - for DBLP:
+    - since we have DBLP as a Turtle file, convert it to N-Triples: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz > dblp.nt` 
+    - split the dataset into N-Triples chunks of 1M triples each: `split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' dblp.nt dblp-`
+    - start the server: `java -server -Xmx32g -jar blazegraph.jar`
+    - load the individual chunks:
+      ```bash
+      for CHUNK in dblp-????.nt.gz; do
+        echo "Import chunk $CHUNK"
+        curl localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"
+      done
+      ```
+  - for Wikidata Truthy: perform analogous steps like for DBLP, but omit Turtle to N-Triples conversion and use `-Xmx64G` when starting `blazegraph.jar`. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
+- **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run `importrdf preload -f -i DATASET DATASET.ttl.gz`.
+- **Apache Jena**:
+  - for DBLP: `tdb2.xloader --loc data dblp.ttl`
+  - for Wikidata Truthy: since `tdb2.xloader` cannot handle Wikidata Truthy even with lots of RAM, we have to resort to `tdb2.tdbloader`. Use `JVM_ARGS="-Xmx64G" TMPDIR="$(pwd)" tdb2.tdbloader --syntax=nt --loader=parallel --loc data wikidata-truthy.nt` for indexing.
+    *Note*: This takes approximately 9 days on our powerful evaluation machine.
 
 ## 3. Generate the benchmark using Sparqloscope
 
@@ -133,7 +173,7 @@ Apply the configuration parameters suitable for the given dataset. For our demon
 - **MillenniumDB**:  start the server with these flags `mdb server --timeout 300 --threads 2 --versioned-buffer 52GB --unversioned-buffer 2GB --strings-static 5GB --strings-dynamic 5GB .`
 - **Blazegraph**: start the server with `java -server -Xmx64g -Djetty.overrideWebXml=./web.xml -jar ../blazegraph.jar` and set `queryTimeout` to `300000` in `web.xml`.
 - **GraphDB**:  At repository creation specify a 300 second timeout, start server with `graphdb -Xmx64G` and issue the query `SELECT * { ?s ?p ?o } LIMIT 1` to trigger loading the dataset
-- **Apache Jena**: `java -Xmx64G -jar fuseki-server.jar --loc data --timeout=300000 /wikidata-truthy`
+- **Apache Jena**: `java -Xmx64g -jar fuseki-server.jar --loc data --timeout=300000 /wikidata-truthy`
 
 ### 4.2. Execute the benchmark
 
