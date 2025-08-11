@@ -61,8 +61,8 @@ Below, we provide brief instructions for indexing the datasets with each of the 
 
 | | DBLP (GiB) | Wikidata Truthy (GiB) |
 |-|-|-|
-| Dataset compressed | 2 | 63 |
-| Dataset N-Triples uncompressed | 61 | 955 |
+| Dataset gzip-compressed | 2 | 63 |
+| Dataset N-Triples | 61 | 955 |
 | QLever index | 9 | 173 |
 | Virtuoso index | 20 | 347 |
 | MillenniumDB index | 19 | 316 |
