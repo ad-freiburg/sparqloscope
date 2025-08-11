@@ -93,7 +93,9 @@ Below, we provide brief instructions for indexing the datasets with each of the 
       done
       ```
   - for Wikidata Truthy: perform analogous steps like for DBLP, but omit Turtle to N-Triples conversion and use `-Xmx64G` when starting `blazegraph.jar`. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
-- **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run `importrdf preload -f -i DATASET DATASET.ttl.gz`.
+- **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run:
+  - for DBLP: `importrdf preload -f -i dblp dblp.ttl.gz`
+  - for Wikidata Truthy: `importrdf preload -Xmx70G -Xms70G -y 600 -i wikidata-truthy wikidata-truthy.nt.gz`. Memory settings lower than 70 GiB lead to failure of the index build.
 - **Apache Jena**:
   - for DBLP: `tdb2.xloader --loc data dblp.ttl`
   - for Wikidata Truthy: since `tdb2.xloader` cannot handle Wikidata Truthy even with lots of RAM, we have to resort to `tdb2.tdbloader`. Use `JVM_ARGS="-Xmx64G" TMPDIR="$(pwd)" tdb2.tdbloader --syntax=nt --loader=parallel --loc data wikidata-truthy.nt` for indexing.
