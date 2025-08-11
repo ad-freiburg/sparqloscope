@@ -67,10 +67,17 @@ Below, we provide brief instructions for indexing the datasets with each of the 
 - **MillenniumDB**: Run the index builder using `zcat DATASET.ttl.gz | mdb import index --format ttl --buffer-strings 40GB --buffer-tensors 40GB` (`60GB` for Wikidata Truthy)
 - **Blazegraph**:
   - for DBLP:
-    - Split the dataset into n-triples chunks: for DBLP: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz | split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' - dblp-`
+    - since we have DBLP as a Turtle file, convert it to N-Triples: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz > dblp.nt` 
+    - split the dataset into N-Triples chunks of 1M triples each: `split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' dblp.nt dblp-`
     - start the server: `java -server -Xmx32g -jar blazegraph.jar`
-    - load the individual chunks: `for CHUNK in dblp-????.nt.gz; do curl -s localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"; done`
-  - for Wikidata Truthy: perform analogous steps like for DBLP, but use `-Xmx64G` when starting `blazegraph.jar`. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
+    - load the individual chunks:
+      ```bash
+      for CHUNK in dblp-????.nt.gz; do
+        echo "Import chunk $CHUNK"
+        curl localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"
+      done
+      ```
+  - for Wikidata Truthy: perform analogous steps like for DBLP, but omit Turtle to N-Triples conversion and use `-Xmx64G` when starting `blazegraph.jar`. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
 - **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run `importrdf preload -f -i DATASET DATASET.ttl.gz`.
 - **Apache Jena**:
   - for DBLP: `tdb2.xloader --loc data dblp.ttl`
