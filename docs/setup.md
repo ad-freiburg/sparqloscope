@@ -60,16 +60,17 @@ Below, we provide brief instructions for indexing the datasets with each of the 
 - **QLever**: For QLever, run indexing using `qlever index` with the Qleverfiles provided:
   - [Qleverfile for DBLP](Qleverfile.dblp)
   - [Qleverfile for Wikidata Truthy](Qleverfile.wikidata-truthy)
-- **Virtuoso**: On Virtuoso's `isql` terminal, run:
+- **Virtuoso**: Set the recommended configuration values for 32 GB (DBLP) or 64 GB (Wikidata Truthy) of memory in your `virtuoso.ini`. Then launch `virtuoso-t` and run the following commands on the `isql` terminal:
   - `ld_dir('/path/to/your/virtuoso/index', 'DATASET.ttl.gz', '');`
   - `DB.DBA.rdf_loader_run();`
   - `checkpoint;`
 - **MillenniumDB**: Run the index builder using `zcat DATASET.ttl.gz | mdb import index --format ttl --buffer-strings 40GB --buffer-tensors 40GB` (`60GB` for Wikidata Truthy)
 - **Blazegraph**:
-  - Split the dataset into n-triples chunks: for DBLP: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz | split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' - dblp-`
-  - start the server: `java -server -Xmx32g -jar blazegraph.jar` (`-Xmx64G` for Wikidata Truthy)
-  - load the individual chunks: `for CHUNK in dblp-????.nt.gz; do curl -s localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"; done`
-  - analogous for Wikidata Truthy
+  - for DBLP:
+    - Split the dataset into n-triples chunks: for DBLP: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz | split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' - dblp-`
+    - start the server: `java -server -Xmx32g -jar blazegraph.jar` (`-Xmx64G` for Wikidata Truthy)
+    - load the individual chunks: `for CHUNK in dblp-????.nt.gz; do curl -s localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"; done`
+  - for Wikidata Truthy: perform analogous steps. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
 - **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run `importrdf preload -f -i DATASET DATASET.ttl.gz`.
 - **Apache Jena**:
   - for DBLP: `tdb2.xloader --loc data dblp.ttl`
