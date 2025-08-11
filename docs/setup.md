@@ -68,9 +68,9 @@ Below, we provide brief instructions for indexing the datasets with each of the 
 - **Blazegraph**:
   - for DBLP:
     - Split the dataset into n-triples chunks: for DBLP: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz | split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' - dblp-`
-    - start the server: `java -server -Xmx32g -jar blazegraph.jar` (`-Xmx64G` for Wikidata Truthy)
+    - start the server: `java -server -Xmx32g -jar blazegraph.jar`
     - load the individual chunks: `for CHUNK in dblp-????.nt.gz; do curl -s localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"; done`
-  - for Wikidata Truthy: perform analogous steps. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
+  - for Wikidata Truthy: perform analogous steps like for DBLP, but use `-Xmx64G` when starting `blazegraph.jar`. *Note:* The indexing for Wikidata Truthy takes about 2.5 days on our powerful evaluation machine.
 - **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run `importrdf preload -f -i DATASET DATASET.ttl.gz`.
 - **Apache Jena**:
   - for DBLP: `tdb2.xloader --loc data dblp.ttl`
