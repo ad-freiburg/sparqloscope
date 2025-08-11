@@ -1,0 +1,1585 @@
+queries:
+- query: join-2-small-large [JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      ?s schema:description ?o2 .
+    }
+  runtime_info:
+    client_time: 1.0235388278961182
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-large-small [JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s wdtn:P8024 ?o2 .
+    }
+  runtime_info:
+    client_time: 300.0172896385193
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-2-large-large [JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s schema:name ?o2 .
+    }
+  runtime_info:
+    client_time: 300.01536798477173
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:name ?o1 .
+      ?s rdfs:label ?o2 .
+    }
+  runtime_info:
+    client_time: 300.0227448940277
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s wdt:P2093 ?o2 .
+    }
+  runtime_info:
+    client_time: 300.0198140144348
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-2-large-large-with-small-res ... e predicates with a small result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      ?s wdt:P478 ?o2 .
+    }
+  runtime_info:
+    client_time: 300.01359152793884
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      ?s wdt:P31 ?o3 .
+    }
+  runtime_info:
+    client_time: 300.022581577301
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      ?c schema:description ?d .
+    }
+  runtime_info:
+    client_time: 300.05559968948364
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o0 .
+      ?s wdt:P8024 ?o1 .
+      ?s wdt:P10837 ?o2 .
+      ?s wdt:P5626 ?o3 .
+      ?s wdt:P3453 ?o4 .
+      ?s wdt:P3177 ?o5 .
+      ?s wdt:P7997 ?o6 .
+      ?s wdt:P4740 ?o7 .
+      ?s wdt:P4034 ?o8 .
+      ?s wdt:P9556 ?o9 .
+      ?s wdt:P470 ?o10 .
+      ?s wdt:P5052 ?o11 .
+      ?s wdtn:P4466 ?o12 .
+      ?s wdt:P4466 ?o13 .
+      ?s wdt:P958 ?o14 .
+      ?s wdt:P7492 ?o15 .
+      ?s wdt:P1385 ?o16 .
+      ?s wdt:P12123 ?o17 .
+      ?s wdt:P6141 ?o18 .
+      ?s wdt:P10916 ?o19 .
+      ?s wdt:P10761 ?o20 .
+      ?s wdt:P6019 ?o21 .
+      ?s wdt:P3322 ?o22 .
+      ?s wdt:P12249 ?o23 .
+      ?s wdt:P4433 ?o24 .
+    }
+  runtime_info:
+    client_time: 0.7681717872619629
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?v0 wdtn:P8024 ?v1 .
+      ?v1 wdt:P8024 ?v2 .
+      ?v2 wdt:P10837 ?v3 .
+      ?v3 wdt:P5626 ?v4 .
+      ?v4 wdt:P3453 ?v5 .
+      ?v5 wdt:P3177 ?v6 .
+      ?v6 wdt:P7997 ?v7 .
+      ?v7 wdt:P4740 ?v8 .
+      ?v8 wdt:P4034 ?v9 .
+      ?v9 wdt:P9556 ?v10 .
+      ?v10 wdt:P470 ?v11 .
+      ?v11 wdt:P5052 ?v12 .
+      ?v12 wdtn:P4466 ?v13 .
+      ?v13 wdt:P4466 ?v14 .
+      ?v14 wdt:P958 ?v15 .
+      ?v15 wdt:P7492 ?v16 .
+      ?v16 wdt:P1385 ?v17 .
+      ?v17 wdt:P12123 ?v18 .
+      ?v18 wdt:P6141 ?v19 .
+      ?v19 wdt:P10916 ?v20 .
+      ?v20 wdt:P10761 ?v21 .
+      ?v21 wdt:P6019 ?v22 .
+      ?v22 wdt:P3322 ?v23 .
+      ?v23 wdt:P12249 ?v24 .
+      ?v24 wdt:P4433 ?v25 .
+    }
+  runtime_info:
+    client_time: 0.5938777923583984
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      OPTIONAL {
+        ?s schema:description ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 0.16104555130004883
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.01599645614624
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s schema:name ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.01779890060425
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.03209233283997
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      OPTIONAL {
+        ?s wdt:P478 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0233886241913
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      OPTIONAL {
+        ?s wdt:P50 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0220947265625
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      OPTIONAL {
+        ?s wdt:P31 ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0229308605194
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0183656215668
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      OPTIONAL {
+        ?c schema:description ?d .
+      }
+    }
+  runtime_info:
+    client_time: 300.01584696769714
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      OPTIONAL {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
+  runtime_info:
+    client_time: 300.0133602619171
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      MINUS {
+        ?s schema:description ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.01075053215027
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.01448917388916
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-large-large [MINUS JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s schema:name ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0088903903961
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0101625919342
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      MINUS {
+        ?s wdt:P478 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.00782775878906
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      MINUS {
+        ?s wdt:P50 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.04051542282104
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      MINUS {
+        ?s wdt:P31 ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 300.1021225452423
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0147707462311
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      MINUS {
+        ?c schema:description ?d .
+      }
+    }
+  runtime_info:
+    client_time: 300.01036763191223
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      MINUS {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
+  runtime_info:
+    client_time: 300.01040840148926
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      FILTER EXISTS {
+        ?s schema:description ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 0.8357830047607422
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1000"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0118827819824
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-large-large [EXISTS JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s schema:name ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.03317523002625
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0240910053253
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P478 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0162591934204
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P50 ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 300.0132381916046
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      FILTER EXISTS {
+        ?s wdt:P31 ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 300.01903343200684
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 300.01563596725464
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      FILTER EXISTS {
+        ?c schema:description ?d .
+      }
+    }
+  runtime_info:
+    client_time: 300.018212556839
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      FILTER EXISTS {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
+  runtime_info:
+    client_time: 300.00988006591797
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: union-no-constraint [UNION of two large predicates, no constraint]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o .
+      }
+      UNION
+      {
+        ?s schema:name ?o .
+      }
+    }
+  runtime_info:
+    client_time: 300.0210611820221
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: union-constraint-from-star [UNION ... cate known to have join partners]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o1 .
+      }
+      UNION
+      {
+        ?s schema:description ?o1 .
+      }
+      ?s wdt:P31 ?o2 .
+    }
+  runtime_info:
+    client_time: 300.0198886394501
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s wdt:P50 ?o1 .
+      }
+      UNION
+      {
+        ?s skos:prefLabel ?o1 .
+      }
+      ?s wdt:P478 ?o2 .
+    }
+  runtime_info:
+    client_time: 300.0333993434906
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o1 .
+      }
+      UNION
+      {
+        ?s schema:name ?o1 .
+      }
+      ?s wdt:P2093 ?o2 .
+    }
+  runtime_info:
+    client_time: 300.02274799346924
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o .
+      }
+      UNION
+      {
+        ?s schema:name ?o .
+      }
+      FILTER (?s = ?o)
+    }
+  runtime_info:
+    client_time: 300.03919649124146
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: multicolumn-join-small [Multicolumn JOIN small]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P921 ?o .
+      ?s wdt:P31 ?o .
+    }
+  runtime_info:
+    client_time: 300.03468656539917
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: multicolumn-join-large [Multicolumn JOIN large]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s skos:prefLabel ?o .
+      ?s rdfs:label ?o .
+    }
+  runtime_info:
+    client_time: 300.0217227935791
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: group-by-count-object-high-multip ... or object with high multiplicity]
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject wdt:P2548 ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 6.24034571647644
+  result_size: 3
+  headers:
+  - object
+  - count
+  results:
+  - - <http://www.wikidata.org/entity/Q22809680>
+    - '"530762"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q22809711>
+    - '"527806"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q41329>
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject skos:prefLabel ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 300.0074417591095
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 285.8088483810425
+  result_size: 10
+  headers:
+  - o1
+  - count
+  results:
+  - - <http://www.wikidata.org/entity/Q7318358>
+    - '"105647158"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q1504425>
+    - '"781966"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q591041>
+    - '"64613"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q121763407>
+    - '"15104"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q2782326>
+    - '"4116"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q815382>
+    - '"3946"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q131359514>
+    - '"2006"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q58901591>
+    - '"1413"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q309481>
+    - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://www.wikidata.org/entity/Q131359749>
+    - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 234.96324396133423
+  result_size: 10
+  headers:
+  - o1
+  - count
+  - min
+  - max
+  - sample
+  results:
+  - - <http://www.wikidata.org/entity/Q7318358>
+    - '"105647158"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q100295053>
+    - <http://www.wikidata.org/entity/Q99731952>
+    - <http://www.wikidata.org/entity/Q99413970>
+  - - <http://www.wikidata.org/entity/Q1504425>
+    - '"781966"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q101138924>
+    - <http://www.wikidata.org/entity/Q99349321>
+    - <http://www.wikidata.org/entity/Q21089955>
+  - - <http://www.wikidata.org/entity/Q591041>
+    - '"64613"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q100000003>
+    - <http://www.wikidata.org/entity/Q99999992>
+    - <http://www.wikidata.org/entity/Q21761510>
+  - - <http://www.wikidata.org/entity/Q121763407>
+    - '"15104"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q100895162>
+    - <http://www.wikidata.org/entity/Q99974210>
+    - <http://www.wikidata.org/entity/Q21090430>
+  - - <http://www.wikidata.org/entity/Q2782326>
+    - '"4116"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q22330678>
+    - <http://www.wikidata.org/entity/Q99409711>
+    - <http://www.wikidata.org/entity/Q22330678>
+  - - <http://www.wikidata.org/entity/Q815382>
+    - '"3946"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q101060206>
+    - <http://www.wikidata.org/entity/Q98459647>
+    - <http://www.wikidata.org/entity/Q35186747>
+  - - <http://www.wikidata.org/entity/Q131359514>
+    - '"2006"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q132291049>
+    - <http://www.wikidata.org/entity/Q38190587>
+    - <http://www.wikidata.org/entity/Q28757570>
+  - - <http://www.wikidata.org/entity/Q58901591>
+    - '"1413"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q22061852>
+    - <http://www.wikidata.org/entity/Q37947489>
+    - <http://www.wikidata.org/entity/Q22061852>
+  - - <http://www.wikidata.org/entity/Q309481>
+    - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q105020799>
+    - <http://www.wikidata.org/entity/Q61632533>
+    - <http://www.wikidata.org/entity/Q118640593>
+  - - <http://www.wikidata.org/entity/Q131359749>
+    - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    - <http://www.wikidata.org/entity/Q108799700>
+    - <http://www.wikidata.org/entity/Q52937709>
+    - <http://www.wikidata.org/entity/Q36152811>
+- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+    }
+  runtime_info:
+    client_time: 222.6213185787201
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s schema:version ?o .
+    }
+  runtime_info:
+    client_time: 216.6763620376587
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s schema:version ?o .
+    }
+  runtime_info:
+    client_time: 218.11723041534424
+  result_size: 1
+  headers:
+  - min
+  results:
+  - - '"984175"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s schema:version ?o .
+    }
+  runtime_info:
+    client_time: 221.4267680644989
+  result_size: 1
+  headers:
+  - max
+  results:
+  - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+  sparql: |-
+    SELECT (AVG(?o) AS ?avg)
+    WHERE {
+      ?s schema:version ?o .
+    }
+  runtime_info:
+    client_time: 217.01539254188538
+  result_size: 1
+  headers:
+  - avg
+  results:
+  - - '"2005535237.021964414488684150482729"^^<http://www.w3.org/2001/XMLSchema#decimal>'
+- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+    }
+  runtime_info:
+    client_time: 300.02732706069946
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s schema:description ?o .
+    }
+  runtime_info:
+    client_time: 300.02509117126465
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s schema:description ?o .
+    }
+  runtime_info:
+    client_time: 300.04476284980774
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }
+  runtime_info:
+    client_time: 300.020156621933
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: distinct-count-object-high-multip ... or object with high multiplicity]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject wdt:P2548 ?object .
+    }
+  runtime_info:
+    client_time: 0.8787229061126709
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject skos:prefLabel ?object .
+    }
+  runtime_info:
+    client_time: 300.00885462760925
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o1) AS ?count)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+  runtime_info:
+    client_time: 266.8588647842407
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"42"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-plus [Transitive path with plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P2293+ ?o .
+    }
+  runtime_info:
+    client_time: 32.431212425231934
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"12972038"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      wd:Q81867 wdt:P2293+ ?o .
+    }
+  runtime_info:
+    client_time: 0.024445772171020508
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3519"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P921/wdt:P2293+ ?o .
+    }
+  runtime_info:
+    client_time: 300.013774394989
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P1911/wdt:P2293+ ?o .
+    }
+  runtime_info:
+    client_time: 0.3967549800872803
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"159948"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER CONTAINS(?o, "com")
+    }
+  runtime_info:
+    client_time: 300.00901675224304
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: regex-3-fixed [REGEX filter with fixed string of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "com")
+    }
+  runtime_info:
+    client_time: 300.0111219882965
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: regex-3 [REGEX filter with expression of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "c.m")
+    }
+  runtime_info:
+    client_time: 300.00811314582825
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: regex-prefix-1 [REGEX filter with prefix of length 1]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "^C")
+    }
+  runtime_info:
+    client_time: 300.007798910141
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: regex-prefix-2 [REGEX filter with prefix of length 2]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Co")
+    }
+  runtime_info:
+    client_time: 300.0074141025543
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: regex-prefix-3 [REGEX filter with prefix of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Com")
+    }
+  runtime_info:
+    client_time: 300.00731325149536
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: strlen [String length for large string predicate]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 300.0074818134308
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: strbefore [STRBEFORE string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 300.00909399986267
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: strafter [STRAFTER string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 300.0075263977051
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: strstarts [STRSTARTS string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 300.01421642303467
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: strends [STRENDS string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 300.0078971385956
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: result-size-tiny [Export 10 tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 10
+  runtime_info:
+    client_time: 0.10941100120544434
+  result_size: 10
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/Q99972526>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q131986095>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q49965200>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52490048>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q109448507>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972580>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q123054632>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972562>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972542>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q124350779>
+    - '"Belgian"@en'
+- query: result-size-small [Export 1000 tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 1000
+  runtime_info:
+    client_time: 0.06450057029724121
+  result_size: 1000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/Q99972526>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q131986095>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q49965200>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52490048>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q109448507>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972580>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q123054632>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972562>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972542>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q124350779>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q50252270>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52225609>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q117118479>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99970415>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q15978746>
+    - '"belga"@hu'
+  - - <http://www.wikidata.org/entity/Q849465>
+    - '"Βέλγιο"@el'
+  - - <http://www.wikidata.org/entity/Q244690>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2437344>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2530189>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2844475>
+    - '"Bélgica"@es'
+- query: result-size-medium [Export 100K tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 100000
+  runtime_info:
+    client_time: 3.8384265899658203
+  result_size: 100000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/Q99972526>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q131986095>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q49965200>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52490048>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q109448507>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972580>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q123054632>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972562>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972542>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q124350779>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q50252270>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52225609>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q117118479>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99970415>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q15978746>
+    - '"belga"@hu'
+  - - <http://www.wikidata.org/entity/Q849465>
+    - '"Βέλγιο"@el'
+  - - <http://www.wikidata.org/entity/Q244690>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2437344>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2530189>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2844475>
+    - '"Bélgica"@es'
+- query: result-size-large [Export 1M tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 1000000
+  runtime_info:
+    client_time: 19.11824917793274
+  result_size: 1000000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/Q99972526>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q131986095>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q49965200>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52490048>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q109448507>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972580>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q123054632>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972562>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972542>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q124350779>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q50252270>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52225609>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q117118479>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99970415>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q15978746>
+    - '"belga"@hu'
+  - - <http://www.wikidata.org/entity/Q849465>
+    - '"Βέλγιο"@el'
+  - - <http://www.wikidata.org/entity/Q244690>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2437344>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2530189>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2844475>
+    - '"Bélgica"@es'
+- query: result-size-xlarge [Export 10M tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 10000000
+  runtime_info:
+    client_time: 146.38923454284668
+  result_size: 10000000
+  headers:
+  - s
+  - o
+  results:
+  - - <http://www.wikidata.org/entity/Q99972526>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q131986095>
+    - '"Belg"@nl'
+  - - <http://www.wikidata.org/entity/Q49965200>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52490048>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q109448507>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972580>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q123054632>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972562>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99972542>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q124350779>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q50252270>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q52225609>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q117118479>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q99970415>
+    - '"Belgian"@en'
+  - - <http://www.wikidata.org/entity/Q15978746>
+    - '"belga"@hu'
+  - - <http://www.wikidata.org/entity/Q849465>
+    - '"Βέλγιο"@el'
+  - - <http://www.wikidata.org/entity/Q244690>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2437344>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2530189>
+    - '"Bélgica"@es'
+  - - <http://www.wikidata.org/entity/Q2844475>
+    - '"Bélgica"@es'
+- query: numeric-baseline [Baseline for numeric queries]
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s schema:version ?o .
+    }
+  runtime_info:
+    client_time: 253.50743746757507
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-abs [ABS function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  runtime_info:
+    client_time: 256.7597622871399
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-ceil [CEIL function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  runtime_info:
+    client_time: 251.6034791469574
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-floor [FLOOR function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  runtime_info:
+    client_time: 251.67625617980957
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-round [ROUND function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  runtime_info:
+    client_time: 252.8416450023651
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-add [Addition]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }
+  runtime_info:
+    client_time: 270.36098885536194
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"481682233301082134"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-greater [Greater than]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }
+  runtime_info:
+    client_time: 271.2556986808777
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2147882675)
+    }
+  runtime_info:
+    client_time: 300.0085175037384
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2241500354)
+    }
+  runtime_info:
+    client_time: 300.0085241794586
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2325672138)
+    }
+  runtime_info:
+    client_time: 300.01112937927246
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (?s = ?o)
+    }
+  runtime_info:
+    client_time: 300.0432493686676
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (?s != ?o)
+    }
+  runtime_info:
+    client_time: 300.0264415740967
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: filter-language-en [FILTER on str ... dicate for only English literals]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (lang(?o) = "en")
+    }
+  runtime_info:
+    client_time: 300.02906107902527
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: date-year [YEAR function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
+  runtime_info:
+    client_time: 300.03946137428284
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: date-month [MONTH function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
+  runtime_info:
+    client_time: 300.01348400115967
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: date-day [DAY function]
+  sparql: |-
+    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
+  runtime_info:
+    client_time: 300.0578303337097
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: number-of-triples [Total number of triples]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 300.0326118469238
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: number-of-subjects [Total number of distinct subjects]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 300.0322811603546
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: number-of-predicates [Total number of distinct predicates]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?p) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 300.0780279636383
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: number-of-objects [Total number of distinct objects]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 300.022483587265
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: number-of-literals [Total number of literals]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isLiteral(?o)
+    }
+  runtime_info:
+    client_time: 300.007999420166
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
+- query: number-of-blank-nodes [Total number of blank nodes]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isBlank(?s)
+    }
+  runtime_info:
+    client_time: 300.01074171066284
+  headers: []
+  results: 'HTTP code: 503: Query timed out '
