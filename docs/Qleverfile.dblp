@@ -1,0 +1,27 @@
+# Qleverfile for DBLP, use with https://github.com/ad-freiburg/qlever-control
+
+[data]
+NAME         = dblp
+GET_DATA_URL = https://sparql.dblp.org/download/dblp_KG_with_associated_data.tar
+GET_DATA_CMD = (curl -LRC - -o dblp+citations.tar ${GET_DATA_URL} && tar -xf dblp+citations.tar) 2>&1 | tee ${NAME}.download-log.txt
+VERSION      = $$(date -r dblp.ttl.gz +"%d.%m.%Y %H:%M" || echo "NO_DATE")
+DESCRIPTION  = DBLP computer science bibliography + citations from OpenCitations, data from ${GET_DATA_URL} (version ${VERSION})
+
+[index]
+INPUT_FILES     = *.gz
+CAT_INPUT_FILES = ( echo '@base <https://dblp.org/rdf/schema> .'; zcat ${INPUT_FILES} )
+SETTINGS_JSON   = { "num-triples-per-batch": 1000000, "group-by-hash-map-enabled" : true }
+VOCABULARY_TYPE = in-memory-compressed
+
+[server]
+PORT               = 7015
+ACCESS_TOKEN       = ${data:NAME}_RANDOM
+MEMORY_FOR_QUERIES = 26G
+CACHE_MAX_SIZE     = 6G
+TIMEOUT            = 180s
+
+[runtime]
+SYSTEM = native
+
+[ui]
+UI_CONFIG = dblp

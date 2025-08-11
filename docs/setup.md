@@ -55,11 +55,16 @@ Download the dataset you wish to use in Turtle or N-triples format. For the data
 
 We recommend that you use a separate directory for each combination of an engine and a dataset.
 
-For QLever, we ran indexing with the `--vocabulary-type in-memory-compressed` flag.
+Below, we provide brief instructions for indexing the datasets with each of the engines. For more details on how to index a given dataset, please consult the documentation of the respective engine.
 
-For details on how to index a given dataset, please consult the documentation of the respective engine.
-
-*Note:* We were unable to generate an index for Wikidata Truthy using Apache Jena.
+- **QLever**: For QLever, we ran indexing using `qlever index` with the Qleverfiles provided:
+  - [Qleverfile for DBLP](Qleverfile.dblp)
+  - [Qleverfile for Wikidata Truthy](Qleverfile.wikidata-truthy)
+- **Virtuoso**:
+- **MillenniumDB**:
+- **Blazegraph**:
+- **GraphDB**:
+- **Apache Jena**:
 
 ## 3. Generate the benchmark using Sparqloscope
 
