@@ -59,8 +59,6 @@ For QLever, we ran indexing with the `--vocabulary-type in-memory-compressed` fl
 
 For details on how to index a given dataset, please consult the documentation of the respective engine.
 
-*Note:* We were unable to generate an index for Wikidata Truthy using Apache Jena.
-
 ## 3. Generate the benchmark using Sparqloscope
 
 ### 3.1. Start QLever for benchmark generation
@@ -135,7 +133,7 @@ Apply the configuration parameters suitable for the given dataset. For our demon
 - **MillenniumDB**:  start the server with these flags `mdb server --timeout 300 --threads 2 --versioned-buffer 52GB --unversioned-buffer 2GB --strings-static 5GB --strings-dynamic 5GB .`
 - **Blazegraph**: start the server with `java -server -Xmx64g -Djetty.overrideWebXml=./web.xml -jar ../blazegraph.jar` and set `queryTimeout` to `300000` in `web.xml`.
 - **GraphDB**:  At repository creation specify a 300 second timeout, start server with `graphdb -Xmx64G` and issue the query `SELECT * { ?s ?p ?o } LIMIT 1` to trigger loading the dataset
-- **Apache Jena**: Unfortunately, we were not able to successfully generate an index for Wikidata Truthy using Apache Jena, therefore we do not provide instructions here.
+- **Apache Jena**: `java -Xmx64G -jar fuseki-server.jar --loc data --timeout=300000 /wikidata-truthy`
 
 ### 4.2. Execute the benchmark
 
