@@ -57,14 +57,24 @@ We recommend that you use a separate directory for each combination of an engine
 
 Below, we provide brief instructions for indexing the datasets with each of the engines. For more details on how to index a given dataset, please consult the documentation of the respective engine.
 
-- **QLever**: For QLever, we ran indexing using `qlever index` with the Qleverfiles provided:
+- **QLever**: For QLever, run indexing using `qlever index` with the Qleverfiles provided:
   - [Qleverfile for DBLP](Qleverfile.dblp)
   - [Qleverfile for Wikidata Truthy](Qleverfile.wikidata-truthy)
-- **Virtuoso**:
-- **MillenniumDB**:
+- **Virtuoso**: On Virtuoso's `isql` terminal, run:
+  - `ld_dir('/path/to/your/virtuoso/index', 'DATASET.ttl.gz', '');`
+  - `DB.DBA.rdf_loader_run();`
+  - `checkpoint;`
+- **MillenniumDB**: Run the index builder using `zcat DATASET.ttl.gz | mdb import index --format ttl --buffer-strings 40GB --buffer-tensors 40GB` (`60GB` for Wikidata Truthy)
 - **Blazegraph**:
-- **GraphDB**:
+  - Split the dataset into n-triples chunks: for DBLP: `docker run -it --rm -v $(pwd):/data stain/jena riot --output=NT /data/dblp.ttl.gz | split -a 4 --numeric-suffixes=1 --additional-suffix=.nt -l 1000000  --filter='gzip > $FILE.gz' - dblp-`
+  - start the server: `java -server -Xmx32g -jar blazegraph.jar` (`-Xmx64G` for Wikidata Truthy)
+  - load the individual chunks: `for CHUNK in dblp-????.nt.gz; do curl -s localhost:9999/blazegraph/namespace/kb/sparql --data-binary update="LOAD <file://$(pwd)/${CHUNK}>"; done`
+  - analogous for Wikidata Truthy
+- **GraphDB**: Run `console` and enter `create graphdb`, follow the instructions and set the dataset name and timeout appropriately. Then run `importrdf preload -f -i DATASET DATASET.ttl.gz`.
 - **Apache Jena**:
+  - for DBLP: `tdb2.xloader --loc data dblp.ttl`
+  - for Wikidata Truthy: since `tdb2.xloader` cannot handle Wikidata Truthy even with lots of RAM, we have to resort to `tdb2.tdbloader`. Use `JVM_ARGS="-Xmx64G" TMPDIR="$(pwd)" tdb2.tdbloader --syntax=nt --loader=parallel --loc data wikidata-truthy.nt` for indexing.
+    *Note*: This takes approximately 9 days on our powerful evaluation machine.
 
 ## 3. Generate the benchmark using Sparqloscope
 
