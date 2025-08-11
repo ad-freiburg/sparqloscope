@@ -57,7 +57,22 @@ We recommend that you use a separate directory for each combination of an engine
 
 Below, we provide brief instructions for indexing the datasets with each of the engines. For more details on how to index a given dataset, please consult the documentation of the respective engine.
 
-- **QLever**: For QLever, run indexing using `qlever index` with the Qleverfiles provided:
+#### Disk space requirements
+
+| | DBLP (GiB) | Wikidata Truthy (GiB) |
+|-|-|-|
+| Dataset compressed | 2 | 63 |
+| Dataset N-Triples uncompressed | 61 | 955 |
+| QLever index | 9 | 173 |
+| Virtuoso index | 20 | 347 |
+| MillenniumDB index | 19 | 316 |
+| Blazegraph index | 82 | 1144 |
+| GraphDB index | 32 | 451 |
+| Jena index | 51 | 1040 |
+
+#### Indexing instructions
+
+- **QLever**: Run indexing using `qlever index` with the Qleverfiles provided:
   - [Qleverfile for DBLP](Qleverfile.dblp)
   - [Qleverfile for Wikidata Truthy](Qleverfile.wikidata-truthy)
 - **Virtuoso**: Set the recommended configuration values for 32 GB (DBLP) or 64 GB (Wikidata Truthy) of memory in your `virtuoso.ini`. Then launch `virtuoso-t` and run the following commands on the `isql` terminal:
