@@ -1,0 +1,1664 @@
+timeout: 180
+queries:
+- query: join-2-small-large [JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      ?s rdf:type ?o2 .
+    }
+  runtime_info:
+    client_time: 0.723564624786377
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-large-small [JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s dblp:formerStreamTitle ?o2 .
+    }
+  runtime_info:
+    client_time: 0.03599429130554199
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-large-large [JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
+  runtime_info:
+    client_time: 39.36071801185608
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      ?s dblp:createdBy ?o2 .
+    }
+  runtime_info:
+    client_time: 26.90532350540161
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      ?s dblp:createdBy ?o2 .
+    }
+  runtime_info:
+    client_time: 15.54337215423584
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-large-large-with-small-res ... e predicates with a small result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      ?s dblp:publishedInJournalVolume ?o2 .
+    }
+  runtime_info:
+    client_time: 1.7799041271209717
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"2143"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      ?s dblp:signatureDblpName ?o3 .
+    }
+  runtime_info:
+    client_time: 36.04844093322754
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      ?c rdfs:subClassOf ?d .
+    }
+  runtime_info:
+    client_time: 32.241612672805786
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o0 .
+      ?s dblp:awardWebpage ?o1 .
+      ?s dblp:successorStream ?o2 .
+      ?s dblp:predeccessorStream ?o3 .
+      ?s rdfs:comment ?o4 .
+      ?s rdfs:domain ?o5 .
+      ?s rdfs:range ?o6 .
+      ?s rdfs:subPropertyOf ?o7 .
+      ?s owl:equivalentProperty ?o8 .
+      ?s rdfs:subClassOf ?o9 .
+      ?s owl:equivalentClass ?o10 .
+      ?s owl:inverseOf ?o11 .
+      ?s dblp:publishersAddress ?o12 .
+      ?s dblp:publishedInBookChapter ?o13 .
+      ?s terms:creator ?o14 .
+      ?s terms:abstract ?o15 .
+      ?s terms:title ?o16 .
+      ?s owl:priorVersion ?o17 .
+      ?s owl:versionInfo ?o18 .
+      ?s owl:versionIRI ?o19 .
+      ?s terms:modified ?o20 .
+      ?s terms:license ?o21 .
+      ?s terms:description ?o22 .
+    }
+  runtime_info:
+    client_time: 0.12201619148254395
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?v0 dblp:formerStreamTitle ?v1 .
+      ?v1 dblp:awardWebpage ?v2 .
+      ?v2 dblp:successorStream ?v3 .
+      ?v3 dblp:predeccessorStream ?v4 .
+      ?v4 rdfs:comment ?v5 .
+      ?v5 rdfs:domain ?v6 .
+      ?v6 rdfs:range ?v7 .
+      ?v7 rdfs:subPropertyOf ?v8 .
+      ?v8 owl:equivalentProperty ?v9 .
+      ?v9 rdfs:subClassOf ?v10 .
+      ?v10 owl:equivalentClass ?v11 .
+      ?v11 owl:inverseOf ?v12 .
+      ?v12 dblp:publishersAddress ?v13 .
+      ?v13 dblp:publishedInBookChapter ?v14 .
+      ?v14 terms:creator ?v15 .
+      ?v15 terms:abstract ?v16 .
+      ?v16 terms:title ?v17 .
+      ?v17 owl:priorVersion ?v18 .
+      ?v18 owl:versionInfo ?v19 .
+      ?v19 owl:versionIRI ?v20 .
+      ?v20 terms:modified ?v21 .
+      ?v21 terms:license ?v22 .
+      ?v22 terms:description ?v23 .
+    }
+  runtime_info:
+    client_time: 0.028734683990478516
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      OPTIONAL {
+        ?s rdf:type ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 0.4921274185180664
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s dblp:formerStreamTitle ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 22.406959056854248
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"113787960"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s dblp:hasSignature ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 38.90931034088135
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"150254678"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      OPTIONAL {
+        ?s dblp:createdBy ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 24.44902229309082
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      OPTIONAL {
+        ?s dblp:publishedInJournalVolume ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 2.3931756019592285
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3725467"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInJournalVolume ?o1 .
+      OPTIONAL {
+        ?s dblp:publishedAsPartOf ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 1.0415329933166504
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3803982"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      OPTIONAL {
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 56.62952399253845
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      OPTIONAL {
+        ?s rdf:type ?o2 .
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 40.32941913604736
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      OPTIONAL {
+        ?c rdfs:subClassOf ?d .
+      }
+    }
+  runtime_info:
+    client_time: 65.13349676132202
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      OPTIONAL {
+        ?b rdf:type ?c .
+        ?c rdfs:subClassOf ?d .
+      }
+    }
+  runtime_info:
+    client_time: 77.56117963790894
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      MINUS {
+        ?s rdf:type ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 0.031232357025146484
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s dblp:formerStreamTitle ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 25.20729970932007
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"113785964"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-large-large [MINUS JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s dblp:hasSignature ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 27.49718999862671
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"98363426"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      MINUS {
+        ?s dblp:createdBy ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 4.604695796966553
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      MINUS {
+        ?s dblp:publishedInJournalVolume ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 2.342829942703247
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3723324"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInJournalVolume ?o1 .
+      MINUS {
+        ?s dblp:publishedAsPartOf ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 1.5583791732788086
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3801839"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      MINUS {
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 13.707961320877075
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      MINUS {
+        ?s rdf:type ?o2 .
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 17.365133047103882
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      MINUS {
+        ?c rdfs:subClassOf ?d .
+      }
+    }
+  runtime_info:
+    client_time: 6.762475967407227
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      MINUS {
+        ?b rdf:type ?c .
+        ?c rdfs:subClassOf ?d .
+      }
+    }
+  runtime_info:
+    client_time: 10.433740139007568
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:formerStreamTitle ?o1 .
+      FILTER EXISTS {
+        ?s rdf:type ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 0.015449285507202148
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"998"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s dblp:formerStreamTitle ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 11.40503478050232
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1630"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-large-large [EXISTS JOIN of two large predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s dblp:hasSignature ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 17.902464628219604
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"15424168"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:hasSignature ?o1 .
+      FILTER EXISTS {
+        ?s dblp:createdBy ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 15.735403060913086
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedAsPartOf ?o1 .
+      FILTER EXISTS {
+        ?s dblp:publishedInJournalVolume ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 2.1919779777526855
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"2143"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInJournalVolume ?o1 .
+      FILTER EXISTS {
+        ?s dblp:publishedAsPartOf ?o2 .
+      }
+    }
+  runtime_info:
+    client_time: 0.7745072841644287
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"2143"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      ?s rdf:type ?o2 .
+      FILTER EXISTS {
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 36.675596475601196
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:signatureOrdinal ?o1 .
+      FILTER EXISTS {
+        ?s rdf:type ?o2 .
+        ?s dblp:signatureDblpName ?o3 .
+      }
+    }
+  runtime_info:
+    client_time: 21.28486943244934
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      ?b rdf:type ?c .
+      FILTER EXISTS {
+        ?c rdfs:subClassOf ?d .
+      }
+    }
+  runtime_info:
+    client_time: 23.857065200805664
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a dblp:signaturePublication ?b .
+      FILTER EXISTS {
+        ?b rdf:type ?c .
+        ?c rdfs:subClassOf ?d .
+      }
+    }
+  runtime_info:
+    client_time: 22.49029850959778
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: union-no-constraint [UNION of two large predicates, no constraint]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o .
+      }
+      UNION
+      {
+        ?s dblp:hasSignature ?o .
+      }
+    }
+  runtime_info:
+    client_time: 8.476535081863403
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"139733220"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: union-constraint-from-star [UNION ... cate known to have join partners]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s dblp:signatureOrdinal ?o1 .
+      }
+      UNION
+      {
+        ?s rdf:type ?o1 .
+      }
+      ?s dblp:signatureDblpName ?o2 .
+    }
+  runtime_info:
+    client_time: 42.84494066238403
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"77836878"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s dblp:publishedAsPartOf ?o1 .
+      }
+      UNION
+      {
+        ?s dblp:publishedInStream ?o1 .
+      }
+      ?s dblp:publishedInJournalVolume ?o2 .
+    }
+  runtime_info:
+    client_time: 4.455115556716919
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3833938"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s dblp:hasSignature ?o1 .
+      }
+      UNION
+      {
+        ?s rdf:type ?o1 .
+      }
+      ?s dblp:createdBy ?o2 .
+    }
+  runtime_info:
+    client_time: 45.9652841091156
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"178610994"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o .
+      }
+      UNION
+      {
+        ?s dblp:hasSignature ?o .
+      }
+      FILTER (?s = ?o)
+    }
+  runtime_info:
+    client_time: 180.00816130638123
+  headers: []
+  results: 'HTTP code: 408: '
+- query: multicolumn-join-small [Multicolumn JOIN small]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:subStream ?o .
+      ?s dblp:relatedStream ?o .
+    }
+  runtime_info:
+    client_time: 0.1409907341003418
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1198"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: multicolumn-join-large [Multicolumn JOIN large]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:createdBy ?o .
+      ?s dblp:authoredBy ?o .
+    }
+  runtime_info:
+    client_time: 32.23427963256836
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"25788228"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-count-object-high-multip ... or object with high multiplicity]
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject rdf:type ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 13.813639163970947
+  result_size: 10
+  headers:
+  - object
+  - count
+  results:
+  - - <https://dblp.org/rdf/schema#Signature>
+    - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#AuthorSignature>
+    - '"25788645"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/spar/datacite/Identifier>
+    - '"19927511"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/spar/datacite/ResourceIdentifier>
+    - '"14898511"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Publication>
+    - '"7770097"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/spar/datacite/PersonalIdentifier>
+    - '"4023629"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Creator>
+    - '"3742739"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Person>
+    - '"3717262"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Inproceedings>
+    - '"3652261"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Article>
+    - '"3039856"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject dblp:hasSignature ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 180.00695729255676
+  headers: []
+  results: 'HTTP code: 408: '
+- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:bibtexType ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 15.62674331665039
+  result_size: 8
+  headers:
+  - o1
+  - count
+  results:
+  - - <http://purl.org/net/nknouf/ns/bibtex#Article>
+    - '"12983449"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Inproceedings>
+    - '"12437024"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Proceedings>
+    - '"150245"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Phdthesis>
+    - '"142547"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Incollection>
+    - '"141870"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Misc>
+    - '"52923"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Book>
+    - '"37541"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/net/nknouf/ns/bibtex#Mastersthesis>
+    - '"27"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
+    WHERE {
+      ?s dblp:bibtexType ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
+  runtime_info:
+    client_time: 180.01073837280273
+  headers: []
+  results: 'HTTP code: 408: '
+- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
+  runtime_info:
+    client_time: 0.014477014541625977
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"7770097"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
+  runtime_info:
+    client_time: 0.023059606552124023
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
+  runtime_info:
+    client_time: 0.0042400360107421875
+  result_size: 1
+  headers:
+  - min
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
+  runtime_info:
+    client_time: 0.004464149475097656
+  result_size: 1
+  headers:
+  - max
+  results:
+  - - '"450"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+  sparql: |-
+    SELECT (AVG(?o) AS ?avg)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
+  runtime_info:
+    client_time: 0.011945962905883789
+  result_size: 1
+  headers:
+  - avg
+  results:
+  - - '"3.3391637195777607409534269649400773246460114976685619240017209566367060797310509765836900105622877037442389715340747998384061357277779157711930751958437584498623376259009379162190639318917125487622612690678121521520259013497514895888687103906167451963598395232388990768068918573345995551921681286604272765191991811685233787943702633313329293057731454317751760370559080536575026026058619345421299116343077827728534148286694490429141360783526898055455420955491289233583570449635313433024066494922778956298743760856524699756000472066178839208828409735425439347797073833183807100477638824843499379737473032833438244078548826353133043255444558800231194024990936406585400413920186581969311322625702098699668742874123707850751412755851053082091510569301773195366801727185645172769400433482361931903810209833931288116480399150744192768764662783489060689975942385275241737651408984984357338138764548241804445941923247547617487915530526838982833805034866360098207268197552746124018786380659083149155023418626562"^^<http://www.w3.org/2001/XMLSchema#decimal>'
+- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+    }
+  runtime_info:
+    client_time: 0.008577585220336914
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+    }
+  runtime_info:
+    client_time: 180.00710463523865
+  headers: []
+  results: 'HTTP code: 408: '
+- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+    }
+  runtime_info:
+    client_time: 180.0107340812683
+  headers: []
+  results: 'HTTP code: 408: '
+- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName ?o } GROUP BY ?s } }
+  runtime_info:
+    client_time: 180.0087206363678
+  headers: []
+  results: 'HTTP code: 408: '
+- query: distinct-count-object-high-multip ... or object with high multiplicity]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject rdf:type ?object .
+    }
+  runtime_info:
+    client_time: 0.023504972457885742
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"32"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject dblp:hasSignature ?object .
+    }
+  runtime_info:
+    client_time: 0.008802652359008789
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o1) AS ?count)
+    WHERE {
+      ?s dblp:bibtexType ?o1 .
+      ?s dblp:hasSignature ?o2 .
+    }
+  runtime_info:
+    client_time: 19.851766109466553
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"8"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-plus [Transitive path with plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:relatedStream+ ?o .
+    }
+  runtime_info:
+    client_time: 0.13741779327392578
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"300322"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      <https://dblp.org/streams/conf/damp> dblp:relatedStream+ ?o .
+    }
+  runtime_info:
+    client_time: 0.010251522064208984
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"582"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:publishedInStream/dblp:relatedStream+ ?o .
+    }
+  runtime_info:
+    client_time: 3.9375765323638916
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"135729769"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s dblp:subStream/dblp:relatedStream+ ?o .
+    }
+  runtime_info:
+    client_time: 0.13075685501098633
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"302786"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER CONTAINS(?o, "com")
+    }
+  runtime_info:
+    client_time: 180.0085425376892
+  headers: []
+  results: 'HTTP code: 408: '
+- query: regex-3-fixed [REGEX filter with fixed string of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "com")
+    }
+  runtime_info:
+    client_time: 180.00709629058838
+  headers: []
+  results: 'HTTP code: 408: '
+- query: regex-3 [REGEX filter with expression of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "c.m")
+    }
+  runtime_info:
+    client_time: 180.00694179534912
+  headers: []
+  results: 'HTTP code: 408: '
+- query: regex-prefix-1 [REGEX filter with prefix of length 1]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "^C")
+    }
+  runtime_info:
+    client_time: 180.01081824302673
+  headers: []
+  results: 'HTTP code: 408: '
+- query: regex-prefix-2 [REGEX filter with prefix of length 2]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Co")
+    }
+  runtime_info:
+    client_time: 180.00891280174255
+  headers: []
+  results: 'HTTP code: 408: '
+- query: regex-prefix-3 [REGEX filter with prefix of length 3]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Com")
+    }
+  runtime_info:
+    client_time: 180.0077188014984
+  headers: []
+  results: 'HTTP code: 408: '
+- query: strlen [String length for large string predicate]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 180.00933408737183
+  headers: []
+  results: 'HTTP code: 408: '
+- query: strbefore [STRBEFORE string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 180.0075340270996
+  headers: []
+  results: 'HTTP code: 408: '
+- query: strafter [STRAFTER string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 180.0111997127533
+  headers: []
+  results: 'HTTP code: 408: '
+- query: strstarts [STRSTARTS string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 180.01114106178284
+  headers: []
+  results: 'HTTP code: 408: '
+- query: strends [STRENDS string function]
+  sparql: |-
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  runtime_info:
+    client_time: 180.01379323005676
+  headers: []
+  results: 'HTTP code: 408: '
+- query: result-size-tiny [Export 10 tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 10
+  runtime_info:
+    client_time: 0.047060489654541016
+  result_size: 10
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Informal>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#Signature>
+- query: result-size-small [Export 1000 tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 1000
+  runtime_info:
+    client_time: 0.8704087734222412
+  result_size: 1000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Informal>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"r3ofvaf5b8w4t07sy942x1bwrpztun7v"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"r3ofvaf5b8w4t07sy942x1bwrpztun7v"'
+    - <http://purl.org/spar/datacite/ResourceIdentifier>
+  - - '"eyznq3v6s8tw4jquws1dq0g53dkdz7s0"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"eyznq3v6s8tw4jquws1dq0g53dkdz7s0"'
+    - <http://purl.org/spar/datacite/ResourceIdentifier>
+  - - '"7e2r5ls4z3hvwac21bdlcfzqkz6wm98g"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"7e2r5ls4z3hvwac21bdlcfzqkz6wm98g"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"h5juh4zmcrfsg1b1e8eh9hxqn10fibu0"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"h5juh4zmcrfsg1b1e8eh9hxqn10fibu0"'
+    - <http://purl.org/spar/datacite/PersonalIdentifier>
+  - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
+    - <https://dblp.org/rdf/schema#Inproceedings>
+- query: result-size-medium [Export 100K tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 100000
+  runtime_info:
+    client_time: 11.478681802749634
+  result_size: 100000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Informal>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"r3ofvaf5b8w4t07sy942x1bwrpztun7v"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"r3ofvaf5b8w4t07sy942x1bwrpztun7v"'
+    - <http://purl.org/spar/datacite/ResourceIdentifier>
+  - - '"eyznq3v6s8tw4jquws1dq0g53dkdz7s0"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"eyznq3v6s8tw4jquws1dq0g53dkdz7s0"'
+    - <http://purl.org/spar/datacite/ResourceIdentifier>
+  - - '"7e2r5ls4z3hvwac21bdlcfzqkz6wm98g"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"7e2r5ls4z3hvwac21bdlcfzqkz6wm98g"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"h5juh4zmcrfsg1b1e8eh9hxqn10fibu0"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"h5juh4zmcrfsg1b1e8eh9hxqn10fibu0"'
+    - <http://purl.org/spar/datacite/PersonalIdentifier>
+  - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
+    - <https://dblp.org/rdf/schema#Inproceedings>
+- query: result-size-large [Export 1M tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 1000000
+  runtime_info:
+    client_time: 69.68442440032959
+  result_size: 1000000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/journals/corr/abs-2103-16251>
+    - <https://dblp.org/rdf/schema#Informal>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"u6484cayeuwou2ftzq3vm735s7ozm45d"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"89ugzdqnbivlbjgu7rhi2mb2flwx0p85"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"08otpu8vj1unrtxtwsx0scnuqhaq43oa"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"r3ofvaf5b8w4t07sy942x1bwrpztun7v"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"r3ofvaf5b8w4t07sy942x1bwrpztun7v"'
+    - <http://purl.org/spar/datacite/ResourceIdentifier>
+  - - '"eyznq3v6s8tw4jquws1dq0g53dkdz7s0"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"eyznq3v6s8tw4jquws1dq0g53dkdz7s0"'
+    - <http://purl.org/spar/datacite/ResourceIdentifier>
+  - - '"7e2r5ls4z3hvwac21bdlcfzqkz6wm98g"'
+    - <https://dblp.org/rdf/schema#AuthorSignature>
+  - - '"7e2r5ls4z3hvwac21bdlcfzqkz6wm98g"'
+    - <https://dblp.org/rdf/schema#Signature>
+  - - '"h5juh4zmcrfsg1b1e8eh9hxqn10fibu0"'
+    - <http://purl.org/spar/datacite/Identifier>
+  - - '"h5juh4zmcrfsg1b1e8eh9hxqn10fibu0"'
+    - <http://purl.org/spar/datacite/PersonalIdentifier>
+  - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
+    - <https://dblp.org/rdf/schema#Publication>
+  - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
+    - <https://dblp.org/rdf/schema#Inproceedings>
+- query: result-size-xlarge [Export 10M tuples]
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s rdf:type ?o .
+    }
+    LIMIT 10000000
+  runtime_info:
+    client_time: 180.01655840873718
+  headers: []
+  results: 'HTTP code: 408: '
+- query: numeric-baseline [Baseline for numeric queries]
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+    }
+  runtime_info:
+    client_time: 0.0904073715209961
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-abs [ABS function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  runtime_info:
+    client_time: 0.004348039627075195
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-ceil [CEIL function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  runtime_info:
+    client_time: 0.004533290863037109
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-floor [FLOOR function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  runtime_info:
+    client_time: 0.0042874813079833984
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-round [ROUND function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  runtime_info:
+    client_time: 0.004472970962524414
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-add [Addition]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  runtime_info:
+    client_time: 0.005063533782958984
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-greater [Greater than]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  runtime_info:
+    client_time: 0.00495147705078125
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+      FILTER (?o >= 2)
+    }
+  runtime_info:
+    client_time: 5.4699866771698
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"6607384"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+      FILTER (?o >= 3)
+    }
+  runtime_info:
+    client_time: 0.18822145462036133
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"4784144"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:numberOfCreators ?o .
+      FILTER (?o >= 7)
+    }
+  runtime_info:
+    client_time: 0.022455692291259766
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"468421"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s rdf:type ?o .
+      FILTER (?s = ?o)
+    }
+  runtime_info:
+    client_time: 0.042714595794677734
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s rdf:type ?o .
+      FILTER (?s != ?o)
+    }
+  runtime_info:
+    client_time: 180.00850224494934
+  headers: []
+  results: 'HTTP code: 408: '
+- query: filter-language-en [FILTER on str ... dicate for only English literals]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s dblp:signatureDblpName ?o .
+      FILTER (lang(?o) = "en")
+    }
+  runtime_info:
+    client_time: 1.9554548263549805
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: date-year [YEAR function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
+  runtime_info:
+    client_time: 0.04620766639709473
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"15637633984"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: date-month [MONTH function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
+  runtime_info:
+    client_time: 0.004850864410400391
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: date-day [DAY function]
+  sparql: |-
+    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
+  runtime_info:
+    client_time: 0.00443577766418457
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: number-of-triples [Total number of triples]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 0.0049893856048583984
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"502361507"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-subjects [Total number of distinct subjects]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 0.003934144973754883
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"57397952"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-predicates [Total number of distinct predicates]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?p) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 0.004456043243408203
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"90"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-objects [Total number of distinct objects]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
+  runtime_info:
+    client_time: 0.004198789596557617
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"115203457"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-literals [Total number of literals]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isLiteral(?o)
+    }
+  runtime_info:
+    client_time: 40.184698820114136
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"146848983"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-blank-nodes [Total number of blank nodes]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isBlank(?s)
+    }
+  runtime_info:
+    client_time: 180.03271341323853
+  headers: []
+  results: 'HTTP code: 408: '
