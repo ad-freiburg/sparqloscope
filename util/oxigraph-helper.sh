@@ -37,4 +37,5 @@ for i in $(seq 1 $NUM_QUERIES); do
   stop_oxigraph
 done
 
-# TODO: join dblp.oxigraph-*.results.yaml files into one
+python3 oxigraph-merge.py > dblp.oxigraph.results.yaml
+
