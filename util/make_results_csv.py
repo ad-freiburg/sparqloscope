@@ -48,6 +48,8 @@ def load_results_yaml(filename: str) \
             qtime = None
         else:
             qtime = query_result["runtime_info"]["client_time"]
+        if name in query_results:
+            name += "-1"
         query_results[name] = qtime
     return dataset, engine, query_results
 
