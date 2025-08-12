@@ -1,0 +1,1144 @@
+timeout: 180
+queries:
+- query: join-2-small-large [JOIN of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:formerStreamTitle ?o1 .\n\
+    \  ?s rdf:type ?o2 .\n}"
+  runtime_info:
+    client_time: 0.2058582305908203
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-2-large-small [JOIN of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s dblp:formerStreamTitle\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 180.94579815864563
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-2-large-large [JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s dblp:hasSignature\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 180.9325864315033
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:hasSignature ?o1 .\n  ?s\
+    \ dblp:createdBy ?o2 .\n}"
+  runtime_info:
+    client_time: 180.84188508987427
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:hasSignature ?o1 .\n  ?s\
+    \ dblp:createdBy ?o2 .\n}"
+  runtime_info:
+    client_time: 180.8577184677124
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-2-large-large-with-small-res ... e predicates with a small result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedAsPartOf ?o1 .\n\
+    \  ?s dblp:publishedInJournalVolume ?o2 .\n}"
+  runtime_info:
+    client_time: 180.89619517326355
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  ?s rdf:type ?o2 .\n  ?s dblp:signatureDblpName ?o3 .\n}"
+  runtime_info:
+    client_time: 180.90269112586975
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  ?b rdf:type ?c .\n  ?c rdfs:subClassOf ?d .\n}"
+  runtime_info:
+    client_time: 180.88044810295105
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:formerStreamTitle ?o0 .\n\
+    \  ?s dblp:awardWebpage ?o1 .\n  ?s dblp:successorStream ?o2 .\n  ?s dblp:predeccessorStream\
+    \ ?o3 .\n  ?s rdfs:comment ?o4 .\n  ?s rdfs:domain ?o5 .\n  ?s rdfs:range ?o6\
+    \ .\n  ?s rdfs:subPropertyOf ?o7 .\n  ?s owl:equivalentProperty ?o8 .\n  ?s rdfs:subClassOf\
+    \ ?o9 .\n  ?s owl:equivalentClass ?o10 .\n  ?s owl:inverseOf ?o11 .\n  ?s dblp:publishersAddress\
+    \ ?o12 .\n  ?s dblp:publishedInBookChapter ?o13 .\n  ?s terms:creator ?o14 .\n\
+    \  ?s terms:abstract ?o15 .\n  ?s terms:title ?o16 .\n  ?s owl:priorVersion ?o17\
+    \ .\n  ?s owl:versionInfo ?o18 .\n  ?s owl:versionIRI ?o19 .\n  ?s terms:modified\
+    \ ?o20 .\n  ?s terms:license ?o21 .\n  ?s terms:description ?o22 .\n}"
+  runtime_info:
+    client_time: 0.25739192962646484
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?v0 dblp:formerStreamTitle ?v1\
+    \ .\n  ?v1 dblp:awardWebpage ?v2 .\n  ?v2 dblp:successorStream ?v3 .\n  ?v3 dblp:predeccessorStream\
+    \ ?v4 .\n  ?v4 rdfs:comment ?v5 .\n  ?v5 rdfs:domain ?v6 .\n  ?v6 rdfs:range ?v7\
+    \ .\n  ?v7 rdfs:subPropertyOf ?v8 .\n  ?v8 owl:equivalentProperty ?v9 .\n  ?v9\
+    \ rdfs:subClassOf ?v10 .\n  ?v10 owl:equivalentClass ?v11 .\n  ?v11 owl:inverseOf\
+    \ ?v12 .\n  ?v12 dblp:publishersAddress ?v13 .\n  ?v13 dblp:publishedInBookChapter\
+    \ ?v14 .\n  ?v14 terms:creator ?v15 .\n  ?v15 terms:abstract ?v16 .\n  ?v16 terms:title\
+    \ ?v17 .\n  ?v17 owl:priorVersion ?v18 .\n  ?v18 owl:versionInfo ?v19 .\n  ?v19\
+    \ owl:versionIRI ?v20 .\n  ?v20 terms:modified ?v21 .\n  ?v21 terms:license ?v22\
+    \ .\n  ?v22 terms:description ?v23 .\n}"
+  runtime_info:
+    client_time: 0.031734466552734375
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:formerStreamTitle ?o1 .\n\
+    \  OPTIONAL {\n    ?s rdf:type ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 0.23112082481384277
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  OPTIONAL {\n\
+    \    ?s dblp:formerStreamTitle ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.97999739646912
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  OPTIONAL {\n\
+    \    ?s dblp:hasSignature ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.93985509872437
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:hasSignature ?o1 .\n  OPTIONAL\
+    \ {\n    ?s dblp:createdBy ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.91758704185486
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedAsPartOf ?o1 .\n\
+    \  OPTIONAL {\n    ?s dblp:publishedInJournalVolume ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.89419031143188
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-2-large-large-with- ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedInJournalVolume\
+    \ ?o1 .\n  OPTIONAL {\n    ?s dblp:publishedAsPartOf ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.86031699180603
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  ?s rdf:type ?o2 .\n  OPTIONAL {\n    ?s dblp:signatureDblpName ?o3 .\n  }\n\
+    }"
+  runtime_info:
+    client_time: 180.9364311695099
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  OPTIONAL {\n    ?s rdf:type ?o2 .\n    ?s dblp:signatureDblpName ?o3 .\n  }\n\
+    }"
+  runtime_info:
+    client_time: 180.897522687912
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  ?b rdf:type ?c .\n  OPTIONAL {\n    ?c rdfs:subClassOf ?d .\n  }\n}"
+  runtime_info:
+    client_time: 180.91586422920227
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  OPTIONAL {\n    ?b rdf:type ?c .\n    ?c rdfs:subClassOf ?d .\n  }\n}"
+  runtime_info:
+    client_time: 180.89936900138855
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:formerStreamTitle ?o1 .\n\
+    \  MINUS {\n    ?s rdf:type ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 182.87223410606384
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  MINUS {\n\
+    \    ?s dblp:formerStreamTitle ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 44.4017653465271
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"204529732"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-large-large [MINUS JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  MINUS {\n\
+    \    ?s dblp:hasSignature ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 139.00569653511047
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"189107194"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:hasSignature ?o1 .\n  MINUS\
+    \ {\n    ?s dblp:createdBy ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 81.88267374038696
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedAsPartOf ?o1 .\n\
+    \  MINUS {\n    ?s dblp:publishedInJournalVolume ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 4.878291845321655
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3723324"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedInJournalVolume\
+    \ ?o1 .\n  MINUS {\n    ?s dblp:publishedAsPartOf ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 4.736279726028442
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"3801839"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  ?s rdf:type ?o2 .\n  MINUS {\n    ?s dblp:signatureDblpName ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 182.59913754463196
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  MINUS {\n    ?s rdf:type ?o2 .\n    ?s dblp:signatureDblpName ?o3 .\n  }\n}"
+  runtime_info:
+    client_time: 180.90930032730103
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  ?b rdf:type ?c .\n  MINUS {\n    ?c rdfs:subClassOf ?d .\n  }\n}"
+  runtime_info:
+    client_time: 180.89120435714722
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  MINUS {\n    ?b rdf:type ?c .\n    ?c rdfs:subClassOf ?d .\n  }\n}"
+  runtime_info:
+    client_time: 181.39187908172607
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:formerStreamTitle ?o1 .\n\
+    \  FILTER EXISTS {\n    ?s rdf:type ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 0.28875184059143066
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"998"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  FILTER EXISTS\
+    \ {\n    ?s dblp:formerStreamTitle ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.97386765480042
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-large-large [EXISTS JOIN of two large predicates]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  FILTER EXISTS\
+    \ {\n    ?s dblp:hasSignature ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.9297354221344
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:hasSignature ?o1 .\n  FILTER\
+    \ EXISTS {\n    ?s dblp:createdBy ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.90872931480408
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedAsPartOf ?o1 .\n\
+    \  FILTER EXISTS {\n    ?s dblp:publishedInJournalVolume ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.90658330917358
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedInJournalVolume\
+    \ ?o1 .\n  FILTER EXISTS {\n    ?s dblp:publishedAsPartOf ?o2 .\n  }\n}"
+  runtime_info:
+    client_time: 180.89004516601562
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  ?s rdf:type ?o2 .\n  FILTER EXISTS {\n    ?s dblp:signatureDblpName ?o3 .\n\
+    \  }\n}"
+  runtime_info:
+    client_time: 180.8561508655548
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:signatureOrdinal ?o1 .\n\
+    \  FILTER EXISTS {\n    ?s rdf:type ?o2 .\n    ?s dblp:signatureDblpName ?o3 .\n\
+    \  }\n}"
+  runtime_info:
+    client_time: 180.89242672920227
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  ?b rdf:type ?c .\n  FILTER EXISTS {\n    ?c rdfs:subClassOf ?d .\n  }\n\
+    }"
+  runtime_info:
+    client_time: 180.88896679878235
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a dblp:signaturePublication ?b\
+    \ .\n  FILTER EXISTS {\n    ?b rdf:type ?c .\n    ?c rdfs:subClassOf ?d .\n  }\n\
+    }"
+  runtime_info:
+    client_time: 180.90580296516418
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: union-no-constraint [UNION of two large predicates, no constraint]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s rdf:type ?o .\n  }\n\
+    \  UNION\n  {\n    ?s dblp:hasSignature ?o .\n  }\n}"
+  runtime_info:
+    client_time: 52.282344579696655
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"256422614"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: union-constraint-from-star [UNION ... cate known to have join partners]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s dblp:signatureOrdinal\
+    \ ?o1 .\n  }\n  UNION\n  {\n    ?s rdf:type ?o1 .\n  }\n  ?s dblp:signatureDblpName\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 180.91819953918457
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s dblp:publishedAsPartOf\
+    \ ?o1 .\n  }\n  UNION\n  {\n    ?s dblp:publishedInStream ?o1 .\n  }\n  ?s dblp:publishedInJournalVolume\
+    \ ?o2 .\n}"
+  runtime_info:
+    client_time: 180.8844118118286
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s dblp:hasSignature ?o1\
+    \ .\n  }\n  UNION\n  {\n    ?s rdf:type ?o1 .\n  }\n  ?s dblp:createdBy ?o2 .\n\
+    }"
+  runtime_info:
+    client_time: 180.90561866760254
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s rdf:type ?o .\n  }\n\
+    \  UNION\n  {\n    ?s dblp:hasSignature ?o .\n  }\n  FILTER (?s = ?o)\n}"
+  runtime_info:
+    client_time: 180.863844871521
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: multicolumn-join-small [Multicolumn JOIN small]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:subStream ?o .\n  ?s dblp:relatedStream\
+    \ ?o .\n}"
+  runtime_info:
+    client_time: 0.2456676959991455
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"1198"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: multicolumn-join-large [Multicolumn JOIN large]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:createdBy ?o .\n  ?s dblp:authoredBy\
+    \ ?o .\n}"
+  runtime_info:
+    client_time: 180.9555435180664
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: group-by-count-object-high-multip ... or object with high multiplicity]
+  sparql: "SELECT ?object (COUNT(?subject) AS ?count)\nWHERE {\n  ?subject rdf:type\
+    \ ?object .\n}\nGROUP BY ?object\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 43.57243275642395
+  result_size: 10
+  headers:
+  - object
+  - count
+  results:
+  - - <https://dblp.org/rdf/schema#Signature>
+    - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#AuthorSignature>
+    - '"51577290"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/spar/datacite/Identifier>
+    - '"39855022"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/spar/datacite/ResourceIdentifier>
+    - '"29797022"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <http://purl.org/spar/datacite/PersonalIdentifier>
+    - '"8047258"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Publication>
+    - '"7770097"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Creator>
+    - '"3742739"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Person>
+    - '"3717262"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Inproceedings>
+    - '"3652261"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - <https://dblp.org/rdf/schema#Article>
+    - '"3039856"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+  sparql: "SELECT ?object (COUNT(?subject) AS ?count)\nWHERE {\n  ?subject dblp:hasSignature\
+    \ ?object .\n}\nGROUP BY ?object\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 87.78741765022278
+  result_size: 10
+  headers:
+  - object
+  - count
+  results:
+  - - '"e554fdfd552ea14dc9c33093bc47abdb"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"ed29f12408fc44da4c81d98b9ba350c8"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"d6652ff096c0ed7dc167aa5a0ba27c33"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"aa6b1ded7cd81ebf5cd25f3f5e4fe11f"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"b321bb9a5bf6f0eca5658211d519f063"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"eeb1dc4bf72a03946671800276f1a3e4"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"fb18fc885399782a433e46bf853cfdc5"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"eab3092f2a829b03cfa6e5ddea8533e9"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"c2287fbdb93c41758b07306e3aa3a294"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  - - '"dd47d156254828c152f9de286a6ac57"'
+    - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: "SELECT ?o1 (COUNT(?s) AS ?count)\nWHERE {\n  ?s dblp:bibtexType ?o1 .\n\
+    \  ?s dblp:hasSignature ?o2 .\n}\nGROUP BY ?o1\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 180.88353872299194
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+  sparql: "SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s)\
+    \ AS ?sample)\nWHERE {\n  ?s dblp:bibtexType ?o1 .\n  ?s dblp:hasSignature ?o2\
+    \ .\n}\nGROUP BY ?o1\nORDER BY DESC(?count)\nLIMIT 10"
+  runtime_info:
+    client_time: 180.89582204818726
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n\
+    }"
+  runtime_info:
+    client_time: 2.126983642578125
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"7770097"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+  sparql: "SELECT (sum(?o) AS ?sum)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n}"
+  runtime_info:
+    client_time: 2.1071934700012207
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+  sparql: "SELECT (MIN(?o) AS ?min)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n}"
+  runtime_info:
+    client_time: 2.060654878616333
+  result_size: 1
+  headers:
+  - min
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+  sparql: "SELECT (MAX(?o) AS ?max)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n}"
+  runtime_info:
+    client_time: 2.2304913997650146
+  result_size: 1
+  headers:
+  - max
+  results:
+  - - '"450"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+  sparql: "SELECT (AVG(?o) AS ?avg)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n}"
+  runtime_info:
+    client_time: 2.2030699253082275
+  result_size: 1
+  headers:
+  - avg
+  results:
+  - - '"3.33916371957776074"^^<http://www.w3.org/2001/XMLSchema#decimal>'
+- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s dblp:signatureDblpName ?o .\n\
+    }"
+  runtime_info:
+    client_time: 10.043659925460815
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+  sparql: "SELECT (MIN(?o) AS ?min)\nWHERE {\n  ?s dblp:signatureDblpName ?o .\n}"
+  runtime_info:
+    client_time: 78.31913352012634
+  result_size: 1
+  headers:
+  - min
+  results:
+  - - '""Johann" Sebastian Rudolph"'
+- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+  sparql: "SELECT (MAX(?o) AS ?max)\nWHERE {\n  ?s dblp:signatureDblpName ?o .\n}"
+  runtime_info:
+    client_time: 74.97515630722046
+  result_size: 1
+  headers:
+  - max
+  results:
+  - - "\"\xFEorger\xF0ur P\xE1lsd\xF3ttir\""
+- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS
+    ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName
+    ?o } GROUP BY ?s } }'
+  runtime_info:
+    client_time: 182.09072875976562
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: distinct-count-object-high-multip ... or object with high multiplicity]
+  sparql: "SELECT (COUNT(DISTINCT ?object) AS ?count)\nWHERE {\n  ?subject rdf:type\
+    \ ?object .\n}"
+  runtime_info:
+    client_time: 43.563671827316284
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"32"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+  sparql: "SELECT (COUNT(DISTINCT ?object) AS ?count)\nWHERE {\n  ?subject dblp:hasSignature\
+    \ ?object .\n}"
+  runtime_info:
+    client_time: 30.61078119277954
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+  sparql: "SELECT (COUNT(DISTINCT ?o1) AS ?count)\nWHERE {\n  ?s dblp:bibtexType ?o1\
+    \ .\n  ?s dblp:hasSignature ?o2 .\n}"
+  runtime_info:
+    client_time: 180.90320229530334
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: transitive-path-plus [Transitive path with plus]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:relatedStream+ ?o .\n}"
+  runtime_info:
+    client_time: 1.4279930591583252
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"300322"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  <https://dblp.org/streams/conf/damp>\
+    \ dblp:relatedStream+ ?o .\n}"
+  runtime_info:
+    client_time: 0.2931387424468994
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"582"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:publishedInStream/dblp:relatedStream+\
+    \ ?o .\n}"
+  runtime_info:
+    client_time: 180.93187880516052
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s dblp:subStream/dblp:relatedStream+\
+    \ ?o .\n}"
+  runtime_info:
+    client_time: 1.3810012340545654
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"302786"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER CONTAINS(?o,\
+    \ \"com\")\n}"
+  runtime_info:
+    client_time: 70.89731192588806
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"465862"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-3-fixed [REGEX filter with fixed string of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
+    \ \"com\")\n}"
+  runtime_info:
+    client_time: 70.26055645942688
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"465862"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-3 [REGEX filter with expression of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
+    \ \"c.m\")\n}"
+  runtime_info:
+    client_time: 83.01074290275574
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"727657"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-prefix-1 [REGEX filter with prefix of length 1]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
+    \ \"^C\")\n}"
+  runtime_info:
+    client_time: 73.95271468162537
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"560014"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-prefix-2 [REGEX filter with prefix of length 2]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?object .\n  FILTER\
+    \ regex(?object, \"^Co\")\n}"
+  runtime_info:
+    client_time: 76.58198523521423
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"36428"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: regex-prefix-3 [REGEX filter with prefix of length 3]
+  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?object .\n  FILTER\
+    \ regex(?object, \"^Com\")\n}"
+  runtime_info:
+    client_time: 72.27933812141418
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"987"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: strlen [String length for large string predicate]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o))
+    AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 77.40909600257874
+  result_size: 1
+  headers:
+  - checksum
+  results:
+  - - '"914706385"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: strbefore [STRBEFORE string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o,
+    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 76.04227709770203
+  result_size: 1
+  headers:
+  - checksum
+  results:
+  - - '"68444965"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: strafter [STRAFTER string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o,
+    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 74.35995101928711
+  result_size: 1
+  headers:
+  - checksum
+  results:
+  - - '"825474569"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: strstarts [STRSTARTS string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 71.73066449165344
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"40"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: strends [STRENDS string function]
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
+  runtime_info:
+    client_time: 77.36518120765686
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"379856"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: result-size-tiny [Export 10 tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s rdf:type ?o .\n}\nLIMIT 10"
+  runtime_info:
+    client_time: 0.023160696029663086
+  result_size: 10
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/pid/226/9977>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/276/4879>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/128/3491>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/267/9750>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/120/2782>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/9597>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/268/0873>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/75/1654>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/387/2468>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/306/4084>
+    - <https://dblp.org/rdf/schema#Creator>
+- query: result-size-small [Export 1000 tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s rdf:type ?o .\n}\nLIMIT 1000"
+  runtime_info:
+    client_time: 0.03363537788391113
+  result_size: 1000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/pid/226/9977>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/276/4879>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/128/3491>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/267/9750>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/120/2782>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/9597>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/268/0873>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/75/1654>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/387/2468>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/306/4084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/296/2916>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/328/2585>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/9370>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/344/6984>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/7771>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/70/3014>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/207/0084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/180/7316>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/378/2706>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/3775>
+    - <https://dblp.org/rdf/schema#Creator>
+- query: result-size-medium [Export 100K tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s rdf:type ?o .\n}\nLIMIT 100000"
+  runtime_info:
+    client_time: 1.7802844047546387
+  result_size: 100000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/pid/226/9977>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/276/4879>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/128/3491>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/267/9750>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/120/2782>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/9597>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/268/0873>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/75/1654>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/387/2468>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/306/4084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/296/2916>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/328/2585>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/9370>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/344/6984>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/7771>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/70/3014>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/207/0084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/180/7316>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/378/2706>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/3775>
+    - <https://dblp.org/rdf/schema#Creator>
+- query: result-size-large [Export 1M tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s rdf:type ?o .\n}\nLIMIT 1000000"
+  runtime_info:
+    client_time: 18.485604286193848
+  result_size: 1000000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/pid/226/9977>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/276/4879>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/128/3491>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/267/9750>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/120/2782>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/9597>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/268/0873>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/75/1654>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/387/2468>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/306/4084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/296/2916>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/328/2585>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/9370>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/344/6984>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/7771>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/70/3014>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/207/0084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/180/7316>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/378/2706>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/3775>
+    - <https://dblp.org/rdf/schema#Creator>
+- query: result-size-xlarge [Export 10M tuples]
+  sparql: "SELECT ?s ?o\nWHERE {\n  ?s rdf:type ?o .\n}\nLIMIT 10000000"
+  runtime_info:
+    client_time: 80.20917177200317
+  result_size: 10000000
+  headers:
+  - s
+  - o
+  results:
+  - - <https://dblp.org/pid/226/9977>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/276/4879>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/128/3491>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/267/9750>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/120/2782>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/9597>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/268/0873>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/75/1654>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/387/2468>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/306/4084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/296/2916>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/328/2585>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/9370>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/344/6984>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/283/7771>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/70/3014>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/207/0084>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/180/7316>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/378/2706>
+    - <https://dblp.org/rdf/schema#Creator>
+  - - <https://dblp.org/pid/399/3775>
+    - <https://dblp.org/rdf/schema#Creator>
+- query: numeric-baseline [Baseline for numeric queries]
+  sparql: "SELECT (sum(?o) AS ?sum)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n}"
+  runtime_info:
+    client_time: 2.2173094749450684
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-abs [ABS function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
+  runtime_info:
+    client_time: 2.5766592025756836
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-ceil [CEIL function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
+  runtime_info:
+    client_time: 2.310551643371582
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-floor [FLOOR function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
+  runtime_info:
+    client_time: 2.183485507965088
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-round [ROUND function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
+  runtime_info:
+    client_time: 2.442016363143921
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-add [Addition]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
+  runtime_info:
+    client_time: 2.2430641651153564
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-greater [Greater than]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
+  runtime_info:
+    client_time: 2.148308753967285
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n\
+    \  FILTER (?o >= 2)\n}"
+  runtime_info:
+    client_time: 2.2436716556549072
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"6607384"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n\
+    \  FILTER (?o >= 3)\n}"
+  runtime_info:
+    client_time: 2.240891218185425
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"4784144"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s dblp:numberOfCreators ?o .\n\
+    \  FILTER (?o >= 7)\n}"
+  runtime_info:
+    client_time: 2.3489952087402344
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"468421"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s rdf:type ?o .\n  FILTER (?s\
+    \ = ?o)\n}"
+  runtime_info:
+    client_time: 180.9226942062378
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s rdf:type ?o .\n  FILTER (?s\
+    \ != ?o)\n}"
+  runtime_info:
+    client_time: 180.87918329238892
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: filter-language-en [FILTER on str ... dicate for only English literals]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s dblp:signatureDblpName ?o .\n\
+    \  FILTER (lang(?o) = \"en\")\n}"
+  runtime_info:
+    client_time: 82.12544345855713
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: date-year [YEAR function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum)
+    WHERE { ?s dblp:yearOfPublication ?o }'
+  runtime_info:
+    client_time: 2.4888384342193604
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - - '"15637633984"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: date-month [MONTH function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum)
+    WHERE { ?s dblp:yearOfPublication ?o }'
+  runtime_info:
+    client_time: 2.0217783451080322
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: date-day [DAY function]
+  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum)
+    WHERE { ?s dblp:yearOfPublication ?o }'
+  runtime_info:
+    client_time: 2.0080695152282715
+  result_size: 1
+  headers:
+  - sum
+  results:
+  - []
+- query: number-of-triples [Total number of triples]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 154.08483242988586
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"788855835"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-subjects [Total number of distinct subjects]
+  sparql: "SELECT (COUNT(DISTINCT ?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 181.2827491760254
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: number-of-predicates [Total number of distinct predicates]
+  sparql: "SELECT (COUNT(DISTINCT ?p) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 160.9936740398407
+  result_size: 1
+  headers:
+  - count
+  results:
+  - - '"90"^^<http://www.w3.org/2001/XMLSchema#integer>'
+- query: number-of-objects [Total number of distinct objects]
+  sparql: "SELECT (COUNT(DISTINCT ?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  runtime_info:
+    client_time: 181.69721007347107
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: number-of-literals [Total number of literals]
+  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n  FILTER isLiteral(?o)\n\
+    }"
+  runtime_info:
+    client_time: 180.8959972858429
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+- query: number-of-blank-nodes [Total number of blank nodes]
+  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n  FILTER isBlank(?s)\n\
+    }"
+  runtime_info:
+    client_time: 180.91146063804626
+  headers: []
+  results: 'Exception: curl command failed with exit code 52, stderr is empty'
+
