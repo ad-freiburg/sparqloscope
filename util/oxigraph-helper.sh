@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Helper script for benchmarking the Oxigraph SPARQL engine
+# Since Oxigraph does not support query timeouts
+# (https://github.com/oxigraph/oxigraph/issues/1336)
+# we need to start the engine for each query individually,
+# run the query and kill the engine if it exceeds the timeout.
+
 DATASET_DIR=/local/data-ssd/sparql-benchmark/oxigraph/dblp
 BENCHMARK_FILE=/local/data-ssd/sparql-benchmark/benchmark-generator/dblp.benchmark.tsv
 OXIGRAPH_PATH=/local/data-ssd/sparql-benchmark/oxigraph/code/oxigraph/target/release/oxigraph

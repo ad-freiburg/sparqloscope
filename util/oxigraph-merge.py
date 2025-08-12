@@ -1,3 +1,4 @@
+# Script to merge the individual result yamls from `oxigraph-helper.sh`.
 import yaml
 y = {
     "timeout": 180,
