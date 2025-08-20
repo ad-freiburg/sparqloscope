@@ -32,7 +32,7 @@ queries:
   - count
   results:
   - - '"30668612493"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+- query: join-2-largest-result [JOIN of two predicates with the largest possible result]
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:name ?o1 . ?s rdfs:label ?o2 }'
@@ -43,7 +43,8 @@ queries:
   - count
   results:
   - - '"65099859287"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+- query: join-2-large-large-with-large-result [JOIN of two large predicates with a
+    reasonably large result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:description ?o1 . ?s wdt:P2093 ?o2 }'
@@ -54,7 +55,8 @@ queries:
   - count
   results:
   - - '"6092272179"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large-with-small-res ... e predicates with a small result]
+- query: join-2-large-large-with-small-result [JOIN of two large predicates with a
+    small result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . ?s wdt:P478 ?o2 }'
   runtime_info:
@@ -64,7 +66,8 @@ queries:
   - count
   results:
   - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+- query: join-3-star-largest-sum-of-join-sizes [JOIN star of three large predicates
+    with the largest sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
@@ -76,7 +79,8 @@ queries:
   - count
   results:
   - - '"3345167144"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+- query: join-3-chain-largest-sum-of-join-sizes [JOIN chain of three large predicates
+    with the largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . ?b wdt:P31 ?c . ?c schema:description ?d }'
@@ -87,7 +91,7 @@ queries:
   - count
   results:
   - - '"16176593578"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+- query: join-xlarge-star-on-small-predicates [JOIN star of many small predicates]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s wdtn:P8024 ?o0 . ?s wdt:P8024 ?o1 . ?s wdt:P10837 ?o2 . ?s wdt:P5626 ?o3 .
@@ -104,7 +108,7 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+- query: join-xlarge-chain-on-small-predicates [JOIN chain of many small predicates]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?v0 wdtn:P8024 ?v1 . ?v1 wdt:P8024 ?v2 . ?v2 wdt:P10837 ?v3 . ?v3 wdt:P5626 ?v4
@@ -121,7 +125,7 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+- query: optional-join-small-large [OPTIONAL JOIN of a small and a large predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s wdtn:P8024 ?o1 OPTIONAL { ?s schema:description ?o2 } }'
@@ -132,7 +136,7 @@ queries:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+- query: optional-join-large-small [OPTIONAL JOIN of a large and a small predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX wdtn: <http://www.wikidata.org/prop/direct-normalized/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:description ?o1 OPTIONAL { ?s wdtn:P8024 ?o2 } }'
@@ -154,7 +158,8 @@ queries:
     (sec) exceeds the limit of 400 (sec). SPARQL query: PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:description ?o1 OPTIONAL { ?s schema:name ?o2 } }'
-- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+- query: optional-join-2-large-large-with-large-result [OPTIONAL JOIN of two large
+    predicates with a reasonably large join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:description ?o1 . OPTIONAL { ?s wdt:P2093 ?o2 } }'
@@ -166,7 +171,8 @@ queries:
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s schema:description ?o1 . OPTIONAL { ?s
     wdt:P2093 ?o2 } }'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
+- query: optional-join-2-large-large-with-small-join-result-1 [OPTIONAL JOIN of two
+    large predicates with a small join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . OPTIONAL { ?s wdt:P478 ?o2
     } }'
@@ -177,7 +183,8 @@ queries:
   - count
   results:
   - - '"33959393"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
+- query: optional-join-2-large-large-with-small-join-result-2 [OPTIONAL JOIN of two
+    large predicates with a small join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . OPTIONAL { ?s wdt:P50 ?o2
     } }'
@@ -188,7 +195,8 @@ queries:
   - count
   results:
   - - '"58200974"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+- query: optional-join-3-star-1 [OPTIONAL JOIN star of three large predicates with
+    the largest sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
@@ -201,7 +209,8 @@ queries:
     PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s rdf:type ?o1 . ?s schema:description ?o2 . OPTIONAL { ?s wdt:P31 ?o3 } }'
-- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+- query: optional-join-3-star-2 [OPTIONAL JOIN star of three large predicates with
+    the largest sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . OPTIONAL { ?s schema:description
@@ -213,7 +222,8 @@ queries:
   - count
   results:
   - - '"3473069123"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+- query: optional-join-3-chain-1 [OPTIONAL JOIN chain of three large predicates with
+    the largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . ?b wdt:P31 ?c . OPTIONAL { ?c schema:description ?d } }'
@@ -224,7 +234,8 @@ queries:
   - count
   results:
   - - '"16176594500"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+- query: optional-join-3-chain-2 [OPTIONAL JOIN chain of three large predicates with
+    the largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . OPTIONAL { ?b wdt:P31 ?c . ?c schema:description ?d } }'
@@ -268,7 +279,8 @@ queries:
   - count
   results:
   - - '"4708411"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+- query: minus-join-2-large-large-with-large-result [MINUS JOIN of two large predicates
+    with a reasonably large join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:description ?o1 . MINUS { ?s wdt:P2093 ?o2 } }'
@@ -279,7 +291,8 @@ queries:
   - count
   results:
   - - '"1587111791"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+- query: minus-join-2-large-large-with-small-join-result-1 [MINUS JOIN of two large
+    predicates with a small join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . MINUS { ?s wdt:P478 ?o2 }
     }'
@@ -290,7 +303,8 @@ queries:
   - count
   results:
   - - '"4209248"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+- query: minus-join-2-large-large-with-small-join-result-2 [MINUS JOIN of two large
+    predicates with a small join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . MINUS { ?s wdt:P50 ?o2 }
     }'
@@ -301,7 +315,8 @@ queries:
   - count
   results:
   - - '"28450829"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+- query: minus-join-3-star-1 [MINUS JOIN star of three large predicates with the largest
+    sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
@@ -314,7 +329,8 @@ queries:
     PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s rdf:type ?o1 . ?s schema:description ?o2 . MINUS { ?s wdt:P31 ?o3 } }'
-- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+- query: minus-join-3-star-2 [MINUS JOIN star of three large predicates with the largest
+    sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . MINUS { ?s schema:description
@@ -326,7 +342,8 @@ queries:
   - count
   results:
   - - '"127901979"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+- query: minus-join-3-chain-1 [MINUS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . ?b wdt:P31 ?c . MINUS { ?c schema:description ?d } }'
@@ -337,7 +354,8 @@ queries:
   - count
   results:
   - - '"922"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+- query: minus-join-3-chain-2 [MINUS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . MINUS { ?b wdt:P31 ?c . ?c schema:description ?d } }'
@@ -381,7 +399,8 @@ queries:
   - count
   results:
   - - '"3268678416"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+- query: exists-join-2-large-large-with-large-result [EXISTS JOIN of two large predicates
+    with a reasonably large join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s schema:description ?o1 . FILTER EXISTS { ?s wdt:P2093 ?o2 } }'
@@ -392,7 +411,8 @@ queries:
   - count
   results:
   - - '"1686275036"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+- query: exists-join-2-large-large-with-small-join-result-1 [EXISTS JOIN of two large
+    predicates with a small join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P50 ?o1 . FILTER EXISTS { ?s wdt:P478
     ?o2 } }'
@@ -403,7 +423,8 @@ queries:
   - count
   results:
   - - '"29748245"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+- query: exists-join-2-large-large-with-small-join-result-2 [EXISTS JOIN of two large
+    predicates with a small join result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s wdt:P478 ?o1 . FILTER EXISTS { ?s wdt:P50
     ?o2 } }'
@@ -414,7 +435,8 @@ queries:
   - count
   results:
   - - '"11561944"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+- query: exists-join-3-star-1 [EXISTS JOIN star of three large predicates with the
+    largest sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . ?s schema:description ?o2
@@ -428,7 +450,8 @@ queries:
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?s rdf:type ?o1 . ?s schema:description ?o2 . FILTER EXISTS { ?s wdt:P31 ?o3 }
     }'
-- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+- query: exists-join-3-star-2 [EXISTS JOIN star of three large predicates with the
+    largest sum of join sizes]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { ?s rdf:type ?o1 . FILTER EXISTS { ?s schema:description
@@ -440,7 +463,8 @@ queries:
   - count
   results:
   - - '"108029262"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+- query: exists-join-3-chain-1 [EXISTS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . ?b wdt:P31 ?c . FILTER EXISTS { ?c schema:description ?d } }'
@@ -451,7 +475,8 @@ queries:
   - count
   results:
   - - '"315089523"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+- query: exists-join-3-chain-2 [EXISTS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     ?a wdt:P2860 ?b . FILTER EXISTS { ?b wdt:P31 ?c . ?c schema:description ?d } }'
@@ -473,7 +498,8 @@ queries:
   - count
   results:
   - - '"3989891752"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-from-star [UNION ... cate known to have join partners]
+- query: union-constraint-from-star [UNION of two large predicates, constrained by
+    a large predicate known to have join partners]
   sparql: 'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { { ?s rdf:type ?o1 } UNION { ?s schema:description
@@ -485,7 +511,8 @@ queries:
   - count
   results:
   - - '"3461507606"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+- query: union-constraint-small-join [UNION of two large predicates, constrained by
+    a join with a small result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT (COUNT(*) AS ?count)
     WHERE { { ?s wdt:P50 ?o1 } UNION { ?s skos:prefLabel ?o1 } ?s wdt:P478 ?o2 }'
@@ -496,7 +523,8 @@ queries:
   - count
   results:
   - - '"111906031"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+- query: union-constraint-large-join [UNION of two large predicates, constrained by
+    a join with a large result]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) WHERE {
     { ?s schema:description ?o1 } UNION { ?s schema:name ?o1 } ?s wdt:P2093 ?o2 }'
@@ -507,7 +535,8 @@ queries:
   - count
   results:
   - - '"6396603056"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+- query: union-constraint-filter-restrictive [UNION of two large predicates, constraint
+    by restrictive FILTER]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) WHERE { { ?s schema:description ?o } UNION { ?s schema:name
     ?o } FILTER (?s = ?o) }'
@@ -539,7 +568,8 @@ queries:
   - count
   results:
   - - '"716504925"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-high-multip ... or object with high multiplicity]
+- query: group-by-count-object-high-multiplicity [GROUP BY with COUNT, for object
+    with high multiplicity]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT ?object (COUNT(?subject) AS ?count) { ?subject wdt:P2548 ?object } GROUP
     BY ?object ORDER BY DESC(?count) LIMIT 10'
@@ -556,7 +586,8 @@ queries:
     - '"527806"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q41329>
     - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+- query: group-by-count-object-low-multiplicity [GROUP BY with COUNT, for object with
+    low multiplicity]
   sparql: 'PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     SELECT ?object (COUNT(?subject) AS ?count) { ?subject skos:prefLabel ?object }
     GROUP BY ?object ORDER BY DESC(?count) LIMIT 10'
@@ -567,7 +598,8 @@ queries:
     query: PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     SELECT ?object (COUNT(?subject) AS ?count) { ?subject skos:prefLabel ?object }
     GROUP BY ?object ORDER BY DESC(?count) LIMIT 10'
-- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+- query: group-by-count-object-wrong-sort-order [GROUP BY with COUNT, for object but
+    not sorted by object]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT ?o1 (COUNT(?s) AS ?count) { ?s
     wdt:P13046 ?o1 . ?s schema:description ?o2 } GROUP BY ?o1 ORDER BY DESC(?count)
@@ -599,7 +631,7 @@ queries:
     - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q131359749>
     - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+- query: group-by-complex-aggregate [GROUP BY with COUNT and MIN and MAX and SAMPLE]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s)
     AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample) { ?s wdt:P13046 ?o1 . ?s schema:description
@@ -664,7 +696,8 @@ queries:
     - <http://www.wikidata.org/entity/Q108799700>
     - <http://www.wikidata.org/entity/Q52937709>
     - <http://www.wikidata.org/entity/Q36152811>
-- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+- query: group-by-implicit-numeric-baseline [Implicit GROUP BY with COUNT on numeric
+    predicate as baseline]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?o) AS ?count) { ?s schema:version ?o }'
   runtime_info:
@@ -674,7 +707,7 @@ queries:
   - count
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+- query: group-by-implicit-numeric-sum [Implicit GROUP BY with SUM on numeric predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(?o) AS ?sum) { ?s schema:version ?o }'
   runtime_info:
@@ -684,7 +717,7 @@ queries:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+- query: group-by-implicit-numeric-min [Implicit GROUP BY with MIN on numeric predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (MIN(?o) AS ?min) { ?s schema:version ?o }'
   runtime_info:
@@ -694,7 +727,7 @@ queries:
   - min
   results:
   - - '"984175"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+- query: group-by-implicit-numeric-max [Implicit GROUP BY with MAX on numeric predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (MAX(?o) AS ?max) { ?s schema:version ?o }'
   runtime_info:
@@ -704,7 +737,7 @@ queries:
   - max
   results:
   - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+- query: group-by-implicit-numeric-avg [Implicit GROUP BY with AVG on numeric predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (AVG(?o) AS ?avg) { ?s schema:version ?o }'
   runtime_info:
@@ -714,7 +747,8 @@ queries:
   - avg
   results:
   - - '"2005535237.021964414488684"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+- query: group-by-implicit-string-baseline [Implicit GROUP BY with COUNT on string
+    predicate as baseline]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?o) AS ?count) { ?s schema:description ?o }'
   runtime_info:
@@ -724,7 +758,7 @@ queries:
   - count
   results:
   - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+- query: group-by-implicit-string-min [Implicit GROUP BY with MIN on string predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (MIN(?o) AS ?min) { ?s schema:description ?o }'
   runtime_info:
@@ -734,7 +768,7 @@ queries:
   - min
   results:
   - []
-- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+- query: group-by-implicit-string-max [Implicit GROUP BY with MAX on string predicate]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (MAX(?o) AS ?max) { ?s schema:description ?o }'
   runtime_info:
@@ -744,7 +778,8 @@ queries:
   - max
   results:
   - - '"BullSequana XH2000, AMD EPYC 7763 64C 2.45GHz, Atos BXI V2"@ru'
-- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+- query: group-by-string-groupconcat [GROUP BY with GROUP_CONCAT on string predicate
+    with high subject multiplicity]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
     AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
@@ -756,7 +791,8 @@ queries:
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?cat)) AS ?sum) {
     { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s schema:description ?o
     } GROUP BY ?s } }'
-- query: distinct-count-object-high-multip ... or object with high multiplicity]
+- query: distinct-count-object-high-multiplicity [COUNT DISTINCT, for object with
+    high multiplicity]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject wdt:P2548 ?object }'
   runtime_info:
@@ -766,7 +802,8 @@ queries:
   - count
   results:
   - - '"3"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+- query: distinct-count-object-low-multiplicity [COUNT DISTINCT, for object with low
+    multiplicity]
   sparql: 'PREFIX p: <http://www.wikidata.org/prop/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     SELECT (COUNT(DISTINCT ?object) AS ?count) { ?subject skos:prefLabel ?object }'
   runtime_info:
@@ -774,7 +811,8 @@ queries:
   headers: []
   results: 'HTTP code: 500: Virtuoso S1TAT Error Query did not complete due to ANYTIME
     timeout. '
-- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+- query: distinct-count-object-wrong-sort-order [COUNT DISTINCT, for object but not
+    sorted by object]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX schema: <http://schema.org/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(DISTINCT ?o1) AS ?count)
     { ?s wdt:P13046 ?o1 . ?s schema:description ?o2 }'
@@ -795,7 +833,8 @@ queries:
     SPARQL query: define sql:big-data-const 0 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { ?s wdt:P2293+
     ?o }'
-- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+- query: transitive-path-plus-fixed-subject [Transitive path with plus and a fixed
+    subject]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { wd:Q81867
     wdt:P2293+ ?o }'
@@ -808,7 +847,8 @@ queries:
     0 PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { wd:Q81867
     wdt:P2293+ ?o }'
-- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+- query: transitive-path-large-join-and-plus [Transitive path with a large join and
+    plus]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) { ?s wdt:P921/wdt:P2293+ ?o }'
   runtime_info:
@@ -818,7 +858,8 @@ queries:
     (sec) exceeds the limit of 400 (sec). SPARQL query: PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (COUNT(*) AS ?count) { ?s wdt:P921/wdt:P2293+
     ?o }'
-- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+- query: transitive-path-small-join-and-plus [Transitive path with a small join and
+    plus]
   sparql: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(*) AS ?count) { ?s wdt:P1911/wdt:P2293+ ?o }'
   runtime_info:
@@ -1244,7 +1285,8 @@ queries:
   - sum
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+- query: numeric-filter-bin-search-fifty-fifty [Numeric FILTER that filters out 50
+    percent of the values]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2147882675)
     }'
@@ -1255,7 +1297,8 @@ queries:
   - count
   results:
   - - '"60044100"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+- query: numeric-filter-bin-search-seventy-thirty [Numeric FILTER that filters out
+    70 percent of the values]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2241500354)
     }'
@@ -1266,7 +1309,8 @@ queries:
   - count
   results:
   - - '"36026461"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+- query: numeric-filter-bin-search-ninetyfive-five [Numeric FILTER that filters out
+    95 percent of the values]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?s) AS ?count) { ?s schema:version ?o . FILTER (?o >= 2325672138)
     }'
@@ -1277,7 +1321,7 @@ queries:
   - count
   results:
   - - '"6004411"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+- query: filter-few-results [FILTER that filters out most rows and has few results]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER (?s = ?o) }'
   runtime_info:
@@ -1287,7 +1331,7 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+- query: filter-many-results [FILTER that filters out few rows and has many results]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER (?s != ?o) }'
   runtime_info:
@@ -1297,7 +1341,7 @@ queries:
   - count
   results:
   - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-language-en [FILTER on str ... dicate for only English literals]
+- query: filter-language-en [FILTER on string predicate for only English literals]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (COUNT(?s) AS ?count) { ?s schema:description ?o . FILTER(LANG(?o) = "en")
     }'

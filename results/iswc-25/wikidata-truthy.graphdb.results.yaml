@@ -1,7 +1,11 @@
 queries:
 - query: join-2-small-large [JOIN of a small and a large predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  ?s schema:description\
-    \ ?o2 .\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      ?s schema:description ?o2 .
+    }
   runtime_info:
     client_time: 0.05031466484069824
   result_size: 1
@@ -10,8 +14,12 @@ queries:
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-2-large-small [JOIN of a large and a small predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ ?s wdtn:P8024 ?o2 .\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s wdtn:P8024 ?o2 .
+    }
   runtime_info:
     client_time: 0.023055076599121094
   result_size: 1
@@ -20,32 +28,50 @@ queries:
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: join-2-large-large [JOIN of two large predicates]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ ?s schema:name ?o2 .\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s schema:name ?o2 .
+    }
   runtime_info:
     client_time: 300.0127532482147
   result_size: 0
   headers: []
   results: Timeout
-- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:name ?o1 .\n  ?s rdfs:label\
-    \ ?o2 .\n}"
+- query: join-2-largest-result [JOIN of two predicates with the largest possible result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:name ?o1 .
+      ?s rdfs:label ?o2 .
+    }
   runtime_info:
     client_time: 300.0177299976349
   result_size: 0
   headers: []
   results: Timeout
-- query: join-2-large-large-with-large-res ... s with a reasonably large result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ ?s wdt:P2093 ?o2 .\n}"
+- query: join-2-large-large-with-large-result [JOIN of two large predicates with a
+    reasonably large result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      ?s wdt:P2093 ?o2 .
+    }
   runtime_info:
     client_time: 300.0199086666107
   result_size: 0
   headers: []
   results: Timeout
-- query: join-2-large-large-with-small-res ... e predicates with a small result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  ?s wdt:P478\
-    \ ?o2 .\n}"
+- query: join-2-large-large-with-small-result [JOIN of two large predicates with a
+    small result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      ?s wdt:P478 ?o2 .
+    }
   runtime_info:
     client_time: 24.397033214569092
   result_size: 1
@@ -53,31 +79,64 @@ queries:
   - count
   results:
   - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
-    \ ?o2 .\n  ?s wdt:P31 ?o3 .\n}"
+- query: join-3-star-largest-sum-of-join-sizes [JOIN star of three large predicates
+    with the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      ?s wdt:P31 ?o3 .
+    }
   runtime_info:
     client_time: 300.0152840614319
   result_size: 0
   headers: []
   results: Timeout
-- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
-    \ ?c .\n  ?c schema:description ?d .\n}"
+- query: join-3-chain-largest-sum-of-join-sizes [JOIN chain of three large predicates
+    with the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      ?c schema:description ?d .
+    }
   runtime_info:
     client_time: 300.01355266571045
   result_size: 0
   headers: []
   results: Timeout
-- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o0 .\n  ?s wdt:P8024\
-    \ ?o1 .\n  ?s wdt:P10837 ?o2 .\n  ?s wdt:P5626 ?o3 .\n  ?s wdt:P3453 ?o4 .\n \
-    \ ?s wdt:P3177 ?o5 .\n  ?s wdt:P7997 ?o6 .\n  ?s wdt:P4740 ?o7 .\n  ?s wdt:P4034\
-    \ ?o8 .\n  ?s wdt:P9556 ?o9 .\n  ?s wdt:P470 ?o10 .\n  ?s wdt:P5052 ?o11 .\n \
-    \ ?s wdtn:P4466 ?o12 .\n  ?s wdt:P4466 ?o13 .\n  ?s wdt:P958 ?o14 .\n  ?s wdt:P7492\
-    \ ?o15 .\n  ?s wdt:P1385 ?o16 .\n  ?s wdt:P12123 ?o17 .\n  ?s wdt:P6141 ?o18 .\n\
-    \  ?s wdt:P10916 ?o19 .\n  ?s wdt:P10761 ?o20 .\n  ?s wdt:P6019 ?o21 .\n  ?s wdt:P3322\
-    \ ?o22 .\n  ?s wdt:P12249 ?o23 .\n  ?s wdt:P4433 ?o24 .\n}"
+- query: join-xlarge-star-on-small-predicates [JOIN star of many small predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o0 .
+      ?s wdt:P8024 ?o1 .
+      ?s wdt:P10837 ?o2 .
+      ?s wdt:P5626 ?o3 .
+      ?s wdt:P3453 ?o4 .
+      ?s wdt:P3177 ?o5 .
+      ?s wdt:P7997 ?o6 .
+      ?s wdt:P4740 ?o7 .
+      ?s wdt:P4034 ?o8 .
+      ?s wdt:P9556 ?o9 .
+      ?s wdt:P470 ?o10 .
+      ?s wdt:P5052 ?o11 .
+      ?s wdtn:P4466 ?o12 .
+      ?s wdt:P4466 ?o13 .
+      ?s wdt:P958 ?o14 .
+      ?s wdt:P7492 ?o15 .
+      ?s wdt:P1385 ?o16 .
+      ?s wdt:P12123 ?o17 .
+      ?s wdt:P6141 ?o18 .
+      ?s wdt:P10916 ?o19 .
+      ?s wdt:P10761 ?o20 .
+      ?s wdt:P6019 ?o21 .
+      ?s wdt:P3322 ?o22 .
+      ?s wdt:P12249 ?o23 .
+      ?s wdt:P4433 ?o24 .
+    }
   runtime_info:
     client_time: 0.037872314453125
   result_size: 1
@@ -85,16 +144,36 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?v0 wdtn:P8024 ?v1 .\n  ?v1 wdt:P8024\
-    \ ?v2 .\n  ?v2 wdt:P10837 ?v3 .\n  ?v3 wdt:P5626 ?v4 .\n  ?v4 wdt:P3453 ?v5 .\n\
-    \  ?v5 wdt:P3177 ?v6 .\n  ?v6 wdt:P7997 ?v7 .\n  ?v7 wdt:P4740 ?v8 .\n  ?v8 wdt:P4034\
-    \ ?v9 .\n  ?v9 wdt:P9556 ?v10 .\n  ?v10 wdt:P470 ?v11 .\n  ?v11 wdt:P5052 ?v12\
-    \ .\n  ?v12 wdtn:P4466 ?v13 .\n  ?v13 wdt:P4466 ?v14 .\n  ?v14 wdt:P958 ?v15 .\n\
-    \  ?v15 wdt:P7492 ?v16 .\n  ?v16 wdt:P1385 ?v17 .\n  ?v17 wdt:P12123 ?v18 .\n\
-    \  ?v18 wdt:P6141 ?v19 .\n  ?v19 wdt:P10916 ?v20 .\n  ?v20 wdt:P10761 ?v21 .\n\
-    \  ?v21 wdt:P6019 ?v22 .\n  ?v22 wdt:P3322 ?v23 .\n  ?v23 wdt:P12249 ?v24 .\n\
-    \  ?v24 wdt:P4433 ?v25 .\n}"
+- query: join-xlarge-chain-on-small-predicates [JOIN chain of many small predicates]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?v0 wdtn:P8024 ?v1 .
+      ?v1 wdt:P8024 ?v2 .
+      ?v2 wdt:P10837 ?v3 .
+      ?v3 wdt:P5626 ?v4 .
+      ?v4 wdt:P3453 ?v5 .
+      ?v5 wdt:P3177 ?v6 .
+      ?v6 wdt:P7997 ?v7 .
+      ?v7 wdt:P4740 ?v8 .
+      ?v8 wdt:P4034 ?v9 .
+      ?v9 wdt:P9556 ?v10 .
+      ?v10 wdt:P470 ?v11 .
+      ?v11 wdt:P5052 ?v12 .
+      ?v12 wdtn:P4466 ?v13 .
+      ?v13 wdt:P4466 ?v14 .
+      ?v14 wdt:P958 ?v15 .
+      ?v15 wdt:P7492 ?v16 .
+      ?v16 wdt:P1385 ?v17 .
+      ?v17 wdt:P12123 ?v18 .
+      ?v18 wdt:P6141 ?v19 .
+      ?v19 wdt:P10916 ?v20 .
+      ?v20 wdt:P10761 ?v21 .
+      ?v21 wdt:P6019 ?v22 .
+      ?v22 wdt:P3322 ?v23 .
+      ?v23 wdt:P12249 ?v24 .
+      ?v24 wdt:P4433 ?v25 .
+    }
   runtime_info:
     client_time: 0.02713632583618164
   result_size: 1
@@ -102,9 +181,15 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-small-large [OPTION ... of a small and a large predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  OPTIONAL\
-    \ {\n    ?s schema:description ?o2 .\n  }\n}"
+- query: optional-join-small-large [OPTIONAL JOIN of a small and a large predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      OPTIONAL {
+        ?s schema:description ?o2 .
+      }
+    }
   runtime_info:
     client_time: 0.042140960693359375
   result_size: 1
@@ -112,33 +197,59 @@ queries:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-large-small [OPTION ... of a large and a small predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ OPTIONAL {\n    ?s wdtn:P8024 ?o2 .\n  }\n}"
+- query: optional-join-large-small [OPTIONAL JOIN of a large and a small predicate]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0152163505554
   result_size: 0
   headers: []
   results: Timeout
 - query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ OPTIONAL {\n    ?s schema:name ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s schema:name ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0202112197876
   result_size: 0
   headers: []
   results: Timeout
-- query: optional-join-2-large-large-with- ... h a reasonably large join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ OPTIONAL {\n    ?s wdt:P2093 ?o2 .\n  }\n}"
+- query: optional-join-2-large-large-with-large-result [OPTIONAL JOIN of two large
+    predicates with a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      OPTIONAL {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0193395614624
   result_size: 0
   headers: []
   results: Timeout
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  OPTIONAL {\n\
-    \    ?s wdt:P478 ?o2 .\n  }\n}"
+- query: optional-join-2-large-large-with-small-join-result-1 [OPTIONAL JOIN of two
+    large predicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      OPTIONAL {
+        ?s wdt:P478 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 37.67595863342285
   result_size: 1
@@ -146,9 +257,16 @@ queries:
   - count
   results:
   - - '"33959393"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P478 ?o1 .\n  OPTIONAL {\n\
-    \    ?s wdt:P50 ?o2 .\n  }\n}"
+- query: optional-join-2-large-large-with-small-join-result-2 [OPTIONAL JOIN of two
+    large predicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      OPTIONAL {
+        ?s wdt:P50 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 46.22395062446594
   result_size: 1
@@ -156,73 +274,137 @@ queries:
   - count
   results:
   - - '"58200974"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
-    \ ?o2 .\n  OPTIONAL {\n    ?s wdt:P31 ?o3 .\n  }\n}"
+- query: optional-join-3-star-1 [OPTIONAL JOIN star of three large predicates with
+    the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      OPTIONAL {
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
     client_time: 300.0124592781067
   result_size: 0
   headers: []
   results: Timeout
-- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  OPTIONAL {\n\
-    \    ?s schema:description ?o2 .\n    ?s wdt:P31 ?o3 .\n  }\n}"
+- query: optional-join-3-star-2 [OPTIONAL JOIN star of three large predicates with
+    the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      OPTIONAL {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
     client_time: 300.0155234336853
   result_size: 0
   headers: []
   results: Timeout
-- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
-    \ ?c .\n  OPTIONAL {\n    ?c schema:description ?d .\n  }\n}"
+- query: optional-join-3-chain-1 [OPTIONAL JOIN chain of three large predicates with
+    the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      OPTIONAL {
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
     client_time: 300.0190255641937
   result_size: 0
   headers: []
   results: Timeout
-- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  OPTIONAL {\n\
-    \    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
+- query: optional-join-3-chain-2 [OPTIONAL JOIN chain of three large predicates with
+    the largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      OPTIONAL {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
     client_time: 300.0285692214966
   result_size: 0
   headers: []
   results: Timeout
 - query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  MINUS {\n\
-    \    ?s schema:description ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      MINUS {
+        ?s schema:description ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0216906070709
   result_size: 0
   headers: []
   results: Timeout
 - query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ MINUS {\n    ?s wdtn:P8024 ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0156297683716
   result_size: 0
   headers: []
   results: Timeout
 - query: minus-join-large-large [MINUS JOIN of two large predicates]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ MINUS {\n    ?s schema:name ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s schema:name ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.03390860557556
   result_size: 0
   headers: []
   results: Timeout
-- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ MINUS {\n    ?s wdt:P2093 ?o2 .\n  }\n}"
+- query: minus-join-2-large-large-with-large-result [MINUS JOIN of two large predicates
+    with a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      MINUS {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.02985525131226
   result_size: 0
   headers: []
   results: Timeout
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  MINUS {\n \
-    \   ?s wdt:P478 ?o2 .\n  }\n}"
+- query: minus-join-2-large-large-with-small-join-result-1 [MINUS JOIN of two large
+    predicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      MINUS {
+        ?s wdt:P478 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 28.74256706237793
   result_size: 1
@@ -230,9 +412,16 @@ queries:
   - count
   results:
   - - '"4209248"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P478 ?o1 .\n  MINUS {\n\
-    \    ?s wdt:P50 ?o2 .\n  }\n}"
+- query: minus-join-2-large-large-with-small-join-result-2 [MINUS JOIN of two large
+    predicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      MINUS {
+        ?s wdt:P50 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 31.107162475585938
   result_size: 1
@@ -240,41 +429,79 @@ queries:
   - count
   results:
   - - '"28450829"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
-    \ ?o2 .\n  MINUS {\n    ?s wdt:P31 ?o3 .\n  }\n}"
+- query: minus-join-3-star-1 [MINUS JOIN star of three large predicates with the largest
+    sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      MINUS {
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
     client_time: 300.0179214477539
   result_size: 0
   headers: []
   results: Timeout
-- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  MINUS {\n\
-    \    ?s schema:description ?o2 .\n    ?s wdt:P31 ?o3 .\n  }\n}"
+- query: minus-join-3-star-2 [MINUS JOIN star of three large predicates with the largest
+    sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      MINUS {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
     client_time: 300.0169265270233
   result_size: 0
   headers: []
   results: Timeout
-- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
-    \ ?c .\n  MINUS {\n    ?c schema:description ?d .\n  }\n}"
+- query: minus-join-3-chain-1 [MINUS JOIN chain of three large predicates with the
+    largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      MINUS {
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
     client_time: 300.01830863952637
   result_size: 0
   headers: []
   results: Timeout
-- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  MINUS {\n\
-    \    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
+- query: minus-join-3-chain-2 [MINUS JOIN chain of three large predicates with the
+    largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      MINUS {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
     client_time: 300.03645849227905
   result_size: 0
   headers: []
   results: Timeout
 - query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdtn:P8024 ?o1 .\n  FILTER EXISTS\
-    \ {\n    ?s schema:description ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdtn:P8024 ?o1 .
+      FILTER EXISTS {
+        ?s schema:description ?o2 .
+      }
+    }
   runtime_info:
     client_time: 0.061539649963378906
   result_size: 1
@@ -283,32 +510,58 @@ queries:
   results:
   - - '"1000"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ FILTER EXISTS {\n    ?s wdtn:P8024 ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s wdtn:P8024 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.01734924316406
   result_size: 0
   headers: []
   results: Timeout
 - query: exists-join-large-large [EXISTS JOIN of two large predicates]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ FILTER EXISTS {\n    ?s schema:name ?o2 .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s schema:name ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0200388431549
   result_size: 0
   headers: []
   results: Timeout
-- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s schema:description ?o1 .\n \
-    \ FILTER EXISTS {\n    ?s wdt:P2093 ?o2 .\n  }\n}"
+- query: exists-join-2-large-large-with-large-result [EXISTS JOIN of two large predicates
+    with a reasonably large join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s schema:description ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P2093 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 300.0266680717468
   result_size: 0
   headers: []
   results: Timeout
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P50 ?o1 .\n  FILTER EXISTS\
-    \ {\n    ?s wdt:P478 ?o2 .\n  }\n}"
+- query: exists-join-2-large-large-with-small-join-result-1 [EXISTS JOIN of two large
+    predicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P50 ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P478 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 75.08085322380066
   result_size: 1
@@ -316,9 +569,16 @@ queries:
   - count
   results:
   - - '"29748245"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P478 ?o1 .\n  FILTER EXISTS\
-    \ {\n    ?s wdt:P50 ?o2 .\n  }\n}"
+- query: exists-join-2-large-large-with-small-join-result-2 [EXISTS JOIN of two large
+    predicates with a small join result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P478 ?o1 .
+      FILTER EXISTS {
+        ?s wdt:P50 ?o2 .
+      }
+    }
   runtime_info:
     client_time: 82.93153405189514
   result_size: 1
@@ -326,57 +586,120 @@ queries:
   - count
   results:
   - - '"11561944"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  ?s schema:description\
-    \ ?o2 .\n  FILTER EXISTS {\n    ?s wdt:P31 ?o3 .\n  }\n}"
+- query: exists-join-3-star-1 [EXISTS JOIN star of three large predicates with the
+    largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      ?s schema:description ?o2 .
+      FILTER EXISTS {
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
     client_time: 300.0373148918152
   result_size: 0
   headers: []
   results: Timeout
-- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdf:type ?o1 .\n  FILTER EXISTS\
-    \ {\n    ?s schema:description ?o2 .\n    ?s wdt:P31 ?o3 .\n  }\n}"
+- query: exists-join-3-star-2 [EXISTS JOIN star of three large predicates with the
+    largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdf:type ?o1 .
+      FILTER EXISTS {
+        ?s schema:description ?o2 .
+        ?s wdt:P31 ?o3 .
+      }
+    }
   runtime_info:
     client_time: 300.02667689323425
   result_size: 0
   headers: []
   results: Timeout
-- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  ?b wdt:P31\
-    \ ?c .\n  FILTER EXISTS {\n    ?c schema:description ?d .\n  }\n}"
+- query: exists-join-3-chain-1 [EXISTS JOIN chain of three large predicates with the
+    largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      ?b wdt:P31 ?c .
+      FILTER EXISTS {
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
     client_time: 300.0170204639435
   result_size: 0
   headers: []
   results: Timeout
-- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?a wdt:P2860 ?b .\n  FILTER EXISTS\
-    \ {\n    ?b wdt:P31 ?c .\n    ?c schema:description ?d .\n  }\n}"
+- query: exists-join-3-chain-2 [EXISTS JOIN chain of three large predicates with the
+    largest sum of join sizes]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?a wdt:P2860 ?b .
+      FILTER EXISTS {
+        ?b wdt:P31 ?c .
+        ?c schema:description ?d .
+      }
+    }
   runtime_info:
     client_time: 300.02360367774963
   result_size: 0
   headers: []
   results: Timeout
 - query: union-no-constraint [UNION of two large predicates, no constraint]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s schema:description ?o\
-    \ .\n  }\n  UNION\n  {\n    ?s schema:name ?o .\n  }\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o .
+      }
+      UNION
+      {
+        ?s schema:name ?o .
+      }
+    }
   runtime_info:
     client_time: 300.03542494773865
   result_size: 0
   headers: []
   results: Timeout
-- query: union-constraint-from-star [UNION ... cate known to have join partners]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s rdf:type ?o1 .\n  }\n\
-    \  UNION\n  {\n    ?s schema:description ?o1 .\n  }\n  ?s wdt:P31 ?o2 .\n}"
+- query: union-constraint-from-star [UNION of two large predicates, constrained by
+    a large predicate known to have join partners]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s rdf:type ?o1 .
+      }
+      UNION
+      {
+        ?s schema:description ?o1 .
+      }
+      ?s wdt:P31 ?o2 .
+    }
   runtime_info:
     client_time: 300.0397455692291
   result_size: 0
   headers: []
   results: Timeout
-- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s wdt:P50 ?o1 .\n  }\n\
-    \  UNION\n  {\n    ?s skos:prefLabel ?o1 .\n  }\n  ?s wdt:P478 ?o2 .\n}"
+- query: union-constraint-small-join [UNION of two large predicates, constrained by
+    a join with a small result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s wdt:P50 ?o1 .
+      }
+      UNION
+      {
+        ?s skos:prefLabel ?o1 .
+      }
+      ?s wdt:P478 ?o2 .
+    }
   runtime_info:
     client_time: 108.04248189926147
   result_size: 1
@@ -384,25 +707,51 @@ queries:
   - count
   results:
   - - '"111906031"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s schema:description ?o1\
-    \ .\n  }\n  UNION\n  {\n    ?s schema:name ?o1 .\n  }\n  ?s wdt:P2093 ?o2 .\n}"
+- query: union-constraint-large-join [UNION of two large predicates, constrained by
+    a join with a large result]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o1 .
+      }
+      UNION
+      {
+        ?s schema:name ?o1 .
+      }
+      ?s wdt:P2093 ?o2 .
+    }
   runtime_info:
     client_time: 300.03429341316223
   result_size: 0
   headers: []
   results: Timeout
-- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  {\n    ?s schema:description ?o\
-    \ .\n  }\n  UNION\n  {\n    ?s schema:name ?o .\n  }\n  FILTER (?s = ?o)\n}"
+- query: union-constraint-filter-restrictive [UNION of two large predicates, constraint
+    by restrictive FILTER]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      {
+        ?s schema:description ?o .
+      }
+      UNION
+      {
+        ?s schema:name ?o .
+      }
+      FILTER (?s = ?o)
+    }
   runtime_info:
     client_time: 300.0486879348755
   result_size: 0
   headers: []
   results: Timeout
 - query: multicolumn-join-small [Multicolumn JOIN small]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P921 ?o .\n  ?s wdt:P31\
-    \ ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P921 ?o .
+      ?s wdt:P31 ?o .
+    }
   runtime_info:
     client_time: 19.55811619758606
   result_size: 1
@@ -411,16 +760,27 @@ queries:
   results:
   - - '"43041"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: multicolumn-join-large [Multicolumn JOIN large]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s skos:prefLabel ?o .\n  ?s rdfs:label\
-    \ ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s skos:prefLabel ?o .
+      ?s rdfs:label ?o .
+    }
   runtime_info:
     client_time: 300.04691982269287
   result_size: 0
   headers: []
   results: Timeout
-- query: group-by-count-object-high-multip ... or object with high multiplicity]
-  sparql: "SELECT ?object (COUNT(?subject) AS ?count)\nWHERE {\n  ?subject wdt:P2548\
-    \ ?object .\n}\nGROUP BY ?object\nORDER BY DESC(?count)\nLIMIT 10"
+- query: group-by-count-object-high-multiplicity [GROUP BY with COUNT, for object
+    with high multiplicity]
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject wdt:P2548 ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
     client_time: 0.33700084686279297
   result_size: 3
@@ -434,17 +794,32 @@ queries:
     - '"527806"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q41329>
     - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-low-multipl ... for object with low multiplicity]
-  sparql: "SELECT ?object (COUNT(?subject) AS ?count)\nWHERE {\n  ?subject skos:prefLabel\
-    \ ?object .\n}\nGROUP BY ?object\nORDER BY DESC(?count)\nLIMIT 10"
+- query: group-by-count-object-low-multiplicity [GROUP BY with COUNT, for object with
+    low multiplicity]
+  sparql: |-
+    SELECT ?object (COUNT(?subject) AS ?count)
+    WHERE {
+      ?subject skos:prefLabel ?object .
+    }
+    GROUP BY ?object
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
     client_time: 205.06372141838074
   headers: []
   results: 'HTTP code: 500: Query evaluation error: Insufficient free Heap Memory
     248Mb for group by and distinct, threshold:250Mb, reached 2,512Mb '
-- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: "SELECT ?o1 (COUNT(?s) AS ?count)\nWHERE {\n  ?s wdt:P13046 ?o1 .\n  ?s\
-    \ schema:description ?o2 .\n}\nGROUP BY ?o1\nORDER BY DESC(?count)\nLIMIT 10"
+- query: group-by-count-object-wrong-sort-order [GROUP BY with COUNT, for object but
+    not sorted by object]
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
     client_time: 39.53780174255371
   result_size: 10
@@ -472,10 +847,16 @@ queries:
     - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q131359749>
     - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
-  sparql: "SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s)\
-    \ AS ?sample)\nWHERE {\n  ?s wdt:P13046 ?o1 .\n  ?s schema:description ?o2 .\n\
-    }\nGROUP BY ?o1\nORDER BY DESC(?count)\nLIMIT 10"
+- query: group-by-complex-aggregate [GROUP BY with COUNT and MIN and MAX and SAMPLE]
+  sparql: |-
+    SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
+    GROUP BY ?o1
+    ORDER BY DESC(?count)
+    LIMIT 10
   runtime_info:
     client_time: 96.58104944229126
   result_size: 10
@@ -536,8 +917,13 @@ queries:
     - <http://www.wikidata.org/entity/Q108799700>
     - <http://www.wikidata.org/entity/Q52937709>
     - <http://www.wikidata.org/entity/Q108799700>
-- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
-  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n}"
+- query: group-by-implicit-numeric-baseline [Implicit GROUP BY with COUNT on numeric
+    predicate as baseline]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
     client_time: 23.176867961883545
   result_size: 1
@@ -545,8 +931,12 @@ queries:
   - count
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
-  sparql: "SELECT (sum(?o) AS ?sum)\nWHERE {\n  ?s schema:version ?o .\n}"
+- query: group-by-implicit-numeric-sum [Implicit GROUP BY with SUM on numeric predicate]
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
     client_time: 161.0672905445099
   result_size: 1
@@ -554,8 +944,12 @@ queries:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
-  sparql: "SELECT (MIN(?o) AS ?min)\nWHERE {\n  ?s schema:version ?o .\n}"
+- query: group-by-implicit-numeric-min [Implicit GROUP BY with MIN on numeric predicate]
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
     client_time: 149.41525411605835
   result_size: 1
@@ -563,8 +957,12 @@ queries:
   - min
   results:
   - - '"984175"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
-  sparql: "SELECT (MAX(?o) AS ?max)\nWHERE {\n  ?s schema:version ?o .\n}"
+- query: group-by-implicit-numeric-max [Implicit GROUP BY with MAX on numeric predicate]
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
     client_time: 147.8843231201172
   result_size: 1
@@ -572,8 +970,12 @@ queries:
   - max
   results:
   - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
-  sparql: "SELECT (AVG(?o) AS ?avg)\nWHERE {\n  ?s schema:version ?o .\n}"
+- query: group-by-implicit-numeric-avg [Implicit GROUP BY with AVG on numeric predicate]
+  sparql: |-
+    SELECT (AVG(?o) AS ?avg)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
     client_time: 162.97162199020386
   result_size: 1
@@ -581,28 +983,42 @@ queries:
   - avg
   results:
   - - '"2005535237.021964414488684150482729"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
-  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n}"
+- query: group-by-implicit-string-baseline [Implicit GROUP BY with COUNT on string
+    predicate as baseline]
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+    }
   runtime_info:
     client_time: 300.04144382476807
   result_size: 0
   headers: []
   results: Timeout
-- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
-  sparql: "SELECT (MIN(?o) AS ?min)\nWHERE {\n  ?s schema:description ?o .\n}"
+- query: group-by-implicit-string-min [Implicit GROUP BY with MIN on string predicate]
+  sparql: |-
+    SELECT (MIN(?o) AS ?min)
+    WHERE {
+      ?s schema:description ?o .
+    }
   runtime_info:
     client_time: 300.0442895889282
   result_size: 0
   headers: []
   results: Timeout
-- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
-  sparql: "SELECT (MAX(?o) AS ?max)\nWHERE {\n  ?s schema:description ?o .\n}"
+- query: group-by-implicit-string-max [Implicit GROUP BY with MAX on string predicate]
+  sparql: |-
+    SELECT (MAX(?o) AS ?max)
+    WHERE {
+      ?s schema:description ?o .
+    }
   runtime_info:
     client_time: 300.04813051223755
   result_size: 0
   headers: []
   results: Timeout
-- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
+- query: group-by-string-groupconcat [GROUP BY with GROUP_CONCAT on string predicate
+    with high subject multiplicity]
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
     AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
@@ -611,9 +1027,13 @@ queries:
   result_size: 0
   headers: []
   results: Timeout
-- query: distinct-count-object-high-multip ... or object with high multiplicity]
-  sparql: "SELECT (COUNT(DISTINCT ?object) AS ?count)\nWHERE {\n  ?subject wdt:P2548\
-    \ ?object .\n}"
+- query: distinct-count-object-high-multiplicity [COUNT DISTINCT, for object with
+    high multiplicity]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject wdt:P2548 ?object .
+    }
   runtime_info:
     client_time: 0.31203556060791016
   result_size: 1
@@ -621,17 +1041,26 @@ queries:
   - count
   results:
   - - '"3"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: distinct-count-object-low-multipl ... for object with low multiplicity]
-  sparql: "SELECT (COUNT(DISTINCT ?object) AS ?count)\nWHERE {\n  ?subject skos:prefLabel\
-    \ ?object .\n}"
+- query: distinct-count-object-low-multiplicity [COUNT DISTINCT, for object with low
+    multiplicity]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?object) AS ?count)
+    WHERE {
+      ?subject skos:prefLabel ?object .
+    }
   runtime_info:
     client_time: 300.01608443260193
   result_size: 0
   headers: []
   results: Timeout
-- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: "SELECT (COUNT(DISTINCT ?o1) AS ?count)\nWHERE {\n  ?s wdt:P13046 ?o1 .\n\
-    \  ?s schema:description ?o2 .\n}"
+- query: distinct-count-object-wrong-sort-order [COUNT DISTINCT, for object but not
+    sorted by object]
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o1) AS ?count)
+    WHERE {
+      ?s wdt:P13046 ?o1 .
+      ?s schema:description ?o2 .
+    }
   runtime_info:
     client_time: 39.44866228103638
   result_size: 1
@@ -640,7 +1069,11 @@ queries:
   results:
   - - '"42"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: transitive-path-plus [Transitive path with plus]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P2293+ ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P2293+ ?o .
+    }
   runtime_info:
     client_time: 20.582950830459595
   result_size: 1
@@ -648,8 +1081,13 @@ queries:
   - count
   results:
   - - '"12972038"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  wd:Q81867 wdt:P2293+ ?o .\n}"
+- query: transitive-path-plus-fixed-subject [Transitive path with plus and a fixed
+    subject]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      wd:Q81867 wdt:P2293+ ?o .
+    }
   runtime_info:
     client_time: 0.02555394172668457
   result_size: 1
@@ -657,15 +1095,25 @@ queries:
   - count
   results:
   - - '"3519"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P921/wdt:P2293+ ?o .\n}"
+- query: transitive-path-large-join-and-plus [Transitive path with a large join and
+    plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P921/wdt:P2293+ ?o .
+    }
   runtime_info:
     client_time: 300.03748297691345
   result_size: 0
   headers: []
   results: Timeout
-- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s wdt:P1911/wdt:P2293+ ?o .\n}"
+- query: transitive-path-small-join-and-plus [Transitive path with a small join and
+    plus]
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s wdt:P1911/wdt:P2293+ ?o .
+    }
   runtime_info:
     client_time: 0.19155478477478027
   result_size: 1
@@ -674,48 +1122,72 @@ queries:
   results:
   - - '"159948"^^<http://www.w3.org/2001/XMLSchema#integer>'
 - query: regex-3-contains [CONTAINS filter with fixed string of length 3]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER CONTAINS(?o,\
-    \ \"com\")\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER CONTAINS(?o, "com")
+    }
   runtime_info:
     client_time: 300.0372769832611
   result_size: 0
   headers: []
   results: Timeout
 - query: regex-3-fixed [REGEX filter with fixed string of length 3]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
-    \ \"com\")\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "com")
+    }
   runtime_info:
     client_time: 300.02732014656067
   result_size: 0
   headers: []
   results: Timeout
 - query: regex-3 [REGEX filter with expression of length 3]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
-    \ \"c.m\")\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "c.m")
+    }
   runtime_info:
     client_time: 300.0383710861206
   result_size: 0
   headers: []
   results: Timeout
 - query: regex-prefix-1 [REGEX filter with prefix of length 1]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?o .\n  FILTER regex(?o,\
-    \ \"^C\")\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?o .
+      FILTER regex(?o, "^C")
+    }
   runtime_info:
     client_time: 300.022310256958
   result_size: 0
   headers: []
   results: Timeout
 - query: regex-prefix-2 [REGEX filter with prefix of length 2]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?object .\n  FILTER\
-    \ regex(?object, \"^Co\")\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Co")
+    }
   runtime_info:
     client_time: 300.04291343688965
   result_size: 0
   headers: []
   results: Timeout
 - query: regex-prefix-3 [REGEX filter with prefix of length 3]
-  sparql: "SELECT (COUNT(*) AS ?count)\nWHERE {\n  ?s rdfs:label ?object .\n  FILTER\
-    \ regex(?object, \"^Com\")\n}"
+  sparql: |-
+    SELECT (COUNT(*) AS ?count)
+    WHERE {
+      ?s rdfs:label ?object .
+      FILTER regex(?object, "^Com")
+    }
   runtime_info:
     client_time: 300.04621481895447
   result_size: 0
@@ -764,7 +1236,12 @@ queries:
   headers: []
   results: Timeout
 - query: result-size-tiny [Export 10 tuples]
-  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 10"
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 10
   runtime_info:
     client_time: 0.02361130714416504
   result_size: 10
@@ -775,30 +1252,30 @@ queries:
   - - <http://www.wikidata.org/entity/Q31>
     - '"wlad yn Ewrop"@cy'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0161t\xE1t v Europe\"@sk"
+    - '"štát v Europe"@sk'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0437\u0435\u043C\u0458\u0430 \u0432\u043E \u0415\u0432\u0440\u043E\u043F\
-      \u0430\"@mk"
+    - '"земја во Европа"@mk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"land in West-Europa"@vls'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\xC9tat d'Europe occidentale\"@fr"
+    - '"État d''Europe occidentale"@fr'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B50\u570B\u5BB6\"@zh"
+    - '"西歐國家"@zh'
   - - <http://www.wikidata.org/entity/Q31>
     - '"stato dell''Europa occidentale, membro dell''Unione europea"@it'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"nagara ing \xC9ropah\"@jv"
+    - '"nagara ing Éropah"@jv'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\u0144stwo w Europie\"@pl"
+    - '"państwo w Europie"@pl'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u09AA\u09B6\u09CD\u099A\u09BF\u09AE \u0987\u0989\u09B0\u09CB\u09AA\u09C7\
-      \u09B0 \u09AF\u09C1\u0995\u09CD\u09A4\u09B0\u09BE\u09B7\u09CD\u099F\u09CD\u09B0\
-      \u09C0\u09AF\u09BC \u09B8\u09BE\u0982\u09AC\u09BF\u09A7\u09BE\u09A8\u09BF\u0995\
-      \ \u09B0\u09BE\u099C\u09A4\u09BE\u09A8\u09CD\u09A4\u09CD\u09B0\u09BF\u0995 \u09B0\
-      \u09BE\u09B7\u09CD\u099F\u09CD\u09B0\"@bn"
+    - '"পশ্চিম ইউরোপের যুক্তরাষ্ট্রীয় সাংবিধানিক রাজতান্ত্রিক রাষ্ট্র"@bn'
 - query: result-size-small [Export 1000 tuples]
-  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 1000"
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 1000
   runtime_info:
     client_time: 0.026450157165527344
   result_size: 1000
@@ -809,53 +1286,50 @@ queries:
   - - <http://www.wikidata.org/entity/Q31>
     - '"wlad yn Ewrop"@cy'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0161t\xE1t v Europe\"@sk"
+    - '"štát v Europe"@sk'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0437\u0435\u043C\u0458\u0430 \u0432\u043E \u0415\u0432\u0440\u043E\u043F\
-      \u0430\"@mk"
+    - '"земја во Европа"@mk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"land in West-Europa"@vls'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\xC9tat d'Europe occidentale\"@fr"
+    - '"État d''Europe occidentale"@fr'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B50\u570B\u5BB6\"@zh"
+    - '"西歐國家"@zh'
   - - <http://www.wikidata.org/entity/Q31>
     - '"stato dell''Europa occidentale, membro dell''Unione europea"@it'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"nagara ing \xC9ropah\"@jv"
+    - '"nagara ing Éropah"@jv'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\u0144stwo w Europie\"@pl"
+    - '"państwo w Europie"@pl'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u09AA\u09B6\u09CD\u099A\u09BF\u09AE \u0987\u0989\u09B0\u09CB\u09AA\u09C7\
-      \u09B0 \u09AF\u09C1\u0995\u09CD\u09A4\u09B0\u09BE\u09B7\u09CD\u099F\u09CD\u09B0\
-      \u09C0\u09AF\u09BC \u09B8\u09BE\u0982\u09AC\u09BF\u09A7\u09BE\u09A8\u09BF\u0995\
-      \ \u09B0\u09BE\u099C\u09A4\u09BE\u09A8\u09CD\u09A4\u09CD\u09B0\u09BF\u0995 \u09B0\
-      \u09BE\u09B7\u09CD\u099F\u09CD\u09B0\"@bn"
+    - '"পশ্চিম ইউরোপের যুক্তরাষ্ট্রীয় সাংবিধানিক রাজতান্ত্রিক রাষ্ট্র"@bn'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"valtio L\xE4nsi-Euroopassa\"@fi"
+    - '"valtio Länsi-Euroopassa"@fi'
   - - <http://www.wikidata.org/entity/Q31>
     - '"constitutional monarchy in Western Europe"@en-CA'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u043A\u0440\u0430\u0457\u043D\u0430 \u0432 \u0417\u0430\u0445\u0456\u0434\
-      \u043D\u0456\u0439 \u0404\u0432\u0440\u043E\u043F\u0456\"@uk"
+    - '"країна в Західній Європі"@uk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"negara di Eropa Barat"@id'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"qu\u1ED1c gia c\xF3 ch\u1EE7 quy\u1EC1n t\u1EA1i T\xE2y \xC2u\"@vi"
+    - '"quốc gia có chủ quyền tại Tây Âu"@vi'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\xEDs da Europa\"@pt"
+    - '"país da Europa"@pt'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0A2F\u0A42\u0A30\u0A2A '\u0A1A \u0A26\u0A47\u0A38\u0A3C\"@pa"
+    - '"ਯੂਰਪ ''ਚ ਦੇਸ਼"@pa'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B27\u56FD\u5BB6\"@zh-MY"
+    - '"西欧国家"@zh-MY'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0433\u043E\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u043E \u0432\
-      \ \u0417\u0430\u043F\u0430\u0434\u043D\u043E\u0439 \u0415\u0432\u0440\u043E\u043F\
-      \u0435\"@ru"
+    - '"государство в Западной Европе"@ru'
   - - <http://www.wikidata.org/entity/Q31>
     - '"Staat in Westeuropa"@de-CH'
 - query: result-size-medium [Export 100K tuples]
-  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 100000"
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 100000
   runtime_info:
     client_time: 0.898017406463623
   result_size: 100000
@@ -866,53 +1340,50 @@ queries:
   - - <http://www.wikidata.org/entity/Q31>
     - '"wlad yn Ewrop"@cy'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0161t\xE1t v Europe\"@sk"
+    - '"štát v Europe"@sk'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0437\u0435\u043C\u0458\u0430 \u0432\u043E \u0415\u0432\u0440\u043E\u043F\
-      \u0430\"@mk"
+    - '"земја во Европа"@mk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"land in West-Europa"@vls'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\xC9tat d'Europe occidentale\"@fr"
+    - '"État d''Europe occidentale"@fr'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B50\u570B\u5BB6\"@zh"
+    - '"西歐國家"@zh'
   - - <http://www.wikidata.org/entity/Q31>
     - '"stato dell''Europa occidentale, membro dell''Unione europea"@it'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"nagara ing \xC9ropah\"@jv"
+    - '"nagara ing Éropah"@jv'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\u0144stwo w Europie\"@pl"
+    - '"państwo w Europie"@pl'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u09AA\u09B6\u09CD\u099A\u09BF\u09AE \u0987\u0989\u09B0\u09CB\u09AA\u09C7\
-      \u09B0 \u09AF\u09C1\u0995\u09CD\u09A4\u09B0\u09BE\u09B7\u09CD\u099F\u09CD\u09B0\
-      \u09C0\u09AF\u09BC \u09B8\u09BE\u0982\u09AC\u09BF\u09A7\u09BE\u09A8\u09BF\u0995\
-      \ \u09B0\u09BE\u099C\u09A4\u09BE\u09A8\u09CD\u09A4\u09CD\u09B0\u09BF\u0995 \u09B0\
-      \u09BE\u09B7\u09CD\u099F\u09CD\u09B0\"@bn"
+    - '"পশ্চিম ইউরোপের যুক্তরাষ্ট্রীয় সাংবিধানিক রাজতান্ত্রিক রাষ্ট্র"@bn'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"valtio L\xE4nsi-Euroopassa\"@fi"
+    - '"valtio Länsi-Euroopassa"@fi'
   - - <http://www.wikidata.org/entity/Q31>
     - '"constitutional monarchy in Western Europe"@en-CA'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u043A\u0440\u0430\u0457\u043D\u0430 \u0432 \u0417\u0430\u0445\u0456\u0434\
-      \u043D\u0456\u0439 \u0404\u0432\u0440\u043E\u043F\u0456\"@uk"
+    - '"країна в Західній Європі"@uk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"negara di Eropa Barat"@id'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"qu\u1ED1c gia c\xF3 ch\u1EE7 quy\u1EC1n t\u1EA1i T\xE2y \xC2u\"@vi"
+    - '"quốc gia có chủ quyền tại Tây Âu"@vi'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\xEDs da Europa\"@pt"
+    - '"país da Europa"@pt'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0A2F\u0A42\u0A30\u0A2A '\u0A1A \u0A26\u0A47\u0A38\u0A3C\"@pa"
+    - '"ਯੂਰਪ ''ਚ ਦੇਸ਼"@pa'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B27\u56FD\u5BB6\"@zh-MY"
+    - '"西欧国家"@zh-MY'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0433\u043E\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u043E \u0432\
-      \ \u0417\u0430\u043F\u0430\u0434\u043D\u043E\u0439 \u0415\u0432\u0440\u043E\u043F\
-      \u0435\"@ru"
+    - '"государство в Западной Европе"@ru'
   - - <http://www.wikidata.org/entity/Q31>
     - '"Staat in Westeuropa"@de-CH'
 - query: result-size-large [Export 1M tuples]
-  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 1000000"
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 1000000
   runtime_info:
     client_time: 6.254053592681885
   result_size: 1000000
@@ -923,53 +1394,50 @@ queries:
   - - <http://www.wikidata.org/entity/Q31>
     - '"wlad yn Ewrop"@cy'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0161t\xE1t v Europe\"@sk"
+    - '"štát v Europe"@sk'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0437\u0435\u043C\u0458\u0430 \u0432\u043E \u0415\u0432\u0440\u043E\u043F\
-      \u0430\"@mk"
+    - '"земја во Европа"@mk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"land in West-Europa"@vls'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\xC9tat d'Europe occidentale\"@fr"
+    - '"État d''Europe occidentale"@fr'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B50\u570B\u5BB6\"@zh"
+    - '"西歐國家"@zh'
   - - <http://www.wikidata.org/entity/Q31>
     - '"stato dell''Europa occidentale, membro dell''Unione europea"@it'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"nagara ing \xC9ropah\"@jv"
+    - '"nagara ing Éropah"@jv'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\u0144stwo w Europie\"@pl"
+    - '"państwo w Europie"@pl'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u09AA\u09B6\u09CD\u099A\u09BF\u09AE \u0987\u0989\u09B0\u09CB\u09AA\u09C7\
-      \u09B0 \u09AF\u09C1\u0995\u09CD\u09A4\u09B0\u09BE\u09B7\u09CD\u099F\u09CD\u09B0\
-      \u09C0\u09AF\u09BC \u09B8\u09BE\u0982\u09AC\u09BF\u09A7\u09BE\u09A8\u09BF\u0995\
-      \ \u09B0\u09BE\u099C\u09A4\u09BE\u09A8\u09CD\u09A4\u09CD\u09B0\u09BF\u0995 \u09B0\
-      \u09BE\u09B7\u09CD\u099F\u09CD\u09B0\"@bn"
+    - '"পশ্চিম ইউরোপের যুক্তরাষ্ট্রীয় সাংবিধানিক রাজতান্ত্রিক রাষ্ট্র"@bn'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"valtio L\xE4nsi-Euroopassa\"@fi"
+    - '"valtio Länsi-Euroopassa"@fi'
   - - <http://www.wikidata.org/entity/Q31>
     - '"constitutional monarchy in Western Europe"@en-CA'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u043A\u0440\u0430\u0457\u043D\u0430 \u0432 \u0417\u0430\u0445\u0456\u0434\
-      \u043D\u0456\u0439 \u0404\u0432\u0440\u043E\u043F\u0456\"@uk"
+    - '"країна в Західній Європі"@uk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"negara di Eropa Barat"@id'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"qu\u1ED1c gia c\xF3 ch\u1EE7 quy\u1EC1n t\u1EA1i T\xE2y \xC2u\"@vi"
+    - '"quốc gia có chủ quyền tại Tây Âu"@vi'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\xEDs da Europa\"@pt"
+    - '"país da Europa"@pt'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0A2F\u0A42\u0A30\u0A2A '\u0A1A \u0A26\u0A47\u0A38\u0A3C\"@pa"
+    - '"ਯੂਰਪ ''ਚ ਦੇਸ਼"@pa'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B27\u56FD\u5BB6\"@zh-MY"
+    - '"西欧国家"@zh-MY'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0433\u043E\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u043E \u0432\
-      \ \u0417\u0430\u043F\u0430\u0434\u043D\u043E\u0439 \u0415\u0432\u0440\u043E\u043F\
-      \u0435\"@ru"
+    - '"государство в Западной Европе"@ru'
   - - <http://www.wikidata.org/entity/Q31>
     - '"Staat in Westeuropa"@de-CH'
 - query: result-size-xlarge [Export 10M tuples]
-  sparql: "SELECT ?s ?o\nWHERE {\n  ?s schema:description ?o .\n}\nLIMIT 10000000"
+  sparql: |-
+    SELECT ?s ?o
+    WHERE {
+      ?s schema:description ?o .
+    }
+    LIMIT 10000000
   runtime_info:
     client_time: 68.22293901443481
   result_size: 10000000
@@ -980,53 +1448,49 @@ queries:
   - - <http://www.wikidata.org/entity/Q31>
     - '"wlad yn Ewrop"@cy'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0161t\xE1t v Europe\"@sk"
+    - '"štát v Europe"@sk'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0437\u0435\u043C\u0458\u0430 \u0432\u043E \u0415\u0432\u0440\u043E\u043F\
-      \u0430\"@mk"
+    - '"земја во Европа"@mk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"land in West-Europa"@vls'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\xC9tat d'Europe occidentale\"@fr"
+    - '"État d''Europe occidentale"@fr'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B50\u570B\u5BB6\"@zh"
+    - '"西歐國家"@zh'
   - - <http://www.wikidata.org/entity/Q31>
     - '"stato dell''Europa occidentale, membro dell''Unione europea"@it'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"nagara ing \xC9ropah\"@jv"
+    - '"nagara ing Éropah"@jv'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\u0144stwo w Europie\"@pl"
+    - '"państwo w Europie"@pl'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u09AA\u09B6\u09CD\u099A\u09BF\u09AE \u0987\u0989\u09B0\u09CB\u09AA\u09C7\
-      \u09B0 \u09AF\u09C1\u0995\u09CD\u09A4\u09B0\u09BE\u09B7\u09CD\u099F\u09CD\u09B0\
-      \u09C0\u09AF\u09BC \u09B8\u09BE\u0982\u09AC\u09BF\u09A7\u09BE\u09A8\u09BF\u0995\
-      \ \u09B0\u09BE\u099C\u09A4\u09BE\u09A8\u09CD\u09A4\u09CD\u09B0\u09BF\u0995 \u09B0\
-      \u09BE\u09B7\u09CD\u099F\u09CD\u09B0\"@bn"
+    - '"পশ্চিম ইউরোপের যুক্তরাষ্ট্রীয় সাংবিধানিক রাজতান্ত্রিক রাষ্ট্র"@bn'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"valtio L\xE4nsi-Euroopassa\"@fi"
+    - '"valtio Länsi-Euroopassa"@fi'
   - - <http://www.wikidata.org/entity/Q31>
     - '"constitutional monarchy in Western Europe"@en-CA'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u043A\u0440\u0430\u0457\u043D\u0430 \u0432 \u0417\u0430\u0445\u0456\u0434\
-      \u043D\u0456\u0439 \u0404\u0432\u0440\u043E\u043F\u0456\"@uk"
+    - '"країна в Західній Європі"@uk'
   - - <http://www.wikidata.org/entity/Q31>
     - '"negara di Eropa Barat"@id'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"qu\u1ED1c gia c\xF3 ch\u1EE7 quy\u1EC1n t\u1EA1i T\xE2y \xC2u\"@vi"
+    - '"quốc gia có chủ quyền tại Tây Âu"@vi'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"pa\xEDs da Europa\"@pt"
+    - '"país da Europa"@pt'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0A2F\u0A42\u0A30\u0A2A '\u0A1A \u0A26\u0A47\u0A38\u0A3C\"@pa"
+    - '"ਯੂਰਪ ''ਚ ਦੇਸ਼"@pa'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u897F\u6B27\u56FD\u5BB6\"@zh-MY"
+    - '"西欧国家"@zh-MY'
   - - <http://www.wikidata.org/entity/Q31>
-    - "\"\u0433\u043E\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u043E \u0432\
-      \ \u0417\u0430\u043F\u0430\u0434\u043D\u043E\u0439 \u0415\u0432\u0440\u043E\u043F\
-      \u0435\"@ru"
+    - '"государство в Западной Европе"@ru'
   - - <http://www.wikidata.org/entity/Q31>
     - '"Staat in Westeuropa"@de-CH'
 - query: numeric-baseline [Baseline for numeric queries]
-  sparql: "SELECT (sum(?o) AS ?sum)\nWHERE {\n  ?s schema:version ?o .\n}"
+  sparql: |-
+    SELECT (sum(?o) AS ?sum)
+    WHERE {
+      ?s schema:version ?o .
+    }
   runtime_info:
     client_time: 166.9865162372589
   result_size: 1
@@ -1094,25 +1558,40 @@ queries:
   - sum
   results:
   - []
-- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n  FILTER\
-    \ (?o >= 2147882675)\n}"
+- query: numeric-filter-bin-search-fifty-fifty [Numeric FILTER that filters out 50
+    percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2147882675)
+    }
   runtime_info:
     client_time: 300.02621579170227
   result_size: 0
   headers: []
   results: Timeout
-- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n  FILTER\
-    \ (?o >= 2241500354)\n}"
+- query: numeric-filter-bin-search-seventy-thirty [Numeric FILTER that filters out
+    70 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2241500354)
+    }
   runtime_info:
     client_time: 300.0416307449341
   result_size: 0
   headers: []
   results: Timeout
-- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:version ?o .\n  FILTER\
-    \ (?o >= 2325672138)\n}"
+- query: numeric-filter-bin-search-ninetyfive-five [Numeric FILTER that filters out
+    95 percent of the values]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:version ?o .
+      FILTER (?o >= 2325672138)
+    }
   runtime_info:
     client_time: 290.7547881603241
   result_size: 1
@@ -1120,9 +1599,13 @@ queries:
   - count
   results:
   - - '"6004411"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-few-results [FILTER that f ... ut most rows and has few results]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n \
-    \ FILTER (?s = ?o)\n}"
+- query: filter-few-results [FILTER that filters out most rows and has few results]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (?s = ?o)
+    }
   runtime_info:
     client_time: 296.03339982032776
   result_size: 1
@@ -1130,17 +1613,25 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-many-results [FILTER that  ... ut few rows and has many results]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n \
-    \ FILTER (?s != ?o)\n}"
+- query: filter-many-results [FILTER that filters out few rows and has many results]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (?s != ?o)
+    }
   runtime_info:
     client_time: 300.03223276138306
   result_size: 0
   headers: []
   results: Timeout
-- query: filter-language-en [FILTER on str ... dicate for only English literals]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s schema:description ?o .\n \
-    \ FILTER (lang(?o) = \"en\")\n}"
+- query: filter-language-en [FILTER on string predicate for only English literals]
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s schema:description ?o .
+      FILTER (lang(?o) = "en")
+    }
   runtime_info:
     client_time: 300.0316073894501
   result_size: 0
@@ -1171,47 +1662,70 @@ queries:
   headers: []
   results: Timeout
 - query: number-of-triples [Total number of triples]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
     client_time: 300.0272696018219
   result_size: 0
   headers: []
   results: Timeout
 - query: number-of-subjects [Total number of distinct subjects]
-  sparql: "SELECT (COUNT(DISTINCT ?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
     client_time: 300.02695631980896
   result_size: 0
   headers: []
   results: Timeout
 - query: number-of-predicates [Total number of distinct predicates]
-  sparql: "SELECT (COUNT(DISTINCT ?p) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?p) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
     client_time: 300.02948689460754
   result_size: 0
   headers: []
   results: Timeout
 - query: number-of-objects [Total number of distinct objects]
-  sparql: "SELECT (COUNT(DISTINCT ?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n}"
+  sparql: |-
+    SELECT (COUNT(DISTINCT ?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+    }
   runtime_info:
     client_time: 300.03389596939087
   result_size: 0
   headers: []
   results: Timeout
 - query: number-of-literals [Total number of literals]
-  sparql: "SELECT (COUNT(?o) AS ?count)\nWHERE {\n  ?s ?p ?o .\n  FILTER isLiteral(?o)\n\
-    }"
+  sparql: |-
+    SELECT (COUNT(?o) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isLiteral(?o)
+    }
   runtime_info:
     client_time: 300.0474374294281
   result_size: 0
   headers: []
   results: Timeout
 - query: number-of-blank-nodes [Total number of blank nodes]
-  sparql: "SELECT (COUNT(?s) AS ?count)\nWHERE {\n  ?s ?p ?o .\n  FILTER isBlank(?s)\n\
-    }"
+  sparql: |-
+    SELECT (COUNT(?s) AS ?count)
+    WHERE {
+      ?s ?p ?o .
+      FILTER isBlank(?s)
+    }
   runtime_info:
     client_time: 300.0251851081848
   result_size: 0
   headers: []
   results: Timeout
-
