@@ -1,5 +1,5 @@
 queries:
-- query: join-2-small-large [JOIN of a small and a large predicate]
+- query: join-2-small-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -13,7 +13,8 @@ queries:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-small [JOIN of a large and a small predicate]
+  long_query: JOIN of a small and a large predicate
+- query: join-2-large-small
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -27,7 +28,8 @@ queries:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large [JOIN of two large predicates]
+  long_query: JOIN of a large and a small predicate
+- query: join-2-large-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -38,7 +40,8 @@ queries:
     client_time: 300.2099404335022
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: join-2-largest-result [JOIN of two predicates with the largest possible result]
+  long_query: JOIN of two large predicates
+- query: join-2-largest-result
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -49,8 +52,8 @@ queries:
     client_time: 300.73988342285156
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: join-2-large-large-with-large-result [JOIN of two large predicates with a
-    reasonably large result]
+  long_query: JOIN of two predicates with the largest possible result
+- query: join-2-large-large-with-large-result
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -64,8 +67,8 @@ queries:
   - count
   results:
   - - '"6092272179"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large-with-small-result [JOIN of two large predicates with a
-    small result]
+  long_query: JOIN of two large predicates with a reasonably large result
+- query: join-2-large-large-with-small-result
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -79,8 +82,8 @@ queries:
   - count
   results:
   - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-star-largest-sum-of-join-sizes [JOIN star of three large predicates
-    with the largest sum of join sizes]
+  long_query: JOIN of two large predicates with a small result
+- query: join-3-star-largest-sum-of-join-sizes
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -95,8 +98,8 @@ queries:
   - count
   results:
   - - '"3345167144"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-chain-largest-sum-of-join-sizes [JOIN chain of three large predicates
-    with the largest sum of join sizes]
+  long_query: JOIN star of three large predicates with the largest sum of join sizes
+- query: join-3-chain-largest-sum-of-join-sizes
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -111,7 +114,8 @@ queries:
   - count
   results:
   - - '"16176593578"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-star-on-small-predicates [JOIN star of many small predicates]
+  long_query: JOIN chain of three large predicates with the largest sum of join sizes
+- query: join-xlarge-star-on-small-predicates
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -148,7 +152,8 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-chain-on-small-predicates [JOIN chain of many small predicates]
+  long_query: JOIN star of many small predicates
+- query: join-xlarge-chain-on-small-predicates
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -185,7 +190,8 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-small-large [OPTIONAL JOIN of a small and a large predicate]
+  long_query: JOIN chain of many small predicates
+- query: optional-join-small-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -201,7 +207,8 @@ queries:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-large-small [OPTIONAL JOIN of a large and a small predicate]
+  long_query: OPTIONAL JOIN of a small and a large predicate
+- query: optional-join-large-small
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -214,7 +221,8 @@ queries:
     client_time: 300.42054510116577
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
+  long_query: OPTIONAL JOIN of a large and a small predicate
+- query: optional-join-large-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -227,8 +235,8 @@ queries:
     client_time: 300.7539772987366
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: optional-join-2-large-large-with-large-result [OPTIONAL JOIN of two large
-    predicates with a reasonably large join result]
+  long_query: OPTIONAL JOIN of two large predicates
+- query: optional-join-2-large-large-with-large-result
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -241,8 +249,8 @@ queries:
     client_time: 300.75665307044983
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: optional-join-2-large-large-with-small-join-result-1 [OPTIONAL JOIN of two
-    large predicates with a small join result]
+  long_query: OPTIONAL JOIN of two large predicates with a reasonably large join result
+- query: optional-join-2-large-large-with-small-join-result-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -258,8 +266,8 @@ queries:
   - count
   results:
   - - '"33959393"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-2-large-large-with-small-join-result-2 [OPTIONAL JOIN of two
-    large predicates with a small join result]
+  long_query: OPTIONAL JOIN of two large predicates with a small join result
+- query: optional-join-2-large-large-with-small-join-result-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -275,8 +283,8 @@ queries:
   - count
   results:
   - - '"58200974"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-star-1 [OPTIONAL JOIN star of three large predicates with
-    the largest sum of join sizes]
+  long_query: OPTIONAL JOIN of two large predicates with a small join result
+- query: optional-join-3-star-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -290,8 +298,9 @@ queries:
     client_time: 300.7833960056305
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: optional-join-3-star-2 [OPTIONAL JOIN star of three large predicates with
-    the largest sum of join sizes]
+  long_query: OPTIONAL JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: optional-join-3-star-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -308,8 +317,9 @@ queries:
   - count
   results:
   - - '"3473068852"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-chain-1 [OPTIONAL JOIN chain of three large predicates with
-    the largest sum of join sizes]
+  long_query: OPTIONAL JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: optional-join-3-chain-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -326,8 +336,9 @@ queries:
   - count
   results:
   - - '"16176594500"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-chain-2 [OPTIONAL JOIN chain of three large predicates with
-    the largest sum of join sizes]
+  long_query: OPTIONAL JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: optional-join-3-chain-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -341,7 +352,9 @@ queries:
     client_time: 300.76945185661316
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
+  long_query: OPTIONAL JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: minus-join-small-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -357,7 +370,8 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
+  long_query: MINUS JOIN of a small and a large predicate
+- query: minus-join-large-small
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -370,7 +384,8 @@ queries:
     client_time: 300.4174220561981
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: minus-join-large-large [MINUS JOIN of two large predicates]
+  long_query: MINUS JOIN of a large and a small predicate
+- query: minus-join-large-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -383,8 +398,8 @@ queries:
     client_time: 300.73871636390686
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: minus-join-2-large-large-with-large-result [MINUS JOIN of two large predicates
-    with a reasonably large join result]
+  long_query: MINUS JOIN of two large predicates
+- query: minus-join-2-large-large-with-large-result
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -397,8 +412,8 @@ queries:
     client_time: 300.7486789226532
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: minus-join-2-large-large-with-small-join-result-1 [MINUS JOIN of two large
-    predicates with a small join result]
+  long_query: MINUS JOIN of two large predicates with a reasonably large join result
+- query: minus-join-2-large-large-with-small-join-result-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -414,8 +429,8 @@ queries:
   - count
   results:
   - - '"4209248"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-small-join-result-2 [MINUS JOIN of two large
-    predicates with a small join result]
+  long_query: MINUS JOIN of two large predicates with a small join result
+- query: minus-join-2-large-large-with-small-join-result-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -431,8 +446,8 @@ queries:
   - count
   results:
   - - '"28450829"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-star-1 [MINUS JOIN star of three large predicates with the largest
-    sum of join sizes]
+  long_query: MINUS JOIN of two large predicates with a small join result
+- query: minus-join-3-star-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -446,8 +461,9 @@ queries:
     client_time: 300.7591128349304
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: minus-join-3-star-2 [MINUS JOIN star of three large predicates with the largest
-    sum of join sizes]
+  long_query: MINUS JOIN star of three large predicates with the largest sum of join
+    sizes
+- query: minus-join-3-star-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -464,8 +480,9 @@ queries:
   - count
   results:
   - - '"127901708"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-chain-1 [MINUS JOIN chain of three large predicates with the
-    largest sum of join sizes]
+  long_query: MINUS JOIN star of three large predicates with the largest sum of join
+    sizes
+- query: minus-join-3-chain-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -482,8 +499,9 @@ queries:
   - count
   results:
   - - '"922"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-chain-2 [MINUS JOIN chain of three large predicates with the
-    largest sum of join sizes]
+  long_query: MINUS JOIN chain of three large predicates with the largest sum of join
+    sizes
+- query: minus-join-3-chain-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -500,7 +518,9 @@ queries:
   - count
   results:
   - - '"10770"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
+  long_query: MINUS JOIN chain of three large predicates with the largest sum of join
+    sizes
+- query: exists-join-small-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -516,7 +536,8 @@ queries:
   - count
   results:
   - - '"1000"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
+  long_query: EXISTS JOIN of a small and a large predicate
+- query: exists-join-large-small
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -529,7 +550,8 @@ queries:
     client_time: 300.4679729938507
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: exists-join-large-large [EXISTS JOIN of two large predicates]
+  long_query: EXISTS JOIN of a large and a small predicate
+- query: exists-join-large-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -542,8 +564,8 @@ queries:
     client_time: 300.7643358707428
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: exists-join-2-large-large-with-large-result [EXISTS JOIN of two large predicates
-    with a reasonably large join result]
+  long_query: EXISTS JOIN of two large predicates
+- query: exists-join-2-large-large-with-large-result
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -556,8 +578,8 @@ queries:
     client_time: 300.7291970252991
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: exists-join-2-large-large-with-small-join-result-1 [EXISTS JOIN of two large
-    predicates with a small join result]
+  long_query: EXISTS JOIN of two large predicates with a reasonably large join result
+- query: exists-join-2-large-large-with-small-join-result-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -573,8 +595,8 @@ queries:
   - count
   results:
   - - '"29748245"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-small-join-result-2 [EXISTS JOIN of two large
-    predicates with a small join result]
+  long_query: EXISTS JOIN of two large predicates with a small join result
+- query: exists-join-2-large-large-with-small-join-result-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -590,8 +612,8 @@ queries:
   - count
   results:
   - - '"11561944"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-star-1 [EXISTS JOIN star of three large predicates with the
-    largest sum of join sizes]
+  long_query: EXISTS JOIN of two large predicates with a small join result
+- query: exists-join-3-star-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -605,8 +627,9 @@ queries:
     client_time: 300.07378220558167
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: exists-join-3-star-2 [EXISTS JOIN star of three large predicates with the
-    largest sum of join sizes]
+  long_query: EXISTS JOIN star of three large predicates with the largest sum of join
+    sizes
+- query: exists-join-3-star-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -623,8 +646,9 @@ queries:
   - count
   results:
   - - '"108029262"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-chain-1 [EXISTS JOIN chain of three large predicates with the
-    largest sum of join sizes]
+  long_query: EXISTS JOIN star of three large predicates with the largest sum of join
+    sizes
+- query: exists-join-3-chain-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -641,8 +665,9 @@ queries:
   - count
   results:
   - - '"315089523"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-chain-2 [EXISTS JOIN chain of three large predicates with the
-    largest sum of join sizes]
+  long_query: EXISTS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: exists-join-3-chain-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -659,7 +684,9 @@ queries:
   - count
   results:
   - - '"309631467"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-no-constraint [UNION of two large predicates, no constraint]
+  long_query: EXISTS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: union-no-constraint
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -678,8 +705,8 @@ queries:
   - count
   results:
   - - '"3989891752"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-from-star [UNION of two large predicates, constrained by
-    a large predicate known to have join partners]
+  long_query: UNION of two large predicates, no constraint
+- query: union-constraint-from-star
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -699,8 +726,9 @@ queries:
   - count
   results:
   - - '"3461507606"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-small-join [UNION of two large predicates, constrained by
-    a join with a small result]
+  long_query: UNION of two large predicates, constrained by a large predicate known
+    to have join partners
+- query: union-constraint-small-join
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -720,8 +748,8 @@ queries:
   - count
   results:
   - - '"111906031"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-large-join [UNION of two large predicates, constrained by
-    a join with a large result]
+  long_query: UNION of two large predicates, constrained by a join with a small result
+- query: union-constraint-large-join
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -741,8 +769,8 @@ queries:
   - count
   results:
   - - '"6396603056"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-filter-restrictive [UNION of two large predicates, constraint
-    by restrictive FILTER]
+  long_query: UNION of two large predicates, constrained by a join with a large result
+- query: union-constraint-filter-restrictive
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -762,7 +790,8 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: multicolumn-join-small [Multicolumn JOIN small]
+  long_query: UNION of two large predicates, constraint by restrictive FILTER
+- query: multicolumn-join-small
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -776,7 +805,8 @@ queries:
   - count
   results:
   - - '"43041"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: multicolumn-join-large [Multicolumn JOIN large]
+  long_query: Multicolumn JOIN small
+- query: multicolumn-join-large
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -790,8 +820,8 @@ queries:
   - count
   results:
   - - '"716504925"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-high-multiplicity [GROUP BY with COUNT, for object
-    with high multiplicity]
+  long_query: Multicolumn JOIN large
+- query: group-by-count-object-high-multiplicity
   sparql: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
@@ -813,8 +843,8 @@ queries:
     - '"527806"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q41329>
     - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-low-multiplicity [GROUP BY with COUNT, for object with
-    low multiplicity]
+  long_query: GROUP BY with COUNT, for object with high multiplicity
+- query: group-by-count-object-low-multiplicity
   sparql: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
@@ -827,8 +857,8 @@ queries:
     client_time: 303.2403447628021
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: group-by-count-object-wrong-sort-order [GROUP BY with COUNT, for object but
-    not sorted by object]
+  long_query: GROUP BY with COUNT, for object with low multiplicity
+- query: group-by-count-object-wrong-sort-order
   sparql: |-
     SELECT ?o1 (COUNT(?s) AS ?count)
     WHERE {
@@ -865,7 +895,8 @@ queries:
     - '"749"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://www.wikidata.org/entity/Q131359749>
     - '"542"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-complex-aggregate [GROUP BY with COUNT and MIN and MAX and SAMPLE]
+  long_query: GROUP BY with COUNT, for object but not sorted by object
+- query: group-by-complex-aggregate
   sparql: |-
     SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
     WHERE {
@@ -935,8 +966,8 @@ queries:
     - <http://www.wikidata.org/entity/Q108799700>
     - <http://www.wikidata.org/entity/Q52937709>
     - <http://www.wikidata.org/entity/Q36152811>
-- query: group-by-implicit-numeric-baseline [Implicit GROUP BY with COUNT on numeric
-    predicate as baseline]
+  long_query: GROUP BY with COUNT and MIN and MAX and SAMPLE
+- query: group-by-implicit-numeric-baseline
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
@@ -949,7 +980,8 @@ queries:
   - count
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-sum [Implicit GROUP BY with SUM on numeric predicate]
+  long_query: Implicit GROUP BY with COUNT on numeric predicate as baseline
+- query: group-by-implicit-numeric-sum
   sparql: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
@@ -962,7 +994,8 @@ queries:
   - sum
   results:
   - []
-- query: group-by-implicit-numeric-min [Implicit GROUP BY with MIN on numeric predicate]
+  long_query: Implicit GROUP BY with SUM on numeric predicate
+- query: group-by-implicit-numeric-min
   sparql: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
@@ -975,7 +1008,8 @@ queries:
   - min
   results:
   - - '"984175"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-max [Implicit GROUP BY with MAX on numeric predicate]
+  long_query: Implicit GROUP BY with MIN on numeric predicate
+- query: group-by-implicit-numeric-max
   sparql: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
@@ -988,7 +1022,8 @@ queries:
   - max
   results:
   - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-avg [Implicit GROUP BY with AVG on numeric predicate]
+  long_query: Implicit GROUP BY with MAX on numeric predicate
+- query: group-by-implicit-numeric-avg
   sparql: |-
     SELECT (AVG(?o) AS ?avg)
     WHERE {
@@ -1001,8 +1036,8 @@ queries:
   - avg
   results:
   - - '"2005535237.02"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-string-baseline [Implicit GROUP BY with COUNT on string
-    predicate as baseline]
+  long_query: Implicit GROUP BY with AVG on numeric predicate
+- query: group-by-implicit-string-baseline
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
@@ -1015,7 +1050,8 @@ queries:
   - count
   results:
   - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-string-min [Implicit GROUP BY with MIN on string predicate]
+  long_query: Implicit GROUP BY with COUNT on string predicate as baseline
+- query: group-by-implicit-string-min
   sparql: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
@@ -1028,7 +1064,8 @@ queries:
   - min
   results:
   - - '"!9'' o."@de'
-- query: group-by-implicit-string-max [Implicit GROUP BY with MAX on string predicate]
+  long_query: Implicit GROUP BY with MIN on string predicate
+- query: group-by-implicit-string-max
   sparql: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
@@ -1041,8 +1078,8 @@ queries:
   - max
   results:
   - - '"ऋऋल या पण"@dso'
-- query: group-by-string-groupconcat [GROUP BY with GROUP_CONCAT on string predicate
-    with high subject multiplicity]
+  long_query: Implicit GROUP BY with MAX on string predicate
+- query: group-by-string-groupconcat
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
     AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
@@ -1050,8 +1087,8 @@ queries:
     client_time: 200.37587523460388
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: distinct-count-object-high-multiplicity [COUNT DISTINCT, for object with
-    high multiplicity]
+  long_query: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
+- query: distinct-count-object-high-multiplicity
   sparql: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
@@ -1064,8 +1101,8 @@ queries:
   - count
   results:
   - - '"3"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: distinct-count-object-low-multiplicity [COUNT DISTINCT, for object with low
-    multiplicity]
+  long_query: COUNT DISTINCT, for object with high multiplicity
+- query: distinct-count-object-low-multiplicity
   sparql: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
@@ -1076,8 +1113,8 @@ queries:
   headers: []
   results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
     jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
-- query: distinct-count-object-wrong-sort-order [COUNT DISTINCT, for object but not
-    sorted by object]
+  long_query: COUNT DISTINCT, for object with low multiplicity
+- query: distinct-count-object-wrong-sort-order
   sparql: |-
     SELECT (COUNT(DISTINCT ?o1) AS ?count)
     WHERE {
@@ -1091,7 +1128,8 @@ queries:
   - count
   results:
   - - '"42"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-plus [Transitive path with plus]
+  long_query: COUNT DISTINCT, for object but not sorted by object
+- query: transitive-path-plus
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1104,8 +1142,8 @@ queries:
   - count
   results:
   - - '"12972038"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-plus-fixed-subject [Transitive path with plus and a fixed
-    subject]
+  long_query: Transitive path with plus
+- query: transitive-path-plus-fixed-subject
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1118,8 +1156,8 @@ queries:
   - count
   results:
   - - '"3519"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-large-join-and-plus [Transitive path with a large join and
-    plus]
+  long_query: Transitive path with plus and a fixed subject
+- query: transitive-path-large-join-and-plus
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1129,8 +1167,8 @@ queries:
     client_time: 300.26085209846497
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: transitive-path-small-join-and-plus [Transitive path with a small join and
-    plus]
+  long_query: Transitive path with a large join and plus
+- query: transitive-path-small-join-and-plus
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1143,7 +1181,8 @@ queries:
   - count
   results:
   - - '"159948"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
+  long_query: Transitive path with a small join and plus
+- query: regex-3-contains
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1154,7 +1193,8 @@ queries:
     client_time: 300.34417033195496
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: regex-3-fixed [REGEX filter with fixed string of length 3]
+  long_query: CONTAINS filter with fixed string of length 3
+- query: regex-3-fixed
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1165,7 +1205,8 @@ queries:
     client_time: 300.75252509117126
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: regex-3 [REGEX filter with expression of length 3]
+  long_query: REGEX filter with fixed string of length 3
+- query: regex-3
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1176,7 +1217,8 @@ queries:
     client_time: 300.67014598846436
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: regex-prefix-1 [REGEX filter with prefix of length 1]
+  long_query: REGEX filter with expression of length 3
+- query: regex-prefix-1
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1187,7 +1229,8 @@ queries:
     client_time: 300.6760952472687
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: regex-prefix-2 [REGEX filter with prefix of length 2]
+  long_query: REGEX filter with prefix of length 1
+- query: regex-prefix-2
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1198,7 +1241,8 @@ queries:
     client_time: 300.6416046619415
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: regex-prefix-3 [REGEX filter with prefix of length 3]
+  long_query: REGEX filter with prefix of length 2
+- query: regex-prefix-3
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1209,28 +1253,32 @@ queries:
     client_time: 300.6503403186798
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: strlen [String length for large string predicate]
+  long_query: REGEX filter with prefix of length 3
+- query: strlen
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 300.69162487983704
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: strbefore [STRBEFORE string function]
+  long_query: String length for large string predicate
+- query: strbefore
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 300.60246896743774
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: strafter [STRAFTER string function]
+  long_query: STRBEFORE string function
+- query: strafter
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 300.6513862609863
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: strstarts [STRSTARTS string function]
+  long_query: STRAFTER string function
+- query: strstarts
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o,
     "a"))) AS ?count) { ?s rdfs:label ?o }'
@@ -1241,7 +1289,8 @@ queries:
   - count
   results:
   - - '"589247"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: strends [STRENDS string function]
+  long_query: STRSTARTS string function
+- query: strends
   sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o,
     "a"))) AS ?count) { ?s rdfs:label ?o }'
@@ -1252,7 +1301,8 @@ queries:
   - count
   results:
   - - '"83145778"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: result-size-tiny [Export 10 tuples]
+  long_query: STRENDS string function
+- query: result-size-tiny
   sparql: |-
     SELECT ?s ?o
     WHERE {
@@ -1286,7 +1336,8 @@ queries:
     - '"*1563"@de'
   - - <http://www.wikidata.org/entity/Q76091498>
     - '"*1708"@de'
-- query: result-size-small [Export 1000 tuples]
+  long_query: Export 10 tuples
+- query: result-size-small
   sparql: |-
     SELECT ?s ?o
     WHERE {
@@ -1340,7 +1391,8 @@ queries:
     - '"*1888"@de'
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
-- query: result-size-medium [Export 100K tuples]
+  long_query: Export 1000 tuples
+- query: result-size-medium
   sparql: |-
     SELECT ?s ?o
     WHERE {
@@ -1394,7 +1446,8 @@ queries:
     - '"*1888"@de'
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
-- query: result-size-large [Export 1M tuples]
+  long_query: Export 100K tuples
+- query: result-size-large
   sparql: |-
     SELECT ?s ?o
     WHERE {
@@ -1448,7 +1501,8 @@ queries:
     - '"*1888"@de'
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
-- query: result-size-xlarge [Export 10M tuples]
+  long_query: Export 1M tuples
+- query: result-size-xlarge
   sparql: |-
     SELECT ?s ?o
     WHERE {
@@ -1502,7 +1556,8 @@ queries:
     - '"*1888"@de'
   - - <http://www.wikidata.org/entity/Q104822217>
     - '"*1926"@de'
-- query: numeric-baseline [Baseline for numeric queries]
+  long_query: Export 10M tuples
+- query: numeric-baseline
   sparql: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
@@ -1515,7 +1570,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-abs [ABS function]
+  long_query: Baseline for numeric queries
+- query: numeric-abs
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
@@ -1525,7 +1581,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-ceil [CEIL function]
+  long_query: ABS function
+- query: numeric-ceil
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
@@ -1535,7 +1592,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-floor [FLOOR function]
+  long_query: CEIL function
+- query: numeric-floor
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
@@ -1545,7 +1603,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-round [ROUND function]
+  long_query: FLOOR function
+- query: numeric-round
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
@@ -1555,7 +1614,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-add [Addition]
+  long_query: ROUND function
+- query: numeric-add
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
@@ -1565,7 +1625,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-greater [Greater than]
+  long_query: Addition
+- query: numeric-greater
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
@@ -1575,8 +1636,8 @@ queries:
   - sum
   results:
   - []
-- query: numeric-filter-bin-search-fifty-fifty [Numeric FILTER that filters out 50
-    percent of the values]
+  long_query: Greater than
+- query: numeric-filter-bin-search-fifty-fifty
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1590,8 +1651,8 @@ queries:
   - count
   results:
   - - '"60044100"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-seventy-thirty [Numeric FILTER that filters out
-    70 percent of the values]
+  long_query: Numeric FILTER that filters out 50 percent of the values
+- query: numeric-filter-bin-search-seventy-thirty
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1605,8 +1666,8 @@ queries:
   - count
   results:
   - - '"36026461"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-ninetyfive-five [Numeric FILTER that filters out
-    95 percent of the values]
+  long_query: Numeric FILTER that filters out 70 percent of the values
+- query: numeric-filter-bin-search-ninetyfive-five
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1620,7 +1681,8 @@ queries:
   - count
   results:
   - - '"6004411"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-few-results [FILTER that filters out most rows and has few results]
+  long_query: Numeric FILTER that filters out 95 percent of the values
+- query: filter-few-results
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1634,7 +1696,8 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-many-results [FILTER that filters out few rows and has many results]
+  long_query: FILTER that filters out most rows and has few results
+- query: filter-many-results
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1648,7 +1711,8 @@ queries:
   - count
   results:
   - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-language-en [FILTER on string predicate for only English literals]
+  long_query: FILTER that filters out few rows and has many results
+- query: filter-language-en
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1659,7 +1723,8 @@ queries:
     client_time: 300.540048122406
   headers: []
   results: 'Empty result: curl returned with code 200, but the result is empty'
-- query: date-year [YEAR function]
+  long_query: FILTER on string predicate for only English literals
+- query: date-year
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
@@ -1669,7 +1734,8 @@ queries:
   - sum
   results:
   - - '"242979680415"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: date-month [MONTH function]
+  long_query: YEAR function
+- query: date-month
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
@@ -1679,7 +1745,8 @@ queries:
   - sum
   results:
   - - '"741944503"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: date-day [DAY function]
+  long_query: MONTH function
+- query: date-day
   sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
     SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
@@ -1689,7 +1756,8 @@ queries:
   - sum
   results:
   - - '"1845375552"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-triples [Total number of triples]
+  long_query: DAY function
+- query: number-of-triples
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1702,7 +1770,8 @@ queries:
   - count
   results:
   - - '"7941293818"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-subjects [Total number of distinct subjects]
+  long_query: Total number of triples
+- query: number-of-subjects
   sparql: |-
     SELECT (COUNT(DISTINCT ?s) AS ?count)
     WHERE {
@@ -1713,7 +1782,8 @@ queries:
   headers: []
   results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
     jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
-- query: number-of-predicates [Total number of distinct predicates]
+  long_query: Total number of distinct subjects
+- query: number-of-predicates
   sparql: |-
     SELECT (COUNT(DISTINCT ?p) AS ?count)
     WHERE {
@@ -1726,7 +1796,8 @@ queries:
   - count
   results:
   - - '"12377"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-objects [Total number of distinct objects]
+  long_query: Total number of distinct predicates
+- query: number-of-objects
   sparql: |-
     SELECT (COUNT(DISTINCT ?o) AS ?count)
     WHERE {
@@ -1737,7 +1808,8 @@ queries:
   headers: []
   results: 'Malformed JSON: curl returned with code 200, but the JSON is malformed:
     jq: parse error: Unfinished JSON term at EOF at line 1, column 50'
-- query: number-of-literals [Total number of literals]
+  long_query: Total number of distinct objects
+- query: number-of-literals
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
@@ -1751,7 +1823,8 @@ queries:
   - count
   results:
   - - '"6627010868"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-blank-nodes [Total number of blank nodes]
+  long_query: Total number of literals
+- query: number-of-blank-nodes
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1765,3 +1838,7 @@ queries:
   - count
   results:
   - - '"37623"^^<http://www.w3.org/2001/XMLSchema#integer>'
+  long_query: Total number of blank nodes
+index_description: Wikidata Truthy from https://dumps.wikimedia.org/wikidatawiki/entities/latest-truthy.nt.gz,
+  ~8 billion triples
+timeout: 300
