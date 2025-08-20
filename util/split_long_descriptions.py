@@ -1,9 +1,9 @@
+# Script to migrate result yamls to the new format expected by the web app
+# (with descriptions split into short and long)
 import re
 from pathlib import Path
-
+import argparse
 import yaml
-
-YAML_FILE_PATH = Path(".")
 
 INDEX_DESCRIPTION = {
     "yago-4": "Full dump from https://yago-knowledge.org/downloads/yago-4, version 12.03.2020, ~2.5 billion triples",
@@ -37,19 +37,19 @@ def split_query_description(query: str) -> tuple[str, str]:
         return query, ""
 
 
-for yaml_file in YAML_FILE_PATH.glob("*.results.yaml"):
+def migrate_yaml(yaml_file: Path):
     if yaml_file.suffix != ".yaml":
-        continue
+        return
     filename = yaml_file.stem
     filename_parts = filename.split(".")
     if len(filename_parts) != 3:
-        continue
+        return
     with open(yaml_file, "r", encoding="utf-8") as q_file:
         try:
             data = yaml.safe_load(q_file)  # Load YAML safely
         except yaml.YAMLError as exc:
             print(f"Error parsing {yaml_file} file: {exc}")
-            continue
+            return
     dataset = filename_parts[0]
     for index in INDEX_DESCRIPTION:
         if index in dataset:
@@ -68,3 +68,24 @@ for yaml_file in YAML_FILE_PATH.glob("*.results.yaml"):
     with open(yaml_file, "w") as f:
         yaml.dump(data, f, sort_keys=False,
                   Dumper=MultiLineDumper, allow_unicode=True,)
+
+
+def command_line_args() -> argparse.Namespace:
+    """
+    Parse the command line arguments and return them
+    """
+    arg_parser = argparse.ArgumentParser(
+        description="""
+        This helper migrates result yamls to the new format expected by the web
+        app with two-part query descriptions (identifier and explanation). 
+        """)
+    arg_parser.add_argument(
+        "yaml_files", nargs='+', type=str,
+        help="The result yaml files to be modified.")
+    return arg_parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = command_line_args()
+    for f in args.yaml_files:
+        migrate_yaml(f)
