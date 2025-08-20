@@ -41,7 +41,7 @@ queries:
   - count
   results:
   - - '"30668612493"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
+- query: join-2-largest-result [JOIN of two predicates with the largest possible result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -55,7 +55,8 @@ queries:
   - count
   results:
   - - '"65099859287"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-2-large-large-with-large-res ... s with a reasonably large result]
+- query: join-2-large-large-with-large-result [JOIN of two large predicates with a
+    reasonably large result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -69,7 +70,8 @@ queries:
   - count
   results:
   - - '"6092272179"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-2-large-large-with-small-res ... e predicates with a small result]
+- query: join-2-large-large-with-small-result [JOIN of two large predicates with a
+    small result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -83,7 +85,8 @@ queries:
   - count
   results:
   - - '"29750145"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
+- query: join-3-star-largest-sum-of-join-sizes [JOIN star of three large predicates
+    with the largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -98,7 +101,8 @@ queries:
   - count
   results:
   - - '"3345167144"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
+- query: join-3-chain-largest-sum-of-join-sizes [JOIN chain of three large predicates
+    with the largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -113,7 +117,7 @@ queries:
   - count
   results:
   - - '"16176593578"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
+- query: join-xlarge-star-on-small-predicates [JOIN star of many small predicates]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -150,7 +154,7 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
+- query: join-xlarge-chain-on-small-predicates [JOIN chain of many small predicates]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -187,7 +191,7 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-small-large [OPTION ... of a small and a large predicate]
+- query: optional-join-small-large [OPTIONAL JOIN of a small and a large predicate]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -203,7 +207,7 @@ queries:
   - count
   results:
   - - '"33706"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-large-small [OPTION ... of a large and a small predicate]
+- query: optional-join-large-small [OPTIONAL JOIN of a large and a small predicate]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -235,7 +239,8 @@ queries:
   - count
   results:
   - - '"30673320904"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-2-large-large-with- ... h a reasonably large join result]
+- query: optional-join-2-large-large-with-large-result [OPTIONAL JOIN of two large
+    predicates with a reasonably large join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -251,7 +256,8 @@ queries:
   - count
   results:
   - - '"7679383970"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
+- query: optional-join-2-large-large-with-small-join-result-1 [OPTIONAL JOIN of two
+    large predicates with a small join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -267,7 +273,8 @@ queries:
   - count
   results:
   - - '"33959393"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
+- query: optional-join-2-large-large-with-small-join-result-2 [OPTIONAL JOIN of two
+    large predicates with a small join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -283,7 +290,8 @@ queries:
   - count
   results:
   - - '"58200974"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
+- query: optional-join-3-star-1 [OPTIONAL JOIN star of three large predicates with
+    the largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -300,7 +308,8 @@ queries:
   - count
   results:
   - - '"3346689978"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
+- query: optional-join-3-star-2 [OPTIONAL JOIN star of three large predicates with
+    the largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -317,7 +326,8 @@ queries:
   - count
   results:
   - - '"3473068852"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
+- query: optional-join-3-chain-1 [OPTIONAL JOIN chain of three large predicates with
+    the largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -334,7 +344,8 @@ queries:
   - count
   results:
   - - '"16176594500"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
+- query: optional-join-3-chain-2 [OPTIONAL JOIN chain of three large predicates with
+    the largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -399,7 +410,8 @@ queries:
   - count
   results:
   - - '"4708411"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
+- query: minus-join-2-large-large-with-large-result [MINUS JOIN of two large predicates
+    with a reasonably large join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -415,7 +427,8 @@ queries:
   - count
   results:
   - - '"1587111791"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+- query: minus-join-2-large-large-with-small-join-result-1 [MINUS JOIN of two large
+    predicates with a small join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -431,7 +444,8 @@ queries:
   - count
   results:
   - - '"4209248"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
+- query: minus-join-2-large-large-with-small-join-result-2 [MINUS JOIN of two large
+    predicates with a small join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -447,7 +461,8 @@ queries:
   - count
   results:
   - - '"28450829"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
+- query: minus-join-3-star-1 [MINUS JOIN star of three large predicates with the largest
+    sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -464,7 +479,8 @@ queries:
   - count
   results:
   - - '"1522834"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
+- query: minus-join-3-star-2 [MINUS JOIN star of three large predicates with the largest
+    sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -481,7 +497,8 @@ queries:
   - count
   results:
   - - '"127901708"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
+- query: minus-join-3-chain-1 [MINUS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -498,7 +515,8 @@ queries:
   - count
   results:
   - - '"922"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
+- query: minus-join-3-chain-2 [MINUS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -563,7 +581,8 @@ queries:
   - count
   results:
   - - '"3268678416"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
+- query: exists-join-2-large-large-with-large-result [EXISTS JOIN of two large predicates
+    with a reasonably large join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -579,7 +598,8 @@ queries:
   - count
   results:
   - - '"1686275036"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+- query: exists-join-2-large-large-with-small-join-result-1 [EXISTS JOIN of two large
+    predicates with a small join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -595,7 +615,8 @@ queries:
   - count
   results:
   - - '"29748245"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
+- query: exists-join-2-large-large-with-small-join-result-2 [EXISTS JOIN of two large
+    predicates with a small join result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -611,7 +632,8 @@ queries:
   - count
   results:
   - - '"11561944"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
+- query: exists-join-3-star-1 [EXISTS JOIN star of three large predicates with the
+    largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -628,7 +650,8 @@ queries:
   - count
   results:
   - - '"3273154906"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
+- query: exists-join-3-star-2 [EXISTS JOIN star of three large predicates with the
+    largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -645,7 +668,8 @@ queries:
   - count
   results:
   - - '"108029262"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
+- query: exists-join-3-chain-1 [EXISTS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -662,7 +686,8 @@ queries:
   - count
   results:
   - - '"315089523"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
+- query: exists-join-3-chain-2 [EXISTS JOIN chain of three large predicates with the
+    largest sum of join sizes]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -698,7 +723,8 @@ queries:
   - count
   results:
   - - '"3989891752"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: union-constraint-from-star [UNION ... cate known to have join partners]
+- query: union-constraint-from-star [UNION of two large predicates, constrained by
+    a large predicate known to have join partners]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -718,7 +744,8 @@ queries:
   - count
   results:
   - - '"3461507606"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
+- query: union-constraint-small-join [UNION of two large predicates, constrained by
+    a join with a small result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -738,7 +765,8 @@ queries:
   - count
   results:
   - - '"111906031"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
+- query: union-constraint-large-join [UNION of two large predicates, constrained by
+    a join with a large result]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -758,7 +786,8 @@ queries:
   - count
   results:
   - - '"6396603056"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
+- query: union-constraint-filter-restrictive [UNION of two large predicates, constraint
+    by restrictive FILTER]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -806,7 +835,8 @@ queries:
   - count
   results:
   - - '"716504925"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-count-object-high-multip ... or object with high multiplicity]
+- query: group-by-count-object-high-multiplicity [GROUP BY with COUNT, for object
+    with high multiplicity]
   sparql: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
@@ -828,7 +858,8 @@ queries:
     - '"527806"^^<http://www.w3.org/2001/XMLSchema#int>'
   - - <http://www.wikidata.org/entity/Q41329>
     - '"1"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-count-object-low-multipl ... for object with low multiplicity]
+- query: group-by-count-object-low-multiplicity [GROUP BY with COUNT, for object with
+    low multiplicity]
   sparql: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
@@ -864,7 +895,8 @@ queries:
     - '"9680"^^<http://www.w3.org/2001/XMLSchema#int>'
   - - '"Erratum"@en'
     - '"9312"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
+- query: group-by-count-object-wrong-sort-order [GROUP BY with COUNT, for object but
+    not sorted by object]
   sparql: |-
     SELECT ?o1 (COUNT(?s) AS ?count)
     WHERE {
@@ -901,7 +933,7 @@ queries:
     - '"749"^^<http://www.w3.org/2001/XMLSchema#int>'
   - - <http://www.wikidata.org/entity/Q131359749>
     - '"542"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
+- query: group-by-complex-aggregate [GROUP BY with COUNT and MIN and MAX and SAMPLE]
   sparql: |-
     SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
     WHERE {
@@ -971,7 +1003,8 @@ queries:
     - <http://www.wikidata.org/entity/Q108799700>
     - <http://www.wikidata.org/entity/Q52937709>
     - <http://www.wikidata.org/entity/Q108799700>
-- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
+- query: group-by-implicit-numeric-baseline [Implicit GROUP BY with COUNT on numeric
+    predicate as baseline]
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
@@ -984,7 +1017,7 @@ queries:
   - count
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
+- query: group-by-implicit-numeric-sum [Implicit GROUP BY with SUM on numeric predicate]
   sparql: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
@@ -997,7 +1030,7 @@ queries:
   - sum
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
+- query: group-by-implicit-numeric-min [Implicit GROUP BY with MIN on numeric predicate]
   sparql: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
@@ -1010,7 +1043,7 @@ queries:
   - min
   results:
   - - '"984175"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
+- query: group-by-implicit-numeric-max [Implicit GROUP BY with MAX on numeric predicate]
   sparql: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
@@ -1023,7 +1056,7 @@ queries:
   - max
   results:
   - - '"2339172630"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
+- query: group-by-implicit-numeric-avg [Implicit GROUP BY with AVG on numeric predicate]
   sparql: |-
     SELECT (AVG(?o) AS ?avg)
     WHERE {
@@ -1036,7 +1069,8 @@ queries:
   - avg
   results:
   - - '"2.00554e+09"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
+- query: group-by-implicit-string-baseline [Implicit GROUP BY with COUNT on string
+    predicate as baseline]
   sparql: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
@@ -1049,7 +1083,7 @@ queries:
   - count
   results:
   - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
+- query: group-by-implicit-string-min [Implicit GROUP BY with MIN on string predicate]
   sparql: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
@@ -1062,7 +1096,7 @@ queries:
   - min
   results:
   - - '"​"@th'
-- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
+- query: group-by-implicit-string-max [Implicit GROUP BY with MAX on string predicate]
   sparql: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
@@ -1075,9 +1109,11 @@ queries:
   - max
   results:
   - - '"󰡔조선신보󰡕의 배일사상을 변론하는 말"@ko'
-- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }
+- query: group-by-string-groupconcat [GROUP BY with GROUP_CONCAT on string predicate
+    with high subject multiplicity]
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ")
+    AS ?cat) { ?s schema:description ?o } GROUP BY ?s } }'
   runtime_info:
     client_time: 302.2687494754791
   headers: []
@@ -1115,7 +1151,8 @@ queries:
     0, "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
     0, "status": "failed", "total_time": 0 }, "status": "ERROR", "time": { "computeResult":
     302264, "total": 302264 } }'
-- query: distinct-count-object-high-multip ... or object with high multiplicity]
+- query: distinct-count-object-high-multiplicity [COUNT DISTINCT, for object with
+    high multiplicity]
   sparql: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
@@ -1128,7 +1165,8 @@ queries:
   - count
   results:
   - - '"3"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: distinct-count-object-low-multipl ... for object with low multiplicity]
+- query: distinct-count-object-low-multiplicity [COUNT DISTINCT, for object with low
+    multiplicity]
   sparql: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
@@ -1141,7 +1179,8 @@ queries:
   - count
   results:
   - - '"669534108"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
+- query: distinct-count-object-wrong-sort-order [COUNT DISTINCT, for object but not
+    sorted by object]
   sparql: |-
     SELECT (COUNT(DISTINCT ?o1) AS ?count)
     WHERE {
@@ -1168,7 +1207,8 @@ queries:
   - count
   results:
   - - '"12972038"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
+- query: transitive-path-plus-fixed-subject [Transitive path with plus and a fixed
+    subject]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1181,7 +1221,8 @@ queries:
   - count
   results:
   - - '"3519"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
+- query: transitive-path-large-join-and-plus [Transitive path with a large join and
+    plus]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1226,7 +1267,8 @@ queries:
     "original_operation_time": 0, "original_total_time": 0, "result_cols": 1, "result_rows":
     0, "status": "cancelled", "total_time": 299992 }, "status": "ERROR", "time": {
     "computeResult": 300000, "total": 300000 } }'
-- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
+- query: transitive-path-small-join-and-plus [Transitive path with a small join and
+    plus]
   sparql: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
@@ -1324,8 +1366,8 @@ queries:
   results:
   - - '"1878503"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strlen [String length for large string predicate]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 114.07735538482666
   result_size: 1
@@ -1334,8 +1376,8 @@ queries:
   results:
   - - '"17104652934"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strbefore [STRBEFORE string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 150.0299391746521
   result_size: 1
@@ -1344,8 +1386,8 @@ queries:
   results:
   - - '"2938346204"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strafter [STRAFTER string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 154.86471819877625
   result_size: 1
@@ -1354,8 +1396,9 @@ queries:
   results:
   - - '"10922757459"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strstarts [STRSTARTS string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRSTARTS(?o,
+    "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 117.91078591346741
   result_size: 1
@@ -1364,8 +1407,9 @@ queries:
   results:
   - - '"589247"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: strends [STRENDS string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(xsd:integer(STRENDS(?o,
+    "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 118.14481043815613
   result_size: 1
@@ -1658,8 +1702,8 @@ queries:
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-abs [ABS function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
     client_time: 1.3556349277496338
   result_size: 1
@@ -1668,8 +1712,8 @@ queries:
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-ceil [CEIL function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
     client_time: 1.338902235031128
   result_size: 1
@@ -1678,8 +1722,8 @@ queries:
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-floor [FLOOR function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
     client_time: 1.3323092460632324
   result_size: 1
@@ -1688,8 +1732,8 @@ queries:
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-round [ROUND function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
     client_time: 1.3638916015625
   result_size: 1
@@ -1698,8 +1742,8 @@ queries:
   results:
   - - '"240841116650541067"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-add [Addition]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
     client_time: 1.9761238098144531
   result_size: 1
@@ -1708,8 +1752,8 @@ queries:
   results:
   - - '"481682233301082134"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: numeric-greater [Greater than]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s schema:version ?o }'
   runtime_info:
     client_time: 1.1115148067474365
   result_size: 1
@@ -1717,7 +1761,8 @@ queries:
   - sum
   results:
   - - '"120088200"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
+- query: numeric-filter-bin-search-fifty-fifty [Numeric FILTER that filters out 50
+    percent of the values]
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1731,7 +1776,8 @@ queries:
   - count
   results:
   - - '"60044100"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
+- query: numeric-filter-bin-search-seventy-thirty [Numeric FILTER that filters out
+    70 percent of the values]
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1745,7 +1791,8 @@ queries:
   - count
   results:
   - - '"36026461"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
+- query: numeric-filter-bin-search-ninetyfive-five [Numeric FILTER that filters out
+    95 percent of the values]
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1759,7 +1806,7 @@ queries:
   - count
   results:
   - - '"6004411"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: filter-few-results [FILTER that f ... ut most rows and has few results]
+- query: filter-few-results [FILTER that filters out most rows and has few results]
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1773,7 +1820,7 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: filter-many-results [FILTER that  ... ut few rows and has many results]
+- query: filter-many-results [FILTER that filters out few rows and has many results]
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1787,7 +1834,7 @@ queries:
   - count
   results:
   - - '"3273386827"^^<http://www.w3.org/2001/XMLSchema#int>'
-- query: filter-language-en [FILTER on str ... dicate for only English literals]
+- query: filter-language-en [FILTER on string predicate for only English literals]
   sparql: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
@@ -1802,8 +1849,8 @@ queries:
   results:
   - - '"97587180"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-year [YEAR function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
     client_time: 1.2399694919586182
   result_size: 1
@@ -1812,8 +1859,8 @@ queries:
   results:
   - - '"242979680415"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-month [MONTH function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
     client_time: 1.614170789718628
   result_size: 1
@@ -1822,8 +1869,8 @@ queries:
   results:
   - - '"741944503"^^<http://www.w3.org/2001/XMLSchema#int>'
 - query: date-day [DAY function]
-  sparql: |-
-    PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }
+  sparql: 'PREFIX schema: <http://schema.org/> PREFIX p: <http://www.wikidata.org/prop/>
+    SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s schema:dateModified ?o }'
   runtime_info:
     client_time: 1.6252353191375732
   result_size: 1
