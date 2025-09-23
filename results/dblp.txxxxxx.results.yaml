@@ -1,7 +1,5 @@
-timeout: 180
 queries:
-- query: join-2-small-large [JOIN of a small and a large predicate]
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -14,8 +12,9 @@ queries:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-small [JOIN of a large and a small predicate]
-  sparql: |-
+  name: join-2-small-large
+  description: JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -28,8 +27,9 @@ queries:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large [JOIN of two large predicates]
-  sparql: |-
+  name: join-2-large-small
+  description: JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -42,8 +42,9 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-largest-result [JOIN of tw ... with the largest possible result]
-  sparql: |-
+  name: join-2-large-large
+  description: JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -56,8 +57,9 @@ queries:
   - count
   results:
   - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large-with-large-res ... s with a reasonably large result]
-  sparql: |-
+  name: join-2-largest-result
+  description: JOIN of two predicates with the largest possible result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -70,8 +72,9 @@ queries:
   - count
   results:
   - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-2-large-large-with-small-res ... e predicates with a small result]
-  sparql: |-
+  name: join-2-large-large-with-large-result
+  description: JOIN of two large predicates with a reasonably large result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -84,8 +87,9 @@ queries:
   - count
   results:
   - - '"2143"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-star-largest-sum-of-join-s ... th the largest sum of join sizes]
-  sparql: |-
+  name: join-2-large-large-with-small-result
+  description: JOIN of two large predicates with a small result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -99,8 +103,9 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-3-chain-largest-sum-of-join- ... th the largest sum of join sizes]
-  sparql: |-
+  name: join-3-star-largest-sum-of-join-sizes
+  description: JOIN star of three large predicates with the largest sum of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -114,8 +119,9 @@ queries:
   - count
   results:
   - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-star-on-small-predica ... IN star of many small predicates]
-  sparql: |-
+  name: join-3-chain-largest-sum-of-join-sizes
+  description: JOIN chain of three large predicates with the largest sum of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o0 .
@@ -149,8 +155,9 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: join-xlarge-chain-on-small-predic ... N chain of many small predicates]
-  sparql: |-
+  name: join-xlarge-star-on-small-predicates
+  description: JOIN star of many small predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?v0 dblp:formerStreamTitle ?v1 .
@@ -184,8 +191,9 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-small-large [OPTION ... of a small and a large predicate]
-  sparql: |-
+  name: join-xlarge-chain-on-small-predicates
+  description: JOIN chain of many small predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -200,8 +208,9 @@ queries:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-large-small [OPTION ... of a large and a small predicate]
-  sparql: |-
+  name: optional-join-small-large
+  description: OPTIONAL JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -216,8 +225,9 @@ queries:
   - count
   results:
   - - '"113787960"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-large-large [OPTIONAL JOIN of two large predicates]
-  sparql: |-
+  name: optional-join-large-small
+  description: OPTIONAL JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -232,8 +242,9 @@ queries:
   - count
   results:
   - - '"150254678"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-2-large-large-with- ... h a reasonably large join result]
-  sparql: |-
+  name: optional-join-large-large
+  description: OPTIONAL JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -248,8 +259,10 @@ queries:
   - count
   results:
   - - '"126720580"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: |-
+  name: optional-join-2-large-large-with-large-result
+  description: OPTIONAL JOIN of two large predicates with a reasonably large join
+    result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -264,8 +277,9 @@ queries:
   - count
   results:
   - - '"3725467"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-2-large-large-with- ... dicates with a small join result]
-  sparql: |-
+  name: optional-join-2-large-large-with-small-join-result-1
+  description: OPTIONAL JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInJournalVolume ?o1 .
@@ -280,8 +294,9 @@ queries:
   - count
   results:
   - - '"3803982"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-star-1 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: |-
+  name: optional-join-2-large-large-with-small-join-result-2
+  description: OPTIONAL JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -297,8 +312,10 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-star-2 [OPTIONAL  ... th the largest sum of join sizes]
-  sparql: |-
+  name: optional-join-3-star-1
+  description: OPTIONAL JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -314,8 +331,10 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-chain-1 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: |-
+  name: optional-join-3-star-2
+  description: OPTIONAL JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -331,8 +350,10 @@ queries:
   - count
   results:
   - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: optional-join-3-chain-2 [OPTIONAL ... th the largest sum of join sizes]
-  sparql: |-
+  name: optional-join-3-chain-1
+  description: OPTIONAL JOIN chain of three large predicates with the largest sum
+    of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -348,8 +369,10 @@ queries:
   - count
   results:
   - - '"275319852"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-small-large [MINUS JOIN of a small and a large predicate]
-  sparql: |-
+  name: optional-join-3-chain-2
+  description: OPTIONAL JOIN chain of three large predicates with the largest sum
+    of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -364,8 +387,9 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-large-small [MINUS JOIN of a large and a small predicate]
-  sparql: |-
+  name: minus-join-small-large
+  description: MINUS JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -380,8 +404,9 @@ queries:
   - count
   results:
   - - '"113785964"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-large-large [MINUS JOIN of two large predicates]
-  sparql: |-
+  name: minus-join-large-small
+  description: MINUS JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -396,8 +421,9 @@ queries:
   - count
   results:
   - - '"98363426"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-lar ... h a reasonably large join result]
-  sparql: |-
+  name: minus-join-large-large
+  description: MINUS JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -412,8 +438,9 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: |-
+  name: minus-join-2-large-large-with-large-result
+  description: MINUS JOIN of two large predicates with a reasonably large join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -428,8 +455,9 @@ queries:
   - count
   results:
   - - '"3723324"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-2-large-large-with-sma ... dicates with a small join result]
-  sparql: |-
+  name: minus-join-2-large-large-with-small-join-result-1
+  description: MINUS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInJournalVolume ?o1 .
@@ -444,8 +472,9 @@ queries:
   - count
   results:
   - - '"3801839"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-star-1 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: |-
+  name: minus-join-2-large-large-with-small-join-result-2
+  description: MINUS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -461,8 +490,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-star-2 [MINUS JOIN s ... th the largest sum of join sizes]
-  sparql: |-
+  name: minus-join-3-star-1
+  description: MINUS JOIN star of three large predicates with the largest sum of join
+    sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -478,8 +509,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-chain-1 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: |-
+  name: minus-join-3-star-2
+  description: MINUS JOIN star of three large predicates with the largest sum of join
+    sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -495,8 +528,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: minus-join-3-chain-2 [MINUS JOIN  ... th the largest sum of join sizes]
-  sparql: |-
+  name: minus-join-3-chain-1
+  description: MINUS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -512,8 +547,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-small-large [EXISTS JOIN of a small and a large predicate]
-  sparql: |-
+  name: minus-join-3-chain-2
+  description: MINUS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -528,8 +565,9 @@ queries:
   - count
   results:
   - - '"998"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-large-small [EXISTS JOIN of a large and a small predicate]
-  sparql: |-
+  name: exists-join-small-large
+  description: EXISTS JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -544,8 +582,9 @@ queries:
   - count
   results:
   - - '"1630"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-large-large [EXISTS JOIN of two large predicates]
-  sparql: |-
+  name: exists-join-large-small
+  description: EXISTS JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -560,8 +599,9 @@ queries:
   - count
   results:
   - - '"15424168"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-la ... h a reasonably large join result]
-  sparql: |-
+  name: exists-join-large-large
+  description: EXISTS JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -576,8 +616,9 @@ queries:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: |-
+  name: exists-join-2-large-large-with-large-result
+  description: EXISTS JOIN of two large predicates with a reasonably large join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -592,8 +633,9 @@ queries:
   - count
   results:
   - - '"2143"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-2-large-large-with-sm ... dicates with a small join result]
-  sparql: |-
+  name: exists-join-2-large-large-with-small-join-result-1
+  description: EXISTS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInJournalVolume ?o1 .
@@ -608,8 +650,9 @@ queries:
   - count
   results:
   - - '"2143"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-star-1 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: |-
+  name: exists-join-2-large-large-with-small-join-result-2
+  description: EXISTS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -625,8 +668,10 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-star-2 [EXISTS JOIN ... th the largest sum of join sizes]
-  sparql: |-
+  name: exists-join-3-star-1
+  description: EXISTS JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -642,8 +687,10 @@ queries:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-chain-1 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: |-
+  name: exists-join-3-star-2
+  description: EXISTS JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -659,8 +706,10 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: exists-join-3-chain-2 [EXISTS JOI ... th the largest sum of join sizes]
-  sparql: |-
+  name: exists-join-3-chain-1
+  description: EXISTS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -676,8 +725,10 @@ queries:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-no-constraint [UNION of two large predicates, no constraint]
-  sparql: |-
+  name: exists-join-3-chain-2
+  description: EXISTS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -695,8 +746,9 @@ queries:
   - count
   results:
   - - '"139733220"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-from-star [UNION ... cate known to have join partners]
-  sparql: |-
+  name: union-no-constraint
+  description: UNION of two large predicates, no constraint
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -715,8 +767,10 @@ queries:
   - count
   results:
   - - '"77836878"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-small-join [UNIO ... ed by a join with a small result]
-  sparql: |-
+  name: union-constraint-from-star
+  description: UNION of two large predicates, constrained by a large predicate known
+    to have join partners
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -735,8 +789,9 @@ queries:
   - count
   results:
   - - '"3833938"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-large-join [UNIO ... ed by a join with a large result]
-  sparql: |-
+  name: union-constraint-small-join
+  description: UNION of two large predicates, constrained by a join with a small result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -755,8 +810,9 @@ queries:
   - count
   results:
   - - '"178610994"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: union-constraint-filter-restricti ... constraint by restrictive FILTER]
-  sparql: |-
+  name: union-constraint-large-join
+  description: UNION of two large predicates, constrained by a join with a large result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -772,8 +828,9 @@ queries:
     client_time: 180.00816130638123
   headers: []
   results: 'HTTP code: 408: '
-- query: multicolumn-join-small [Multicolumn JOIN small]
-  sparql: |-
+  name: union-constraint-filter-restrictive
+  description: UNION of two large predicates, constraint by restrictive FILTER
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:subStream ?o .
@@ -786,8 +843,9 @@ queries:
   - count
   results:
   - - '"1198"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: multicolumn-join-large [Multicolumn JOIN large]
-  sparql: |-
+  name: multicolumn-join-small
+  description: Multicolumn JOIN small
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:createdBy ?o .
@@ -800,8 +858,9 @@ queries:
   - count
   results:
   - - '"25788228"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-high-multip ... or object with high multiplicity]
-  sparql: |-
+  name: multicolumn-join-large
+  description: Multicolumn JOIN large
+- query: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
       ?subject rdf:type ?object .
@@ -836,8 +895,9 @@ queries:
     - '"3652261"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <https://dblp.org/rdf/schema#Article>
     - '"3039856"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-count-object-low-multipl ... for object with low multiplicity]
-  sparql: |-
+  name: group-by-count-object-high-multiplicity
+  description: GROUP BY with COUNT, for object with high multiplicity
+- query: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
       ?subject dblp:hasSignature ?object .
@@ -849,8 +909,9 @@ queries:
     client_time: 180.00695729255676
   headers: []
   results: 'HTTP code: 408: '
-- query: group-by-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: |-
+  name: group-by-count-object-low-multiplicity
+  description: GROUP BY with COUNT, for object with low multiplicity
+- query: |-
     SELECT ?o1 (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:bibtexType ?o1 .
@@ -882,8 +943,9 @@ queries:
     - '"37541"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <http://purl.org/net/nknouf/ns/bibtex#Mastersthesis>
     - '"27"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-complex-aggregate [GROUP ... COUNT and MIN and MAX and SAMPLE]
-  sparql: |-
+  name: group-by-count-object-wrong-sort-order
+  description: GROUP BY with COUNT, for object but not sorted by object
+- query: |-
     SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
     WHERE {
       ?s dblp:bibtexType ?o1 .
@@ -896,8 +958,9 @@ queries:
     client_time: 180.01073837280273
   headers: []
   results: 'HTTP code: 408: '
-- query: group-by-implicit-numeric-baselin ... on numeric predicate as baseline]
-  sparql: |-
+  name: group-by-complex-aggregate
+  description: GROUP BY with COUNT and MIN and MAX and SAMPLE
+- query: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -909,8 +972,9 @@ queries:
   - count
   results:
   - - '"7770097"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-sum [Im ... BY with SUM on numeric predicate]
-  sparql: |-
+  name: group-by-implicit-numeric-baseline
+  description: Implicit GROUP BY with COUNT on numeric predicate as baseline
+- query: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -922,8 +986,9 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-min [Im ... BY with MIN on numeric predicate]
-  sparql: |-
+  name: group-by-implicit-numeric-sum
+  description: Implicit GROUP BY with SUM on numeric predicate
+- query: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -935,8 +1000,9 @@ queries:
   - min
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-max [Im ... BY with MAX on numeric predicate]
-  sparql: |-
+  name: group-by-implicit-numeric-min
+  description: Implicit GROUP BY with MIN on numeric predicate
+- query: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -948,8 +1014,9 @@ queries:
   - max
   results:
   - - '"450"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-numeric-avg [Im ... BY with AVG on numeric predicate]
-  sparql: |-
+  name: group-by-implicit-numeric-max
+  description: Implicit GROUP BY with MAX on numeric predicate
+- query: |-
     SELECT (AVG(?o) AS ?avg)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -961,8 +1028,9 @@ queries:
   - avg
   results:
   - - '"3.3391637195777607409534269649400773246460114976685619240017209566367060797310509765836900105622877037442389715340747998384061357277779157711930751958437584498623376259009379162190639318917125487622612690678121521520259013497514895888687103906167451963598395232388990768068918573345995551921681286604272765191991811685233787943702633313329293057731454317751760370559080536575026026058619345421299116343077827728534148286694490429141360783526898055455420955491289233583570449635313433024066494922778956298743760856524699756000472066178839208828409735425439347797073833183807100477638824843499379737473032833438244078548826353133043255444558800231194024990936406585400413920186581969311322625702098699668742874123707850751412755851053082091510569301773195366801727185645172769400433482361931903810209833931288116480399150744192768764662783489060689975942385275241737651408984984357338138764548241804445941923247547617487915530526838982833805034866360098207268197552746124018786380659083149155023418626562"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-- query: group-by-implicit-string-baseline ...  on string predicate as baseline]
-  sparql: |-
+  name: group-by-implicit-numeric-avg
+  description: Implicit GROUP BY with AVG on numeric predicate
+- query: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -974,8 +1042,9 @@ queries:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: group-by-implicit-string-min [Imp ...  BY with MIN on string predicate]
-  sparql: |-
+  name: group-by-implicit-string-baseline
+  description: Implicit GROUP BY with COUNT on string predicate as baseline
+- query: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -984,8 +1053,9 @@ queries:
     client_time: 180.00710463523865
   headers: []
   results: 'HTTP code: 408: '
-- query: group-by-implicit-string-max [Imp ...  BY with MAX on string predicate]
-  sparql: |-
+  name: group-by-implicit-string-min
+  description: Implicit GROUP BY with MIN on string predicate
+- query: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -994,15 +1064,18 @@ queries:
     client_time: 180.0107340812683
   headers: []
   results: 'HTTP code: 408: '
-- query: group-by-string-groupconcat [GROU ... e with high subject multiplicity]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName ?o } GROUP BY ?s } }
+  name: group-by-implicit-string-max
+  description: Implicit GROUP BY with MAX on string predicate
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS
+    ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName
+    ?o } GROUP BY ?s } }'
   runtime_info:
     client_time: 180.0087206363678
   headers: []
   results: 'HTTP code: 408: '
-- query: distinct-count-object-high-multip ... or object with high multiplicity]
-  sparql: |-
+  name: group-by-string-groupconcat
+  description: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
+- query: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
       ?subject rdf:type ?object .
@@ -1014,8 +1087,9 @@ queries:
   - count
   results:
   - - '"32"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: distinct-count-object-low-multipl ... for object with low multiplicity]
-  sparql: |-
+  name: distinct-count-object-high-multiplicity
+  description: COUNT DISTINCT, for object with high multiplicity
+- query: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
       ?subject dblp:hasSignature ?object .
@@ -1027,8 +1101,9 @@ queries:
   - count
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: distinct-count-object-wrong-sort- ...  object but not sorted by object]
-  sparql: |-
+  name: distinct-count-object-low-multiplicity
+  description: COUNT DISTINCT, for object with low multiplicity
+- query: |-
     SELECT (COUNT(DISTINCT ?o1) AS ?count)
     WHERE {
       ?s dblp:bibtexType ?o1 .
@@ -1041,8 +1116,9 @@ queries:
   - count
   results:
   - - '"8"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-plus [Transitive path with plus]
-  sparql: |-
+  name: distinct-count-object-wrong-sort-order
+  description: COUNT DISTINCT, for object but not sorted by object
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:relatedStream+ ?o .
@@ -1054,8 +1130,9 @@ queries:
   - count
   results:
   - - '"300322"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-plus-fixed-subjec ... th with plus and a fixed subject]
-  sparql: |-
+  name: transitive-path-plus
+  description: Transitive path with plus
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       <https://dblp.org/streams/conf/damp> dblp:relatedStream+ ?o .
@@ -1067,8 +1144,9 @@ queries:
   - count
   results:
   - - '"582"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-large-join-and-pl ...  path with a large join and plus]
-  sparql: |-
+  name: transitive-path-plus-fixed-subject
+  description: Transitive path with plus and a fixed subject
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInStream/dblp:relatedStream+ ?o .
@@ -1080,8 +1158,9 @@ queries:
   - count
   results:
   - - '"135729769"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: transitive-path-small-join-and-pl ...  path with a small join and plus]
-  sparql: |-
+  name: transitive-path-large-join-and-plus
+  description: Transitive path with a large join and plus
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:subStream/dblp:relatedStream+ ?o .
@@ -1093,8 +1172,9 @@ queries:
   - count
   results:
   - - '"302786"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: regex-3-contains [CONTAINS filter with fixed string of length 3]
-  sparql: |-
+  name: transitive-path-small-join-and-plus
+  description: Transitive path with a small join and plus
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1104,8 +1184,9 @@ queries:
     client_time: 180.0085425376892
   headers: []
   results: 'HTTP code: 408: '
-- query: regex-3-fixed [REGEX filter with fixed string of length 3]
-  sparql: |-
+  name: regex-3-contains
+  description: CONTAINS filter with fixed string of length 3
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1115,8 +1196,9 @@ queries:
     client_time: 180.00709629058838
   headers: []
   results: 'HTTP code: 408: '
-- query: regex-3 [REGEX filter with expression of length 3]
-  sparql: |-
+  name: regex-3-fixed
+  description: REGEX filter with fixed string of length 3
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1126,8 +1208,9 @@ queries:
     client_time: 180.00694179534912
   headers: []
   results: 'HTTP code: 408: '
-- query: regex-prefix-1 [REGEX filter with prefix of length 1]
-  sparql: |-
+  name: regex-3
+  description: REGEX filter with expression of length 3
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1137,8 +1220,9 @@ queries:
     client_time: 180.01081824302673
   headers: []
   results: 'HTTP code: 408: '
-- query: regex-prefix-2 [REGEX filter with prefix of length 2]
-  sparql: |-
+  name: regex-prefix-1
+  description: REGEX filter with prefix of length 1
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?object .
@@ -1148,8 +1232,9 @@ queries:
     client_time: 180.00891280174255
   headers: []
   results: 'HTTP code: 408: '
-- query: regex-prefix-3 [REGEX filter with prefix of length 3]
-  sparql: |-
+  name: regex-prefix-2
+  description: REGEX filter with prefix of length 2
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?object .
@@ -1159,43 +1244,49 @@ queries:
     client_time: 180.0077188014984
   headers: []
   results: 'HTTP code: 408: '
-- query: strlen [String length for large string predicate]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o)) AS ?checksum) { ?s rdfs:label ?o }
+  name: regex-prefix-3
+  description: REGEX filter with prefix of length 3
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o))
+    AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 180.00933408737183
   headers: []
   results: 'HTTP code: 408: '
-- query: strbefore [STRBEFORE string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  name: strlen
+  description: String length for large string predicate
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o,
+    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 180.0075340270996
   headers: []
   results: 'HTTP code: 408: '
-- query: strafter [STRAFTER string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o, "a"))) AS ?checksum) { ?s rdfs:label ?o }
+  name: strbefore
+  description: STRBEFORE string function
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o,
+    "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 180.0111997127533
   headers: []
   results: 'HTTP code: 408: '
-- query: strstarts [STRSTARTS string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  name: strafter
+  description: STRAFTER string function
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 180.01114106178284
   headers: []
   results: 'HTTP code: 408: '
-- query: strends [STRENDS string function]
-  sparql: |-
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }
+  name: strstarts
+  description: STRSTARTS string function
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 180.01379323005676
   headers: []
   results: 'HTTP code: 408: '
-- query: result-size-tiny [Export 10 tuples]
-  sparql: |-
+  name: strends
+  description: STRENDS string function
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1228,8 +1319,9 @@ queries:
     - <https://dblp.org/rdf/schema#AuthorSignature>
   - - '"rwsclwsic7j61c1xuwpgku2uh5u5zm6i"'
     - <https://dblp.org/rdf/schema#Signature>
-- query: result-size-small [Export 1000 tuples]
-  sparql: |-
+  name: result-size-tiny
+  description: Export 10 tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1282,8 +1374,9 @@ queries:
     - <https://dblp.org/rdf/schema#Publication>
   - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
     - <https://dblp.org/rdf/schema#Inproceedings>
-- query: result-size-medium [Export 100K tuples]
-  sparql: |-
+  name: result-size-small
+  description: Export 1000 tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1336,8 +1429,9 @@ queries:
     - <https://dblp.org/rdf/schema#Publication>
   - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
     - <https://dblp.org/rdf/schema#Inproceedings>
-- query: result-size-large [Export 1M tuples]
-  sparql: |-
+  name: result-size-medium
+  description: Export 100K tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1390,8 +1484,9 @@ queries:
     - <https://dblp.org/rdf/schema#Publication>
   - - <https://dblp.org/rec/conf/ismar/MinsterMS15>
     - <https://dblp.org/rdf/schema#Inproceedings>
-- query: result-size-xlarge [Export 10M tuples]
-  sparql: |-
+  name: result-size-large
+  description: Export 1M tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1401,8 +1496,9 @@ queries:
     client_time: 180.01655840873718
   headers: []
   results: 'HTTP code: 408: '
-- query: numeric-baseline [Baseline for numeric queries]
-  sparql: |-
+  name: result-size-xlarge
+  description: Export 10M tuples
+- query: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1414,9 +1510,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-abs [ABS function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  name: numeric-baseline
+  description: Baseline for numeric queries
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 0.004348039627075195
   result_size: 1
@@ -1424,9 +1521,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-ceil [CEIL function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  name: numeric-abs
+  description: ABS function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 0.004533290863037109
   result_size: 1
@@ -1434,9 +1532,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-floor [FLOOR function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  name: numeric-ceil
+  description: CEIL function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 0.0042874813079833984
   result_size: 1
@@ -1444,9 +1543,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-round [ROUND function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  name: numeric-floor
+  description: FLOOR function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 0.004472970962524414
   result_size: 1
@@ -1454,9 +1554,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-add [Addition]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  name: numeric-round
+  description: ROUND function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 0.005063533782958984
   result_size: 1
@@ -1464,9 +1565,10 @@ queries:
   - sum
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-greater [Greater than]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum) WHERE { ?s dblp:numberOfCreators ?o }
+  name: numeric-add
+  description: Addition
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum)
+    WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 0.00495147705078125
   result_size: 1
@@ -1474,8 +1576,9 @@ queries:
   - sum
   results:
   - []
-- query: numeric-filter-bin-search-fifty-f ... ers out 50 percent of the values]
-  sparql: |-
+  name: numeric-greater
+  description: Greater than
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1488,8 +1591,9 @@ queries:
   - count
   results:
   - - '"6607384"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-seventy ... ers out 70 percent of the values]
-  sparql: |-
+  name: numeric-filter-bin-search-fifty-fifty
+  description: Numeric FILTER that filters out 50 percent of the values
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1502,8 +1606,9 @@ queries:
   - count
   results:
   - - '"4784144"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: numeric-filter-bin-search-ninetyf ... ers out 95 percent of the values]
-  sparql: |-
+  name: numeric-filter-bin-search-seventy-thirty
+  description: Numeric FILTER that filters out 70 percent of the values
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1516,8 +1621,9 @@ queries:
   - count
   results:
   - - '"468421"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-few-results [FILTER that f ... ut most rows and has few results]
-  sparql: |-
+  name: numeric-filter-bin-search-ninetyfive-five
+  description: Numeric FILTER that filters out 95 percent of the values
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s rdf:type ?o .
@@ -1530,8 +1636,9 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: filter-many-results [FILTER that  ... ut few rows and has many results]
-  sparql: |-
+  name: filter-few-results
+  description: FILTER that filters out most rows and has few results
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s rdf:type ?o .
@@ -1541,8 +1648,9 @@ queries:
     client_time: 180.00850224494934
   headers: []
   results: 'HTTP code: 408: '
-- query: filter-language-en [FILTER on str ... dicate for only English literals]
-  sparql: |-
+  name: filter-many-results
+  description: FILTER that filters out few rows and has many results
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -1555,9 +1663,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: date-year [YEAR function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
+  name: filter-language-en
+  description: FILTER on string predicate for only English literals
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum)
+    WHERE { ?s dblp:yearOfPublication ?o }'
   runtime_info:
     client_time: 0.04620766639709473
   result_size: 1
@@ -1565,9 +1674,10 @@ queries:
   - sum
   results:
   - - '"15637633984"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: date-month [MONTH function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
+  name: date-year
+  description: YEAR function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum)
+    WHERE { ?s dblp:yearOfPublication ?o }'
   runtime_info:
     client_time: 0.004850864410400391
   result_size: 1
@@ -1575,9 +1685,10 @@ queries:
   - sum
   results:
   - []
-- query: date-day [DAY function]
-  sparql: |-
-    PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum) WHERE { ?s dblp:yearOfPublication ?o }
+  name: date-month
+  description: MONTH function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum)
+    WHERE { ?s dblp:yearOfPublication ?o }'
   runtime_info:
     client_time: 0.00443577766418457
   result_size: 1
@@ -1585,8 +1696,9 @@ queries:
   - sum
   results:
   - []
-- query: number-of-triples [Total number of triples]
-  sparql: |-
+  name: date-day
+  description: DAY function
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1598,8 +1710,9 @@ queries:
   - count
   results:
   - - '"502361507"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-subjects [Total number of distinct subjects]
-  sparql: |-
+  name: number-of-triples
+  description: Total number of triples
+- query: |-
     SELECT (COUNT(DISTINCT ?s) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1611,8 +1724,9 @@ queries:
   - count
   results:
   - - '"57397952"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-predicates [Total number of distinct predicates]
-  sparql: |-
+  name: number-of-subjects
+  description: Total number of distinct subjects
+- query: |-
     SELECT (COUNT(DISTINCT ?p) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1624,8 +1738,9 @@ queries:
   - count
   results:
   - - '"90"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-objects [Total number of distinct objects]
-  sparql: |-
+  name: number-of-predicates
+  description: Total number of distinct predicates
+- query: |-
     SELECT (COUNT(DISTINCT ?o) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1637,8 +1752,9 @@ queries:
   - count
   results:
   - - '"115203457"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-literals [Total number of literals]
-  sparql: |-
+  name: number-of-objects
+  description: Total number of distinct objects
+- query: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1651,8 +1767,9 @@ queries:
   - count
   results:
   - - '"146848983"^^<http://www.w3.org/2001/XMLSchema#integer>'
-- query: number-of-blank-nodes [Total number of blank nodes]
-  sparql: |-
+  name: number-of-literals
+  description: Total number of literals
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1662,3 +1779,9 @@ queries:
     client_time: 180.03271341323853
   headers: []
   results: 'HTTP code: 408: '
+  name: number-of-blank-nodes
+  description: Total number of blank nodes
+timeout: 180
+name: DBLP (500 million triples)
+description: DBLP computer science bibliography, data from https://dblp.org/rdf, ~500
+  million triples
