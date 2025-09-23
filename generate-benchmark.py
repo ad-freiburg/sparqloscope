@@ -727,10 +727,13 @@ def generate_queries(
     # Add value for special placeholder `%LIMIT%`.
     placeholders["LIMIT"] = str(args.limit)
 
-    result = []
+    # Result queries as tuples (name, description, query pretty, query one line)
+    result: list[tuple[str, str, str, str]] = []
+
     num_queries_written = 0
     num_queries_error = 0
     num_queries_condition_false = 0
+
     for query_template in query_templates:
         # Get the values for the various fields (`condition` is optional).
         name = query_template["name"]
@@ -853,7 +856,7 @@ def generate_queries(
         query_single_line = query_single_line.rstrip()
         log.debug(colored(query, "yellow"))
         log.debug(colored(query_single_line, "yellow"))
-        result.append((f"{name} [{description}]", query, query_single_line))
+        result.append((name, description, query, query_single_line))
         num_queries_written += 1
 
     # Custom dumper for YAML, that dumps all values of key `query` using `|-`.
@@ -866,16 +869,23 @@ def generate_queries(
     # Write the result as TSV or YAML.
     with open_file_for_writing(output_filename) as output_file:
         if args.output_format == "tsv":
-            for description, _, query in result:
-                print(f"{description}\t{query}", file=output_file)
+            for name, description, _, query in result:
+                print(f"{name} [{description}]\t{query}", file=output_file)
         else:
+            assert args.output_format == "yaml", "Unsupported output format"
+
+            # Output YAML structure differs from TSV
             yaml_dict = {
-                "kb": args.kg_name,
+                "title": args.kg_title or args.kg_name,
+                "description": args.kg_description,
                 "queries": [
-                    {"query": description, "sparql": query}
-                    for description, query, _ in result
+                    {"name": name, "description": description, "query": query}
+                    for name, description, query, _ in result
                 ],
             }
+
+            # Output the YAML using custom settings to preserver order and
+            # readability
             print(
                 yaml.dump(yaml_dict, sort_keys=False, Dumper=MultiLineDumper),
                 file=output_file,
@@ -916,12 +926,23 @@ def command_line_args() -> argparse.Namespace:
         "output file will be based on this",
     )
     arg_parser.add_argument(
+        "--kg-title",
+        type=str,
+        help="A human-readable title of the knowledge graph; if not provided, "
+        "the value of `--kg-name` will be used automatically",
+    )
+    arg_parser.add_argument(
+        "--kg-description",
+        type=str,
+        help="An optional description of the knowledge graph",
+    )
+    arg_parser.add_argument(
         "--output-format",
         type=str,
-        choices=["tsv", "yml"],
-        default="tsv",
-        help="The output format for the benchmark results (tsv or yml"
-        ", default: tsv)",
+        choices=["tsv", "yaml"],
+        default="yaml",
+        help="The output format for the benchmark results (tsv or yaml"
+        ", default: yaml)",
     )
     arg_parser.add_argument(
         "--prefix-definitions",

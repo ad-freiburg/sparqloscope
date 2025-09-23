@@ -130,7 +130,8 @@ python3 generate-benchmark.py \
   --prefix-definitions "$(cat prefixes/DATASET.ttl)" \
   --kg-name DATASET \
   --external-url http://localhost:FREEPORT \
-  --port FREEPORT
+  --port FREEPORT \
+  --output-format tsv
 ```
 
 If you would like to run the SPARQL engine on `HOST_A` and the `generate-benchmark.py` program on `HOST_B`, please set `--sparql-endpoint http://HOST_A:PORT` and `--external-url http://HOST_B:FREEPORT` and ensure that both machines can access the respective ports through their firewalls.
@@ -145,7 +146,8 @@ python3 generate-benchmark.py \
   --prefix-definitions "$(cat prefixes/dblp.ttl)" \
   --kg-name dblp \
   --external-url http://localhost:8080 \
-  --port 8080
+  --port 8080 \
+  --output-format tsv
 ```
 
 ### 3.3. Stop QLever
