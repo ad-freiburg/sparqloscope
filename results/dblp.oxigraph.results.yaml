@@ -1,7 +1,6 @@
 timeout: 180
 queries:
-- query: join-2-small-large
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -14,9 +13,10 @@ queries:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: JOIN of a small and a large predicate
-- query: join-2-large-small
-  sparql: |-
+  server_restarted: true
+  name: join-2-small-large
+  description: JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -26,9 +26,10 @@ queries:
     client_time: 180.94579815864563
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN of a large and a small predicate
-- query: join-2-large-large
-  sparql: |-
+  server_restarted: true
+  name: join-2-large-small
+  description: JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -38,9 +39,10 @@ queries:
     client_time: 180.9325864315033
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN of two large predicates
-- query: join-2-largest-result
-  sparql: |-
+  server_restarted: true
+  name: join-2-large-large
+  description: JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -50,9 +52,10 @@ queries:
     client_time: 180.84188508987427
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN of two predicates with the largest possible result
-- query: join-2-large-large-with-large-result
-  sparql: |-
+  server_restarted: true
+  name: join-2-largest-result
+  description: JOIN of two predicates with the largest possible result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -62,9 +65,10 @@ queries:
     client_time: 180.8577184677124
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN of two large predicates with a reasonably large result
-- query: join-2-large-large-with-small-result
-  sparql: |-
+  server_restarted: true
+  name: join-2-large-large-with-large-result
+  description: JOIN of two large predicates with a reasonably large result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -74,9 +78,10 @@ queries:
     client_time: 180.89619517326355
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN of two large predicates with a small result
-- query: join-3-star-largest-sum-of-join-sizes
-  sparql: |-
+  server_restarted: true
+  name: join-2-large-large-with-small-result
+  description: JOIN of two large predicates with a small result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -87,9 +92,10 @@ queries:
     client_time: 180.90269112586975
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN star of three large predicates with the largest sum of join sizes
-- query: join-3-chain-largest-sum-of-join-sizes
-  sparql: |-
+  server_restarted: true
+  name: join-3-star-largest-sum-of-join-sizes
+  description: JOIN star of three large predicates with the largest sum of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -100,9 +106,10 @@ queries:
     client_time: 180.88044810295105
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: JOIN chain of three large predicates with the largest sum of join sizes
-- query: join-xlarge-star-on-small-predicates
-  sparql: |-
+  server_restarted: true
+  name: join-3-chain-largest-sum-of-join-sizes
+  description: JOIN chain of three large predicates with the largest sum of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o0 .
@@ -136,9 +143,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: JOIN star of many small predicates
-- query: join-xlarge-chain-on-small-predicates
-  sparql: |-
+  server_restarted: true
+  name: join-xlarge-star-on-small-predicates
+  description: JOIN star of many small predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?v0 dblp:formerStreamTitle ?v1 .
@@ -172,9 +180,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: JOIN chain of many small predicates
-- query: optional-join-small-large
-  sparql: |-
+  server_restarted: true
+  name: join-xlarge-chain-on-small-predicates
+  description: JOIN chain of many small predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -189,9 +198,10 @@ queries:
   - count
   results:
   - - '"1996"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: OPTIONAL JOIN of a small and a large predicate
-- query: optional-join-large-small
-  sparql: |-
+  server_restarted: true
+  name: optional-join-small-large
+  description: OPTIONAL JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -203,9 +213,10 @@ queries:
     client_time: 180.97999739646912
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN of a large and a small predicate
-- query: optional-join-large-large
-  sparql: |-
+  server_restarted: true
+  name: optional-join-large-small
+  description: OPTIONAL JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -217,9 +228,10 @@ queries:
     client_time: 180.93985509872437
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN of two large predicates
-- query: optional-join-2-large-large-with-large-result
-  sparql: |-
+  server_restarted: true
+  name: optional-join-large-large
+  description: OPTIONAL JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -231,9 +243,11 @@ queries:
     client_time: 180.91758704185486
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN of two large predicates with a reasonably large join result
-- query: optional-join-2-large-large-with-small-join-result-1
-  sparql: |-
+  server_restarted: true
+  name: optional-join-2-large-large-with-large-result
+  description: OPTIONAL JOIN of two large predicates with a reasonably large join
+    result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -245,9 +259,10 @@ queries:
     client_time: 180.89419031143188
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN of two large predicates with a small join result
-- query: optional-join-2-large-large-with-small-join-result-2
-  sparql: |-
+  server_restarted: true
+  name: optional-join-2-large-large-with-small-join-result-1
+  description: OPTIONAL JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInJournalVolume ?o1 .
@@ -259,9 +274,10 @@ queries:
     client_time: 180.86031699180603
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN of two large predicates with a small join result
-- query: optional-join-3-star-1
-  sparql: |-
+  server_restarted: true
+  name: optional-join-2-large-large-with-small-join-result-2
+  description: OPTIONAL JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -274,10 +290,11 @@ queries:
     client_time: 180.9364311695099
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN star of three large predicates with the largest sum of
+  server_restarted: true
+  name: optional-join-3-star-1
+  description: OPTIONAL JOIN star of three large predicates with the largest sum of
     join sizes
-- query: optional-join-3-star-2
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -290,10 +307,11 @@ queries:
     client_time: 180.897522687912
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN star of three large predicates with the largest sum of
+  server_restarted: true
+  name: optional-join-3-star-2
+  description: OPTIONAL JOIN star of three large predicates with the largest sum of
     join sizes
-- query: optional-join-3-chain-1
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -306,10 +324,11 @@ queries:
     client_time: 180.91586422920227
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN chain of three large predicates with the largest sum of
-    join sizes
-- query: optional-join-3-chain-2
-  sparql: |-
+  server_restarted: true
+  name: optional-join-3-chain-1
+  description: OPTIONAL JOIN chain of three large predicates with the largest sum
+    of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -322,10 +341,11 @@ queries:
     client_time: 180.89936900138855
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: OPTIONAL JOIN chain of three large predicates with the largest sum of
-    join sizes
-- query: minus-join-small-large
-  sparql: |-
+  server_restarted: true
+  name: optional-join-3-chain-2
+  description: OPTIONAL JOIN chain of three large predicates with the largest sum
+    of join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -337,9 +357,10 @@ queries:
     client_time: 182.87223410606384
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: MINUS JOIN of a small and a large predicate
-- query: minus-join-large-small
-  sparql: |-
+  server_restarted: true
+  name: minus-join-small-large
+  description: MINUS JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -354,9 +375,10 @@ queries:
   - count
   results:
   - - '"204529732"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: MINUS JOIN of a large and a small predicate
-- query: minus-join-large-large
-  sparql: |-
+  server_restarted: true
+  name: minus-join-large-small
+  description: MINUS JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -371,9 +393,10 @@ queries:
   - count
   results:
   - - '"189107194"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: MINUS JOIN of two large predicates
-- query: minus-join-2-large-large-with-large-result
-  sparql: |-
+  server_restarted: true
+  name: minus-join-large-large
+  description: MINUS JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -388,9 +411,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: MINUS JOIN of two large predicates with a reasonably large join result
-- query: minus-join-2-large-large-with-small-join-result-1
-  sparql: |-
+  server_restarted: true
+  name: minus-join-2-large-large-with-large-result
+  description: MINUS JOIN of two large predicates with a reasonably large join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -405,9 +429,10 @@ queries:
   - count
   results:
   - - '"3723324"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: MINUS JOIN of two large predicates with a small join result
-- query: minus-join-2-large-large-with-small-join-result-2
-  sparql: |-
+  server_restarted: true
+  name: minus-join-2-large-large-with-small-join-result-1
+  description: MINUS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInJournalVolume ?o1 .
@@ -422,9 +447,10 @@ queries:
   - count
   results:
   - - '"3801839"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: MINUS JOIN of two large predicates with a small join result
-- query: minus-join-3-star-1
-  sparql: |-
+  server_restarted: true
+  name: minus-join-2-large-large-with-small-join-result-2
+  description: MINUS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -437,10 +463,11 @@ queries:
     client_time: 182.59913754463196
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: MINUS JOIN star of three large predicates with the largest sum of join
+  server_restarted: true
+  name: minus-join-3-star-1
+  description: MINUS JOIN star of three large predicates with the largest sum of join
     sizes
-- query: minus-join-3-star-2
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -453,10 +480,11 @@ queries:
     client_time: 180.90930032730103
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: MINUS JOIN star of three large predicates with the largest sum of join
+  server_restarted: true
+  name: minus-join-3-star-2
+  description: MINUS JOIN star of three large predicates with the largest sum of join
     sizes
-- query: minus-join-3-chain-1
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -469,10 +497,11 @@ queries:
     client_time: 180.89120435714722
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: MINUS JOIN chain of three large predicates with the largest sum of join
-    sizes
-- query: minus-join-3-chain-2
-  sparql: |-
+  server_restarted: true
+  name: minus-join-3-chain-1
+  description: MINUS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -485,10 +514,11 @@ queries:
     client_time: 181.39187908172607
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: MINUS JOIN chain of three large predicates with the largest sum of join
-    sizes
-- query: exists-join-small-large
-  sparql: |-
+  server_restarted: true
+  name: minus-join-3-chain-2
+  description: MINUS JOIN chain of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:formerStreamTitle ?o1 .
@@ -503,9 +533,10 @@ queries:
   - count
   results:
   - - '"998"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: EXISTS JOIN of a small and a large predicate
-- query: exists-join-large-small
-  sparql: |-
+  server_restarted: true
+  name: exists-join-small-large
+  description: EXISTS JOIN of a small and a large predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -517,9 +548,10 @@ queries:
     client_time: 180.97386765480042
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN of a large and a small predicate
-- query: exists-join-large-large
-  sparql: |-
+  server_restarted: true
+  name: exists-join-large-small
+  description: EXISTS JOIN of a large and a small predicate
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdf:type ?o1 .
@@ -531,9 +563,10 @@ queries:
     client_time: 180.9297354221344
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN of two large predicates
-- query: exists-join-2-large-large-with-large-result
-  sparql: |-
+  server_restarted: true
+  name: exists-join-large-large
+  description: EXISTS JOIN of two large predicates
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:hasSignature ?o1 .
@@ -545,9 +578,10 @@ queries:
     client_time: 180.90872931480408
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN of two large predicates with a reasonably large join result
-- query: exists-join-2-large-large-with-small-join-result-1
-  sparql: |-
+  server_restarted: true
+  name: exists-join-2-large-large-with-large-result
+  description: EXISTS JOIN of two large predicates with a reasonably large join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedAsPartOf ?o1 .
@@ -559,9 +593,10 @@ queries:
     client_time: 180.90658330917358
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN of two large predicates with a small join result
-- query: exists-join-2-large-large-with-small-join-result-2
-  sparql: |-
+  server_restarted: true
+  name: exists-join-2-large-large-with-small-join-result-1
+  description: EXISTS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInJournalVolume ?o1 .
@@ -573,9 +608,10 @@ queries:
     client_time: 180.89004516601562
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN of two large predicates with a small join result
-- query: exists-join-3-star-1
-  sparql: |-
+  server_restarted: true
+  name: exists-join-2-large-large-with-small-join-result-2
+  description: EXISTS JOIN of two large predicates with a small join result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -588,10 +624,11 @@ queries:
     client_time: 180.8561508655548
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN star of three large predicates with the largest sum of join
-    sizes
-- query: exists-join-3-star-2
-  sparql: |-
+  server_restarted: true
+  name: exists-join-3-star-1
+  description: EXISTS JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:signatureOrdinal ?o1 .
@@ -604,10 +641,11 @@ queries:
     client_time: 180.89242672920227
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN star of three large predicates with the largest sum of join
-    sizes
-- query: exists-join-3-chain-1
-  sparql: |-
+  server_restarted: true
+  name: exists-join-3-star-2
+  description: EXISTS JOIN star of three large predicates with the largest sum of
+    join sizes
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -620,10 +658,11 @@ queries:
     client_time: 180.88896679878235
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN chain of three large predicates with the largest sum of
+  server_restarted: true
+  name: exists-join-3-chain-1
+  description: EXISTS JOIN chain of three large predicates with the largest sum of
     join sizes
-- query: exists-join-3-chain-2
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?a dblp:signaturePublication ?b .
@@ -636,10 +675,11 @@ queries:
     client_time: 180.90580296516418
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: EXISTS JOIN chain of three large predicates with the largest sum of
+  server_restarted: true
+  name: exists-join-3-chain-2
+  description: EXISTS JOIN chain of three large predicates with the largest sum of
     join sizes
-- query: union-no-constraint
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -657,9 +697,10 @@ queries:
   - count
   results:
   - - '"256422614"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: UNION of two large predicates, no constraint
-- query: union-constraint-from-star
-  sparql: |-
+  server_restarted: true
+  name: union-no-constraint
+  description: UNION of two large predicates, no constraint
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -675,10 +716,11 @@ queries:
     client_time: 180.91819953918457
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: UNION of two large predicates, constrained by a large predicate known
+  server_restarted: true
+  name: union-constraint-from-star
+  description: UNION of two large predicates, constrained by a large predicate known
     to have join partners
-- query: union-constraint-small-join
-  sparql: |-
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -694,9 +736,10 @@ queries:
     client_time: 180.8844118118286
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: UNION of two large predicates, constrained by a join with a small result
-- query: union-constraint-large-join
-  sparql: |-
+  server_restarted: true
+  name: union-constraint-small-join
+  description: UNION of two large predicates, constrained by a join with a small result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -712,9 +755,10 @@ queries:
     client_time: 180.90561866760254
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: UNION of two large predicates, constrained by a join with a large result
-- query: union-constraint-filter-restrictive
-  sparql: |-
+  server_restarted: true
+  name: union-constraint-large-join
+  description: UNION of two large predicates, constrained by a join with a large result
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       {
@@ -730,9 +774,10 @@ queries:
     client_time: 180.863844871521
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: UNION of two large predicates, constraint by restrictive FILTER
-- query: multicolumn-join-small
-  sparql: |-
+  server_restarted: true
+  name: union-constraint-filter-restrictive
+  description: UNION of two large predicates, constraint by restrictive FILTER
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:subStream ?o .
@@ -745,9 +790,10 @@ queries:
   - count
   results:
   - - '"1198"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Multicolumn JOIN small
-- query: multicolumn-join-large
-  sparql: |-
+  server_restarted: true
+  name: multicolumn-join-small
+  description: Multicolumn JOIN small
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:createdBy ?o .
@@ -757,9 +803,10 @@ queries:
     client_time: 180.9555435180664
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: Multicolumn JOIN large
-- query: group-by-count-object-high-multiplicity
-  sparql: |-
+  server_restarted: true
+  name: multicolumn-join-large
+  description: Multicolumn JOIN large
+- query: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
       ?subject rdf:type ?object .
@@ -794,9 +841,10 @@ queries:
     - '"3652261"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - <https://dblp.org/rdf/schema#Article>
     - '"3039856"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: GROUP BY with COUNT, for object with high multiplicity
-- query: group-by-count-object-low-multiplicity
-  sparql: |-
+  server_restarted: true
+  name: group-by-count-object-high-multiplicity
+  description: GROUP BY with COUNT, for object with high multiplicity
+- query: |-
     SELECT ?object (COUNT(?subject) AS ?count)
     WHERE {
       ?subject dblp:hasSignature ?object .
@@ -831,9 +879,10 @@ queries:
     - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
   - - '"dd47d156254828c152f9de286a6ac57"'
     - '"1"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: GROUP BY with COUNT, for object with low multiplicity
-- query: group-by-count-object-wrong-sort-order
-  sparql: |-
+  server_restarted: true
+  name: group-by-count-object-low-multiplicity
+  description: GROUP BY with COUNT, for object with low multiplicity
+- query: |-
     SELECT ?o1 (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:bibtexType ?o1 .
@@ -846,9 +895,10 @@ queries:
     client_time: 180.88353872299194
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: GROUP BY with COUNT, for object but not sorted by object
-- query: group-by-complex-aggregate
-  sparql: |-
+  server_restarted: true
+  name: group-by-count-object-wrong-sort-order
+  description: GROUP BY with COUNT, for object but not sorted by object
+- query: |-
     SELECT ?o1 (COUNT(?s) AS ?count) (MIN(?s) AS ?min) (MAX(?s) AS ?max) (SAMPLE(?s) AS ?sample)
     WHERE {
       ?s dblp:bibtexType ?o1 .
@@ -861,9 +911,10 @@ queries:
     client_time: 180.89582204818726
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: GROUP BY with COUNT and MIN and MAX and SAMPLE
-- query: group-by-implicit-numeric-baseline
-  sparql: |-
+  server_restarted: true
+  name: group-by-complex-aggregate
+  description: GROUP BY with COUNT and MIN and MAX and SAMPLE
+- query: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -875,9 +926,10 @@ queries:
   - count
   results:
   - - '"7770097"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Implicit GROUP BY with COUNT on numeric predicate as baseline
-- query: group-by-implicit-numeric-sum
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-numeric-baseline
+  description: Implicit GROUP BY with COUNT on numeric predicate as baseline
+- query: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -889,9 +941,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Implicit GROUP BY with SUM on numeric predicate
-- query: group-by-implicit-numeric-min
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-numeric-sum
+  description: Implicit GROUP BY with SUM on numeric predicate
+- query: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -903,9 +956,10 @@ queries:
   - min
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Implicit GROUP BY with MIN on numeric predicate
-- query: group-by-implicit-numeric-max
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-numeric-min
+  description: Implicit GROUP BY with MIN on numeric predicate
+- query: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -917,9 +971,10 @@ queries:
   - max
   results:
   - - '"450"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Implicit GROUP BY with MAX on numeric predicate
-- query: group-by-implicit-numeric-avg
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-numeric-max
+  description: Implicit GROUP BY with MAX on numeric predicate
+- query: |-
     SELECT (AVG(?o) AS ?avg)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -931,9 +986,10 @@ queries:
   - avg
   results:
   - - '"3.33916371957776074"^^<http://www.w3.org/2001/XMLSchema#decimal>'
-  long_query: Implicit GROUP BY with AVG on numeric predicate
-- query: group-by-implicit-string-baseline
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-numeric-avg
+  description: Implicit GROUP BY with AVG on numeric predicate
+- query: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -945,9 +1001,10 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Implicit GROUP BY with COUNT on string predicate as baseline
-- query: group-by-implicit-string-min
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-string-baseline
+  description: Implicit GROUP BY with COUNT on string predicate as baseline
+- query: |-
     SELECT (MIN(?o) AS ?min)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -959,9 +1016,10 @@ queries:
   - min
   results:
   - - '""Johann" Sebastian Rudolph"'
-  long_query: Implicit GROUP BY with MIN on string predicate
-- query: group-by-implicit-string-max
-  sparql: |-
+  server_restarted: true
+  name: group-by-implicit-string-min
+  description: Implicit GROUP BY with MIN on string predicate
+- query: |-
     SELECT (MAX(?o) AS ?max)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -973,18 +1031,20 @@ queries:
   - max
   results:
   - - '"þorgerður Pálsdóttir"'
-  long_query: Implicit GROUP BY with MAX on string predicate
-- query: group-by-string-groupconcat
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS
+  server_restarted: true
+  name: group-by-implicit-string-max
+  description: Implicit GROUP BY with MAX on string predicate
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(STRLEN(?cat)) AS
     ?sum) { { SELECT (GROUP_CONCAT(?o; SEPARATOR=" ") AS ?cat) { ?s dblp:signatureDblpName
     ?o } GROUP BY ?s } }'
   runtime_info:
     client_time: 182.09072875976562
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
-- query: distinct-count-object-high-multiplicity
-  sparql: |-
+  server_restarted: true
+  name: group-by-string-groupconcat
+  description: GROUP BY with GROUP_CONCAT on string predicate with high subject multiplicity
+- query: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
       ?subject rdf:type ?object .
@@ -996,9 +1056,10 @@ queries:
   - count
   results:
   - - '"32"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: COUNT DISTINCT, for object with high multiplicity
-- query: distinct-count-object-low-multiplicity
-  sparql: |-
+  server_restarted: true
+  name: distinct-count-object-high-multiplicity
+  description: COUNT DISTINCT, for object with high multiplicity
+- query: |-
     SELECT (COUNT(DISTINCT ?object) AS ?count)
     WHERE {
       ?subject dblp:hasSignature ?object .
@@ -1010,9 +1071,10 @@ queries:
   - count
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: COUNT DISTINCT, for object with low multiplicity
-- query: distinct-count-object-wrong-sort-order
-  sparql: |-
+  server_restarted: true
+  name: distinct-count-object-low-multiplicity
+  description: COUNT DISTINCT, for object with low multiplicity
+- query: |-
     SELECT (COUNT(DISTINCT ?o1) AS ?count)
     WHERE {
       ?s dblp:bibtexType ?o1 .
@@ -1022,9 +1084,10 @@ queries:
     client_time: 180.90320229530334
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: COUNT DISTINCT, for object but not sorted by object
-- query: transitive-path-plus
-  sparql: |-
+  server_restarted: true
+  name: distinct-count-object-wrong-sort-order
+  description: COUNT DISTINCT, for object but not sorted by object
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:relatedStream+ ?o .
@@ -1036,9 +1099,10 @@ queries:
   - count
   results:
   - - '"300322"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Transitive path with plus
-- query: transitive-path-plus-fixed-subject
-  sparql: |-
+  server_restarted: true
+  name: transitive-path-plus
+  description: Transitive path with plus
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       <https://dblp.org/streams/conf/damp> dblp:relatedStream+ ?o .
@@ -1050,9 +1114,10 @@ queries:
   - count
   results:
   - - '"582"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Transitive path with plus and a fixed subject
-- query: transitive-path-large-join-and-plus
-  sparql: |-
+  server_restarted: true
+  name: transitive-path-plus-fixed-subject
+  description: Transitive path with plus and a fixed subject
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:publishedInStream/dblp:relatedStream+ ?o .
@@ -1061,9 +1126,10 @@ queries:
     client_time: 180.93187880516052
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: Transitive path with a large join and plus
-- query: transitive-path-small-join-and-plus
-  sparql: |-
+  server_restarted: true
+  name: transitive-path-large-join-and-plus
+  description: Transitive path with a large join and plus
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s dblp:subStream/dblp:relatedStream+ ?o .
@@ -1075,9 +1141,10 @@ queries:
   - count
   results:
   - - '"302786"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Transitive path with a small join and plus
-- query: regex-3-contains
-  sparql: |-
+  server_restarted: true
+  name: transitive-path-small-join-and-plus
+  description: Transitive path with a small join and plus
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1090,9 +1157,10 @@ queries:
   - count
   results:
   - - '"465862"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: CONTAINS filter with fixed string of length 3
-- query: regex-3-fixed
-  sparql: |-
+  server_restarted: true
+  name: regex-3-contains
+  description: CONTAINS filter with fixed string of length 3
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1105,9 +1173,10 @@ queries:
   - count
   results:
   - - '"465862"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: REGEX filter with fixed string of length 3
-- query: regex-3
-  sparql: |-
+  server_restarted: true
+  name: regex-3-fixed
+  description: REGEX filter with fixed string of length 3
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1120,9 +1189,10 @@ queries:
   - count
   results:
   - - '"727657"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: REGEX filter with expression of length 3
-- query: regex-prefix-1
-  sparql: |-
+  server_restarted: true
+  name: regex-3
+  description: REGEX filter with expression of length 3
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?o .
@@ -1135,9 +1205,10 @@ queries:
   - count
   results:
   - - '"560014"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: REGEX filter with prefix of length 1
-- query: regex-prefix-2
-  sparql: |-
+  server_restarted: true
+  name: regex-prefix-1
+  description: REGEX filter with prefix of length 1
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?object .
@@ -1150,9 +1221,10 @@ queries:
   - count
   results:
   - - '"36428"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: REGEX filter with prefix of length 2
-- query: regex-prefix-3
-  sparql: |-
+  server_restarted: true
+  name: regex-prefix-2
+  description: REGEX filter with prefix of length 2
+- query: |-
     SELECT (COUNT(*) AS ?count)
     WHERE {
       ?s rdfs:label ?object .
@@ -1165,9 +1237,10 @@ queries:
   - count
   results:
   - - '"987"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: REGEX filter with prefix of length 3
-- query: strlen
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o))
+  server_restarted: true
+  name: regex-prefix-3
+  description: REGEX filter with prefix of length 3
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(?o))
     AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 77.40909600257874
@@ -1176,9 +1249,10 @@ queries:
   - checksum
   results:
   - - '"914706385"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: String length for large string predicate
-- query: strbefore
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o,
+  server_restarted: true
+  name: strlen
+  description: String length for large string predicate
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRBEFORE(?o,
     "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 76.04227709770203
@@ -1187,9 +1261,10 @@ queries:
   - checksum
   results:
   - - '"68444965"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: STRBEFORE string function
-- query: strafter
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o,
+  server_restarted: true
+  name: strbefore
+  description: STRBEFORE string function
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT (SUM(STRLEN(STRAFTER(?o,
     "a"))) AS ?checksum) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 74.35995101928711
@@ -1198,9 +1273,10 @@ queries:
   - checksum
   results:
   - - '"825474569"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: STRAFTER string function
-- query: strstarts
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+  server_restarted: true
+  name: strafter
+  description: STRAFTER string function
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     SELECT (SUM(xsd:integer(STRSTARTS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 71.73066449165344
@@ -1209,9 +1285,10 @@ queries:
   - count
   results:
   - - '"40"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: STRSTARTS string function
-- query: strends
-  sparql: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+  server_restarted: true
+  name: strstarts
+  description: STRSTARTS string function
+- query: 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     SELECT (SUM(xsd:integer(STRENDS(?o, "a"))) AS ?count) { ?s rdfs:label ?o }'
   runtime_info:
     client_time: 77.36518120765686
@@ -1220,9 +1297,10 @@ queries:
   - count
   results:
   - - '"379856"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: STRENDS string function
-- query: result-size-tiny
-  sparql: |-
+  server_restarted: true
+  name: strends
+  description: STRENDS string function
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1255,9 +1333,10 @@ queries:
     - <https://dblp.org/rdf/schema#Creator>
   - - <https://dblp.org/pid/306/4084>
     - <https://dblp.org/rdf/schema#Creator>
-  long_query: Export 10 tuples
-- query: result-size-small
-  sparql: |-
+  server_restarted: true
+  name: result-size-tiny
+  description: Export 10 tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1310,9 +1389,10 @@ queries:
     - <https://dblp.org/rdf/schema#Creator>
   - - <https://dblp.org/pid/399/3775>
     - <https://dblp.org/rdf/schema#Creator>
-  long_query: Export 1000 tuples
-- query: result-size-medium
-  sparql: |-
+  server_restarted: true
+  name: result-size-small
+  description: Export 1000 tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1365,9 +1445,10 @@ queries:
     - <https://dblp.org/rdf/schema#Creator>
   - - <https://dblp.org/pid/399/3775>
     - <https://dblp.org/rdf/schema#Creator>
-  long_query: Export 100K tuples
-- query: result-size-large
-  sparql: |-
+  server_restarted: true
+  name: result-size-medium
+  description: Export 100K tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1420,9 +1501,10 @@ queries:
     - <https://dblp.org/rdf/schema#Creator>
   - - <https://dblp.org/pid/399/3775>
     - <https://dblp.org/rdf/schema#Creator>
-  long_query: Export 1M tuples
-- query: result-size-xlarge
-  sparql: |-
+  server_restarted: true
+  name: result-size-large
+  description: Export 1M tuples
+- query: |-
     SELECT ?s ?o
     WHERE {
       ?s rdf:type ?o .
@@ -1475,9 +1557,10 @@ queries:
     - <https://dblp.org/rdf/schema#Creator>
   - - <https://dblp.org/pid/399/3775>
     - <https://dblp.org/rdf/schema#Creator>
-  long_query: Export 10M tuples
-- query: numeric-baseline
-  sparql: |-
+  server_restarted: true
+  name: result-size-xlarge
+  description: Export 10M tuples
+- query: |-
     SELECT (sum(?o) AS ?sum)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1489,9 +1572,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Baseline for numeric queries
-- query: numeric-abs
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum)
+  server_restarted: true
+  name: numeric-baseline
+  description: Baseline for numeric queries
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ABS(?o)) AS ?sum)
     WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 2.5766592025756836
@@ -1500,9 +1584,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: ABS function
-- query: numeric-ceil
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum)
+  server_restarted: true
+  name: numeric-abs
+  description: ABS function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(CEIL(?o)) AS ?sum)
     WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 2.310551643371582
@@ -1511,9 +1596,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: CEIL function
-- query: numeric-floor
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum)
+  server_restarted: true
+  name: numeric-ceil
+  description: CEIL function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(FLOOR(?o)) AS ?sum)
     WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 2.183485507965088
@@ -1522,9 +1608,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: FLOOR function
-- query: numeric-round
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum)
+  server_restarted: true
+  name: numeric-floor
+  description: FLOOR function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(ROUND(?o)) AS ?sum)
     WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 2.442016363143921
@@ -1533,9 +1620,10 @@ queries:
   - sum
   results:
   - - '"25945626"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: ROUND function
-- query: numeric-add
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum)
+  server_restarted: true
+  name: numeric-round
+  description: ROUND function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o + ?o) AS ?sum)
     WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 2.2430641651153564
@@ -1544,9 +1632,10 @@ queries:
   - sum
   results:
   - - '"51891252"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Addition
-- query: numeric-greater
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum)
+  server_restarted: true
+  name: numeric-add
+  description: Addition
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(?o > 0) AS ?sum)
     WHERE { ?s dblp:numberOfCreators ?o }'
   runtime_info:
     client_time: 2.148308753967285
@@ -1555,9 +1644,10 @@ queries:
   - sum
   results:
   - []
-  long_query: Greater than
-- query: numeric-filter-bin-search-fifty-fifty
-  sparql: |-
+  server_restarted: true
+  name: numeric-greater
+  description: Greater than
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1570,9 +1660,10 @@ queries:
   - count
   results:
   - - '"6607384"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Numeric FILTER that filters out 50 percent of the values
-- query: numeric-filter-bin-search-seventy-thirty
-  sparql: |-
+  server_restarted: true
+  name: numeric-filter-bin-search-fifty-fifty
+  description: Numeric FILTER that filters out 50 percent of the values
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1585,9 +1676,10 @@ queries:
   - count
   results:
   - - '"4784144"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Numeric FILTER that filters out 70 percent of the values
-- query: numeric-filter-bin-search-ninetyfive-five
-  sparql: |-
+  server_restarted: true
+  name: numeric-filter-bin-search-seventy-thirty
+  description: Numeric FILTER that filters out 70 percent of the values
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:numberOfCreators ?o .
@@ -1600,9 +1692,10 @@ queries:
   - count
   results:
   - - '"468421"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Numeric FILTER that filters out 95 percent of the values
-- query: filter-few-results
-  sparql: |-
+  server_restarted: true
+  name: numeric-filter-bin-search-ninetyfive-five
+  description: Numeric FILTER that filters out 95 percent of the values
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s rdf:type ?o .
@@ -1612,9 +1705,10 @@ queries:
     client_time: 180.9226942062378
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: FILTER that filters out most rows and has few results
-- query: filter-many-results
-  sparql: |-
+  server_restarted: true
+  name: filter-few-results
+  description: FILTER that filters out most rows and has few results
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s rdf:type ?o .
@@ -1624,9 +1718,10 @@ queries:
     client_time: 180.87918329238892
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: FILTER that filters out few rows and has many results
-- query: filter-language-en
-  sparql: |-
+  server_restarted: true
+  name: filter-many-results
+  description: FILTER that filters out few rows and has many results
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s dblp:signatureDblpName ?o .
@@ -1639,9 +1734,10 @@ queries:
   - count
   results:
   - - '"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: FILTER on string predicate for only English literals
-- query: date-year
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum)
+  server_restarted: true
+  name: filter-language-en
+  description: FILTER on string predicate for only English literals
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(YEAR(?o)) AS ?sum)
     WHERE { ?s dblp:yearOfPublication ?o }'
   runtime_info:
     client_time: 2.4888384342193604
@@ -1650,9 +1746,10 @@ queries:
   - sum
   results:
   - - '"15637633984"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: YEAR function
-- query: date-month
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum)
+  server_restarted: true
+  name: date-year
+  description: YEAR function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(MONTH(?o)) AS ?sum)
     WHERE { ?s dblp:yearOfPublication ?o }'
   runtime_info:
     client_time: 2.0217783451080322
@@ -1661,9 +1758,10 @@ queries:
   - sum
   results:
   - []
-  long_query: MONTH function
-- query: date-day
-  sparql: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum)
+  server_restarted: true
+  name: date-month
+  description: MONTH function
+- query: 'PREFIX dblp: <https://dblp.org/rdf/schema#> SELECT (SUM(DAY(?o)) AS ?sum)
     WHERE { ?s dblp:yearOfPublication ?o }'
   runtime_info:
     client_time: 2.0080695152282715
@@ -1672,9 +1770,10 @@ queries:
   - sum
   results:
   - []
-  long_query: DAY function
-- query: number-of-triples
-  sparql: |-
+  server_restarted: true
+  name: date-day
+  description: DAY function
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1686,9 +1785,10 @@ queries:
   - count
   results:
   - - '"788855835"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Total number of triples
-- query: number-of-subjects
-  sparql: |-
+  server_restarted: true
+  name: number-of-triples
+  description: Total number of triples
+- query: |-
     SELECT (COUNT(DISTINCT ?s) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1697,9 +1797,10 @@ queries:
     client_time: 181.2827491760254
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: Total number of distinct subjects
-- query: number-of-predicates
-  sparql: |-
+  server_restarted: true
+  name: number-of-subjects
+  description: Total number of distinct subjects
+- query: |-
     SELECT (COUNT(DISTINCT ?p) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1711,9 +1812,10 @@ queries:
   - count
   results:
   - - '"90"^^<http://www.w3.org/2001/XMLSchema#integer>'
-  long_query: Total number of distinct predicates
-- query: number-of-objects
-  sparql: |-
+  server_restarted: true
+  name: number-of-predicates
+  description: Total number of distinct predicates
+- query: |-
     SELECT (COUNT(DISTINCT ?o) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1722,9 +1824,10 @@ queries:
     client_time: 181.69721007347107
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: Total number of distinct objects
-- query: number-of-literals
-  sparql: |-
+  server_restarted: true
+  name: number-of-objects
+  description: Total number of distinct objects
+- query: |-
     SELECT (COUNT(?o) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1734,9 +1837,10 @@ queries:
     client_time: 180.8959972858429
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: Total number of literals
-- query: number-of-blank-nodes
-  sparql: |-
+  server_restarted: true
+  name: number-of-literals
+  description: Total number of literals
+- query: |-
     SELECT (COUNT(?s) AS ?count)
     WHERE {
       ?s ?p ?o .
@@ -1746,6 +1850,9 @@ queries:
     client_time: 180.91146063804626
   headers: []
   results: 'Exception: curl command failed with exit code 52, stderr is empty'
-  long_query: Total number of blank nodes
-index_description: DBLP computer science bibliography, data from https://dblp.org/rdf,
-  ~500 million triples
+  server_restarted: true
+  name: number-of-blank-nodes
+  description: Total number of blank nodes
+name: DBLP (500 million triples)
+description: DBLP computer science bibliography, data from https://dblp.org/rdf, ~500
+  million triples
