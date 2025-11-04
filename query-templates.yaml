@@ -188,9 +188,10 @@ placeholders:
       - suffix: _PERCENTILE_NINETYFIVE
         variable: "?percentile95"
     query: |
-      SELECT (floor(COUNT(*) * 0.5) AS ?median)
-             (floor(COUNT(*) * 0.7) AS ?percentile70)
-             (floor(COUNT(*) * 0.95) AS ?percentile95) {
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT (xsd:integer(floor(COUNT(*) * 0.5)) AS ?median)
+             (xsd:integer(floor(COUNT(*) * 0.7)) AS ?percentile70)
+             (xsd:integer(floor(COUNT(*) * 0.95)) AS ?percentile95) {
         ?s %PREDICATE_LARGE_WITH_NUMERIC% ?o . }
   - name: VALUE_FOR_NUMERIC_BIN_SEARCH_1
     description: The median of the numeric values
