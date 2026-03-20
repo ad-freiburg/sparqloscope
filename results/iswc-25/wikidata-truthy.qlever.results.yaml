@@ -2037,3 +2037,5 @@ timeout: 300
 name: Wikidata Truthy (8 billion triples)
 description: Wikidata Truthy from https://dumps.wikimedia.org/wikidatawiki/entities/latest-truthy.nt.gz,
   ~8 billion triples
+index_size: 187097690112
+index_time: 10799
