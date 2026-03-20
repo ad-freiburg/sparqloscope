@@ -1856,3 +1856,7 @@ queries:
 name: DBLP (500 million triples)
 description: DBLP computer science bibliography, data from https://dblp.org/rdf, ~500
   million triples
+# I'm not sure if some of the index files are not-deleted temp files from an indexing crash
+index_size: 181220515840
+# Time approx.
+index_time: 1500

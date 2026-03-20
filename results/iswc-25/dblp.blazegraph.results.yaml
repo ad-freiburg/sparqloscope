@@ -3473,3 +3473,6 @@ timeout: 180
 name: DBLP (500 million triples)
 description: DBLP computer science bibliography, data from https://dblp.org/rdf, ~500
   million triples
+index_size: 87049388032
+# Time approx.
+index_time: 7380
